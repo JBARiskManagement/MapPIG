@@ -1,0 +1,19 @@
+<RCC>
+    <qresource prefix="/">
+        <file>../Resources/Leaflet/images/layers-2x.png</file>
+        <file>../Resources/Leaflet/images/layers.png</file>
+        <file>../Resources/Leaflet/images/marker-icon-2x.png</file>
+        <file>../Resources/Leaflet/images/marker-icon.png</file>
+        <file>../Resources/Leaflet/images/marker-shadow.png</file>
+        <file>../Resources/Leaflet/leaflet-src.js</file>
+        <file>../Resources/Leaflet/leaflet.css</file>
+        <file>../Resources/Leaflet/leaflet.js</file>
+        <file>../Resources/html/index.html</file>
+        <file>../Resources/css/main.css</file>
+        <file>../Resources/js/map.js</file>
+        <file>../Resources/MarkerCluster/leaflet.markercluster-src.js</file>
+        <file>../Resources/MarkerCluster/leaflet.markercluster.js</file>
+        <file>../Resources/MarkerCluster/MarkerCluster.css</file>
+        <file>../Resources/MarkerCluster/MarkerCluster.Default.css</file>
+    </qresource>
+</RCC>

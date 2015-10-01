@@ -1,0 +1,191 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>MapThing Prototype</title>
+
+
+        <link href='qrc:/../Resources/Leaflet/leaflet.css' rel='stylesheet' />
+        <link href="qrc:/../Resources/PruneCluster/LeafletStyleSheet.css" rel='stylesheet' />
+        <link href='qrc:/../Resources/bootstrap/css/bootstrap.css' rel='stylesheet' />
+        <link href='qrc:/../Resources/css/main.css' rel='stylesheet' />
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    </head>
+    <body>
+    <div class="navbar navbar-fixed-top" role="navigation">
+      <div class="container-fluid">
+        <div class="navbar-header">
+          <div class="navbar-icon-container">
+            <a href="#" class="navbar-icon pull-right visible-xs" id="nav-btn"><i class="fa fa-bars fa-lg"></i></a>
+            <a href="#" class="navbar-icon pull-right visible-xs" id="sidebar-toggle-btn"><i class="fa fa-search fa-lg"></i></a>
+          </div>
+          <a class="navbar-brand" href="#">MapThing</a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">            
+            <li class="hidden-xs"><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="db-btn"><i class="fa fa-database"></i>&nbsp;&nbsp;Database</a></li>
+            <li class="hidden-xs"><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="hazards-btn"><i class="fa fa-server"></i>&nbsp;&nbsp;Hazards</a></li>
+            <li><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="analysis-btn"><i class="fa fa-line-chart"></i>&nbsp;&nbsp;Analysis</a></li>
+          </ul>
+        </div><!--/.navbar-collapse -->
+      </div>
+    </div>
+    
+    <!--Main Window-->
+     <div id="container">
+      <div id="db-sidebar" class="sidebar" hidden>
+        <div class="sidebar-wrapper">
+          <div class="panel panel-default" id="features">
+            <div class="panel-heading">
+              <h3 class="panel-title">Database
+              <button type="button" class="btn btn-xs btn-default pull-right" id="db-sidebar-hide-btn"><i class="fa fa-chevron-left"></i></button></h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-12 col-md-12">
+                  <form role="form" class="db-form">
+                      <div class="form-group">
+                        <label for="host">Host</label>
+                        <input type="input" class="form-control" id="host">
+                      </div>
+                      <div class="form-group">
+                        <label for="port">Port</label>
+                        <input type="input" class="form-control" id="port">
+                      </div>
+                      <div class="form-group">
+                        <label for="user">User</label>
+                        <input type="input" class="form-control" id="user">
+                      </div>
+                      <div class="form-group">
+                        <label for="pwd">Password</label>
+                        <input type="input" class="form-control" id="pwd">
+                      </div>
+                      
+                      <button type="button" class="btn btn-default" id="db-submit">Submit</button>
+                    </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id="hazards-sidebar" class="sidebar" hidden>
+        <div class="sidebar-wrapper">
+          <div class="panel panel-default" id="hazfeatures">
+            <div class="panel-heading">
+              <h3 class="panel-title">Hazard Map Server
+              <button type="button" class="btn btn-xs btn-default pull-right" id="hazards-sidebar-hide-btn"><i class="fa fa-chevron-left"></i></button></h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-12 col-md-12">
+                  <form role="form" class="hazard-form">
+                      <div class="form-group">
+                        <label for="hazardmaphost">Host URL</label>
+                        <input type="input" class="form-control" id="hazardmaphost">
+                      </div>
+                      <div class="form-group">
+                        <label for="layer">Layer</label>
+                        <input type="input" class="form-control" id="layer">
+                      </div>
+                      <div class="form-group">
+                        <label for="format">Format</label>
+                        <input type="input" class="form-control" id="format" value="image/png">
+                      </div>
+                      <div class="form-group">
+                        <label for="tms">TMS</label>
+                        <input type="checkbox" class="form-control" id="tms">
+                      </div>
+                      
+                      <button type="button" class="btn btn-default" id="hazard-submit">Add Layer</button>
+                    </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      <div id="analysis-sidebar" class="sidebar" hidden>
+        <div class="sidebar-wrapper">
+          <div class="panel panel-default" id="hazfeatures">
+            <div class="panel-heading">
+              <h3 class="panel-title">Analysis
+              <button type="button" class="btn btn-xs btn-default pull-right" id="analysis-sidebar-hide-btn"><i class="fa fa-chevron-left"></i></button></h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-12 col-md-12">
+                  <button type="button" class="btn btn-default btn-block" id="summarize-view-btn">Summarize View</button>
+                  <button type="button" class="btn btn-default btn-block" id="elect-btn">ELECT</button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      
+      
+      
+      
+      
+      <div id="map"></div>
+    </div>
+    
+    <!-- MODALS -->
+        <div class="modal fade" id="attributionModal" tabindex="-1" role="dialog">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
+            <h4 class="modal-title">
+            </h4>
+          </div>
+          <div class="modal-body">
+            <div id="attribution"></div>
+          </div>
+        </div><!-- /.modal-content -->
+      </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    
+    
+    
+    <div class="modal fade" id="lecModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+      <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">LEC Curve</h4>
+          </div>
+          <div class="modal-body">
+            <p>Loss Exceedance for Risks in View</p>
+            <canvas id="lecPopupChart" width="568" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    
+    
+    <script src='qrc:/../Resources/jquery-1.11.3.min.js'></script>
+    <script src='qrc:/../Resources/Leaflet/leaflet.js'></script>  
+	<script src="qrc:/../Resources/PruneCluster/PruneCluster.min.js"></script>	
+    <script src='qrc:/../Resources/bootstrap/js/bootstrap.js'></script>
+    <script src='qrc:/../Resources/js/map.js'></script>
+    <script src='qrc:/../Resources/js/Chart.min.js'></script>
+
+    </body>
+    
+
+    
+    
+    
+    
+</html>
