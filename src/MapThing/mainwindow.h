@@ -1,6 +1,8 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "datarequests.h"
+
 #include <QMainWindow>
 #include <QWebView>
 #include <QWebFrame>
@@ -26,6 +28,7 @@ private:
     QToolBar *toolBar;
     QAction *dataA;
     QAction *mapA;
+    DataRequests *bridge;
 
     /**
      * @brief MainWindow::setSize Resizes the application to a nice proportion of the screen

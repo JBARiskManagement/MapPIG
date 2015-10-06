@@ -8,13 +8,16 @@
         <file>../Resources/Leaflet/leaflet-src.js</file>
         <file>../Resources/Leaflet/leaflet.css</file>
         <file>../Resources/Leaflet/leaflet.js</file>
-        <file>../Resources/PruneCluster/PruneCluster.min.js</file>
-        <file>../Resources/PruneCluster/LeafletStyleSheet.css</file>
         <file>../Resources/html/index.html</file>
         <file>../Resources/css/main.css</file>
         <file>../Resources/js/map.js</file>
-        <file>../Resources/js/jquery-1.11.3.min.js</file>
-        <file>../Resources/js/bootbox.min.js</file>
+        <file>../Resources/MarkerCluster/leaflet.markercluster-src.js</file>
+        <file>../Resources/MarkerCluster/leaflet.markercluster.js</file>
+        <file>../Resources/MarkerCluster/MarkerCluster.css</file>
+        <file>../Resources/MarkerCluster/MarkerCluster.Default.css</file>
+        <file>../Resources/PruneCluster/PruneCluster.min.js</file>
+        <file>../Resources/PruneCluster/LeafletStyleSheet.css</file>
+		<file>../Resources/jquery-1.11.3.min.js</file>
         <file>../Resources/js/Chart.min.js</file>
         <file>../Resources/bootstrap/css/bootstrap-theme.css</file>
         <file>../Resources/bootstrap/css/bootstrap-theme.css.map</file>
@@ -30,9 +33,6 @@
         <file>../Resources/bootstrap/js/bootstrap.js</file>
         <file>../Resources/bootstrap/js/bootstrap.min.js</file>
         <file>../Resources/bootstrap/js/npm.js</file>
-        <file>../Resources/L.Geosearch/js/l.geosearch.provider.google.js</file>
-        <file>../Resources/L.Geosearch/js/l.control.geosearch.js</file>
         <file>../Resources/img/ffa500-marker-32.png</file>
-        <file>../Resources/img/TransLogo.png</file>
     </qresource>
 </RCC>

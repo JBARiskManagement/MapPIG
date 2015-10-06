@@ -1,6 +1,7 @@
 #include "mainwindow.h"
 #include "constants.h"
 
+
 // Qt Classes
 #include <QDesktopWidget>
 #include <QRect>
@@ -13,45 +14,43 @@
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
 {
+    // No need to explicitly call delete as under control of QObject. This applies to
+    // all objects that inherit from QObject and we pass a "parent" to (i.e. this)
+    webview = new QWebView(this);
 
-    toolBar = addToolBar("main toolbar");
-    dataA = toolBar->addAction("Map");
-    dataA = toolBar->addAction("Data");
-
-    webview = new QWebView();
-
-    webview->page()->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
-    webview->page()->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
-    //webview->page()->setLinkDelegationPolicy(QWebPage::DelegateAllLinks);
-    webview->page()->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+    QWebPage *page = webview->page();
+    page->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+    page->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
+    page->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
     webview->setContentsMargins(0,0,0,0);
-    //webview->setRenderHints(QPainter::HighQualityAntialiasing |QPainter::SmoothPixmapTransform);
 
-    inspector = new QWebInspector();
-    inspector->resize(900,500);
-    inspector->setPage(webview->page());
+    // The bridge forms the link between C++ and javascript.
+    // bridge methods can be called from both sides (use signals/slots) and pass data
+    bridge = new DataRequests(this);
+    page->mainFrame()->addToJavaScriptWindowObject("BRIDGE", bridge);
 
-    QShortcut *inspectorShortcut = new QShortcut(QKeySequence("Ctrl+D"), this);
-    connect(inspectorShortcut, SIGNAL(activated()), this, SLOT(toggleInspector()));
+    // Web inspector only really required for debugging so should not
+    // be documented in user documentation.
+    // Do not pass this as parent so it will be created as a separate dialog.
+    // This means we need to explicitly delete.
+    inspector = new QWebInspector;
+    //inspector->resize(950,700);
+    inspector->setPage(page);
 
     // Setup the size of the window
     setSize();
 
-    // Load the stylesheet
     //loadStyleSheet();
-    //setWindowIcon(QIcon(":/TransLogo.png"));
+    setWindowIcon(QIcon(":/../Resources/img/TransLogo.png"));
 
     setCentralWidget(webview);
 
-    // Load the index page
+    // set up the HTML UI
     showMap();
 }
 
 MainWindow::~MainWindow()
 {
-    delete(webview);
-    delete(inspector);
-    delete(toolBar);
 }
 
 void MainWindow::setSize()
@@ -59,8 +58,8 @@ void MainWindow::setSize()
   QDesktopWidget desktop;
   QRect screenSize = desktop.availableGeometry(desktop.primaryScreen());
 
-  int width = screenSize.width()*0.63;
-  int height = screenSize.height()*0.7;
+  int width = screenSize.width()*0.7;
+  int height = screenSize.height()*0.75;
   //int webViewWidth = width*0.85;
 
   //QList<int> list;
@@ -91,9 +90,7 @@ void MainWindow::showMap()
 void MainWindow::toggleInspector()
 {
     inspector->setVisible(inspector->isHidden());
-    //inspector->show();
 }
-
 
 void MainWindow::quit()
 {

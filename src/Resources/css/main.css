@@ -77,9 +77,14 @@ input[type="radio"], input[type="checkbox"] {
 
 
 .navbar .navbar-brand {
-  font-size: 20px;
+  font-size: 18px;
   color: #595959;
 }
+
+.navbar-brand {
+    padding: 10px 15px;
+}
+
 .navbar-collapse.in {
   overflow-y: hidden;
 }

@@ -2,6 +2,8 @@
 #define DATAREQUESTS_H
 
 #include <QObject>
+#include <QString>
+#include <QtSql>
 
 /**
  * @brief The DataRequests class
@@ -13,10 +15,18 @@ class DataRequests : public QObject
 public:
     explicit DataRequests(QObject *parent = 0);
     ~DataRequests();
+    QSqlDatabase jcalfDb;
+
+    Q_INVOKABLE bool setJcalfDatabase(QString host, QString port, QString user, QString pwd);
 
 signals:
+    void riskUpdated(double lat, double lng);
+    void updatesFinished();
 
 public slots:
+
+    void refreshExposures(double minX, double minY, double maxX, double maxY);
+
 };
 
 #endif // DATAREQUESTS_H

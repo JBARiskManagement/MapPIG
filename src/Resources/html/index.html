@@ -19,20 +19,23 @@
 
     </head>
     <body>
-    <div class="navbar navbar-fixed-top" role="navigation">
+    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
           <div class="navbar-icon-container">
             <a href="#" class="navbar-icon pull-right visible-xs" id="nav-btn"><i class="fa fa-bars fa-lg"></i></a>
             <a href="#" class="navbar-icon pull-right visible-xs" id="sidebar-toggle-btn"><i class="fa fa-search fa-lg"></i></a>
           </div>
-          <a class="navbar-brand" href="#">MapThing</a>
+          <a class="navbar-brand" href="#">
+            <img alt="MapThing" src="qrc:/../Resources/img/TransLogo.png" style="max-width: 100%; max-height: 100%">
+          </a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">            
             <li class="hidden-xs"><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="db-btn"><i class="fa fa-database"></i>&nbsp;&nbsp;Database</a></li>
-            <li class="hidden-xs"><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="hazards-btn"><i class="fa fa-server"></i>&nbsp;&nbsp;Hazards</a></li>
+            <li class="hidden-xs"><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="hazards-btn"><i class="fa fa-globe"></i>&nbsp;&nbsp;Overlays</a></li>
             <li><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="analysis-btn"><i class="fa fa-line-chart"></i>&nbsp;&nbsp;Analysis</a></li>
+            <li><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="geocode-btn"><i class="fa fa-search"></i>&nbsp;&nbsp;Locate</a></li>
           </ul>
         </div><!--/.navbar-collapse -->
       </div>
@@ -80,7 +83,7 @@
         <div class="sidebar-wrapper">
           <div class="panel panel-default" id="hazfeatures">
             <div class="panel-heading">
-              <h3 class="panel-title">Hazard Map Server
+              <h3 class="panel-title">Add WMS Layer
               <button type="button" class="btn btn-xs btn-default pull-right" id="hazards-sidebar-hide-btn"><i class="fa fa-chevron-left"></i></button></h3>
             </div>
             <div class="panel-body">
@@ -131,32 +134,33 @@
           </div>
         </div>
       </div>
-      
-      
-      
-      
-      
+
+      <div id="geocode-sidebar" class="sidebar" hidden>
+        <div class="sidebar-wrapper">
+          <div class="panel panel-default" id="geocode-details">
+            <div class="panel-heading">
+              <h3 class="panel-title">Locate
+              <button type="button" class="btn btn-xs btn-default pull-right" id="geocode-sidebar-hide-btn"><i class="fa fa-chevron-left"></i></button></h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-12 col-md-12">
+                <form role="form" class="geocode-form">
+                    <div class="form-group">
+                      <label for="address">Address</label>
+                      <input type="input" class="form-control" id="address">
+                    </div>
+                    <button type="button" class="btn btn-default" id="geocode-submit">Search</button>
+                  </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div id="map"></div>
     </div>
-    
-    <!-- MODALS -->
-        <div class="modal fade" id="attributionModal" tabindex="-1" role="dialog">
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <button class="close" type="button" data-dismiss="modal" aria-hidden="true">&times;</button>
-            <h4 class="modal-title">
-            </h4>
-          </div>
-          <div class="modal-body">
-            <div id="attribution"></div>
-          </div>
-        </div><!-- /.modal-content -->
-      </div><!-- /.modal-dialog -->
-    </div><!-- /.modal -->
-    
-    
-    
+
     <div class="modal fade" id="lecModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
       <div class="modal-dialog"  role="document">
         <div class="modal-content">
@@ -172,20 +176,28 @@
       </div>
     </div>
     
-    
-    
-    <script src='qrc:/../Resources/jquery-1.11.3.min.js'></script>
-    <script src='qrc:/../Resources/Leaflet/leaflet.js'></script>  
-	<script src="qrc:/../Resources/PruneCluster/PruneCluster.min.js"></script>	
-    <script src='qrc:/../Resources/bootstrap/js/bootstrap.js'></script>
-    <script src='qrc:/../Resources/js/map.js'></script>
-    <script src='qrc:/../Resources/js/Chart.min.js'></script>
+    <!-- UI libs -->
+    <script type="text/javascript" src='qrc:/../Resources/js/jquery-1.11.3.min.js'></script>
+    <script type="text/javascript" src='qrc:/../Resources/bootstrap/js/bootstrap.js'></script>
+    <script type="text/javascript" src='qrc:/../Resources/js/bootbox.min.js'></script>
+
+    <!-- Mapping libs -->
+    <script type="text/javascript" src='qrc:/../Resources/Leaflet/leaflet.js'></script>
+    <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0"></script>
+    <script type="text/javascript" src="qrc:/../Resources/PruneCluster/PruneCluster.min.js"></script>
+    <script type="text/javascript" src="qrc:/../Resources/L.Geosearch/js/l.control.geosearch.js"></script>
+    <script type="text/javascript" src="qrc:/../Resources/L.Geosearch/js/l.geosearch.provider.google.js"></script>
+
+    <!-- Chart libs -->
+    <script type="text/javascript" src='qrc:/../Resources/js/Chart.min.js'></script>
+
+
+    <!--Always ensure our own JS is loaded last so it has access to the above libs -->
+    <script type="text/javascript" src='qrc:/../Resources/js/map.js'></script>
+
+    <script type="text/javascript">
+        $(document).ready(initMap);
+    </script>
 
     </body>
-    
-
-    
-    
-    
-    
 </html>
