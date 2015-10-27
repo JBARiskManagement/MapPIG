@@ -1,1 +1,4 @@
 .exe 
+.pro.*
+.smproj
+src/build-*

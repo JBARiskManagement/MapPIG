@@ -1,6 +1,7 @@
 #include "datarequests.h"
 #include <QDebug>
 #include <QSqlQuery>
+#include <QCoreApplication>
 
 DataRequests::DataRequests(QObject *parent) : QObject(parent)
 {
@@ -14,7 +15,6 @@ DataRequests::~DataRequests()
 
 bool DataRequests::setJcalfDatabase(QString host, QString port, QString user, QString pwd)
 {
-    qDebug() << host;
     jcalfDb = QSqlDatabase::addDatabase("QPSQL");
     jcalfDb.setHostName(host);
     jcalfDb.setPort(port.toInt());
@@ -24,6 +24,13 @@ bool DataRequests::setJcalfDatabase(QString host, QString port, QString user, QS
 
     bool ok = jcalfDb.open();
     return ok;
+}
+
+QString DataRequests::getLastError()
+{
+    QSqlError err = jcalfDb.lastError();
+    return err.text();
+
 }
 
 void DataRequests::refreshExposures(double minX, double minY, double maxX, double maxY)
@@ -43,9 +50,24 @@ void DataRequests::refreshExposures(double minX, double minY, double maxX, doubl
 
     query.exec();
 
-    if (query.size() > 0)
+    int size = query.size();
+
+
+    if (size > 0)
     {
+        int increment = 0.01 * size;
+        int percent = 0;
+        int countdown = increment;
+
         while (query.next()){
+            countdown--;
+            if(countdown == 0)
+            {
+                percent++;
+                emit progressUpdated(percent);
+                countdown = increment;
+
+            }
             double lat = query.value(1).toDouble();
             double lng = query.value(2).toDouble();
             emit riskUpdated(lat, lng);

@@ -8,6 +8,7 @@
 #include <QWebFrame>
 #include <QWebInspector>
 #include <QToolBar>
+#include <QThread>
 
 class MainWindow : public QMainWindow
 {
@@ -29,6 +30,7 @@ private:
     QAction *dataA;
     QAction *mapA;
     DataRequests *bridge;
+    QThread *workerThread;
 
     /**
      * @brief MainWindow::setSize Resizes the application to a nice proportion of the screen

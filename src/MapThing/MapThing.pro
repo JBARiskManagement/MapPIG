@@ -16,11 +16,13 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    datarequests.cpp
+    datarequests.cpp \
+    jcalfdb.cpp
 
 HEADERS  += mainwindow.h \
     datarequests.h \
-    constants.h
+    constants.h \
+    jcalfdb.h
 
 RESOURCES += \
     resources.qrc

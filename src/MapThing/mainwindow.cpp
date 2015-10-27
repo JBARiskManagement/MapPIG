@@ -29,6 +29,12 @@ MainWindow::MainWindow(QWidget *parent)
     bridge = new DataRequests(this);
     page->mainFrame()->addToJavaScriptWindowObject("BRIDGE", bridge);
 
+
+    // Thread for the bridge
+    workerThread = new QThread(this);
+    bridge->moveToThread(workerThread);
+    workerThread->start();
+
     // Web inspector only really required for debugging so should not
     // be documented in user documentation.
     // Do not pass this as parent so it will be created as a separate dialog.
@@ -51,6 +57,8 @@ MainWindow::MainWindow(QWidget *parent)
 
 MainWindow::~MainWindow()
 {
+    workerThread->deleteLater();
+
 }
 
 void MainWindow::setSize()

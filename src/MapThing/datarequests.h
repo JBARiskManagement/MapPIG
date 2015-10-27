@@ -18,10 +18,12 @@ public:
     QSqlDatabase jcalfDb;
 
     Q_INVOKABLE bool setJcalfDatabase(QString host, QString port, QString user, QString pwd);
+    Q_INVOKABLE QString getLastError();
 
 signals:
     void riskUpdated(double lat, double lng);
     void updatesFinished();
+    void progressUpdated(int perc);
 
 public slots:
 

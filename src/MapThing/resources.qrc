@@ -34,5 +34,7 @@
         <file>../Resources/L.Geosearch/js/l.control.geosearch.js</file>
         <file>../Resources/img/ffa500-marker-32.png</file>
         <file>../Resources/img/TransLogo.png</file>
+        <file>../Resources/L.Loading/Control.Loading.css</file>
+        <file>../Resources/L.Loading/Control.Loading.js</file>
     </qresource>
 </RCC>

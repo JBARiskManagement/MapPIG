@@ -42,6 +42,75 @@ input[type="radio"], input[type="checkbox"] {
   padding-top: 10px;
 }
 
+/* Overlays */
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1000;
+}
+
+.progress {
+    z-index: 1001;
+    position: relative;
+    top: 50%;
+    left: 25%;
+    width: 50%;
+    opacity: 1;
+}
+
+.progress-bar {
+    background-color: #e98300;
+}
+
+
+/* For controlling cluster size. This div will get added dynamically when jcalf layers are added */
+div#size {
+    position: absolute;
+    left: 1em;
+    top: 5em;
+    background: white;
+    color: #595959;
+    padding: 0.4em;
+    z-index: 1000;
+    border-radius: 4px;
+}
+
+/* Appearance of cluster size slider */
+input[type=range]{
+    -webkit-appearance: none;
+}
+
+input[type=range]::-webkit-slider-runnable-track {
+    width: 300px;
+    height: 5px;
+    background: #ddd;
+    border: none;
+    border-radius: 3px;
+}
+
+input[type=range]::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    border: none;
+    height: 16px;
+    width: 16px;
+    border-radius: 50%;
+    background: goldenrod;
+    margin-top: -4px;
+}
+
+input[type=range]:focus {
+    outline: none;
+}
+
+input[type=range]:focus::-webkit-slider-runnable-track {
+    background: #ccc;
+}
+
+
 
 .progress-bar-full {
   width: 100%;

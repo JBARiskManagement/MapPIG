@@ -12,8 +12,10 @@
 
         <link href='qrc:/../Resources/Leaflet/leaflet.css' rel='stylesheet' />
         <link href="qrc:/../Resources/PruneCluster/LeafletStyleSheet.css" rel='stylesheet' />
+        <link href='qrc:/../Resources/L.Loading/Control.Loading.css' rel='stylesheet' />
         <link href='qrc:/../Resources/bootstrap/css/bootstrap.css' rel='stylesheet' />
         <link href='qrc:/../Resources/css/main.css' rel='stylesheet' />
+
         
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
@@ -32,6 +34,7 @@
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">            
+            <li class="hidden-xs"><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="csv-btn"><i class="fa fa-file-text"></i>&nbsp;&nbsp;File</a></li>
             <li class="hidden-xs"><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="db-btn"><i class="fa fa-database"></i>&nbsp;&nbsp;Database</a></li>
             <li class="hidden-xs"><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="hazards-btn"><i class="fa fa-globe"></i>&nbsp;&nbsp;Overlays</a></li>
             <li><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="analysis-btn"><i class="fa fa-line-chart"></i>&nbsp;&nbsp;Analysis</a></li>
@@ -43,6 +46,8 @@
     
     <!--Main Window-->
      <div id="container">
+
+      <!-- Slide out menus-->
       <div id="db-sidebar" class="sidebar" hidden>
         <div class="sidebar-wrapper">
           <div class="panel panel-default" id="features">
@@ -68,7 +73,7 @@
                       </div>
                       <div class="form-group">
                         <label for="pwd">Password</label>
-                        <input type="input" class="form-control" id="pwd">
+                        <input type="password" class="form-control" id="pwd">
                       </div>
                       
                       <button type="button" class="btn btn-default" id="db-submit">Submit</button>
@@ -79,6 +84,43 @@
           </div>
         </div>
       </div>
+
+      <div id="csv-sidebar" class="sidebar" hidden>
+        <div class="sidebar-wrapper">
+          <div class="panel panel-default" id="features">
+            <div class="panel-heading">
+              <h3 class="panel-title">File
+              <button type="button" class="btn btn-xs btn-default pull-right" id="csv-sidebar-hide-btn"><i class="fa fa-chevron-left"></i></button></h3>
+            </div>
+            <div class="panel-body">
+              <div class="row">
+                <div class="col-xs-12 col-md-12">
+                  <form role="form" class="csv-form">
+                      <div class="form-group">
+                        <label for="csv-select">Existing files</label>
+                        <select class="form-control" id="csv-select"></select>
+                        <button type="button" class="btn btn-default" id="csv-add">Add</button>
+                        <button type="button" class="btn btn-default" id="csv-remove">Remove</button>
+                      </div>
+                      <div class="form-group">
+                        <label for="open-file">Load file</label>
+                        <input type="file" id="open-file">
+                        <label for="file-format">Format</label>
+                        <select class="form-control" id="file-format">
+                            <option>JCalf Portfolio</option>
+                            <option>ELECT exposures</option>
+                            <option>Oasis Exposures</option>
+                        </select>
+                      </div>
+                      <button type="button" class="btn btn-default" id="csv-submit">Submit</button>
+                    </form>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
       <div id="hazards-sidebar" class="sidebar" hidden>
         <div class="sidebar-wrapper">
           <div class="panel panel-default" id="hazfeatures">
@@ -105,8 +147,7 @@
                       <div class="form-group">
                         <label for="tms">TMS</label>
                         <input type="checkbox" class="form-control" id="tms">
-                      </div>
-                      
+                      </div>                      
                       <button type="button" class="btn btn-default" id="hazard-submit">Add Layer</button>
                     </form>
                 </div>
@@ -158,9 +199,26 @@
           </div>
         </div>
       </div>
-      <div id="map"></div>
+      <!-- end slide out menus -->
+
+      <!-- This is where the actual map goes -->
+      <div id="map">
+      </div>
+
+
+    <!-- progress bar modal -->
+    <div class="overlay"  id="progressOverlay" hidden>
+        <div class="progress">
+          <div class="progress-bar" id="progress-bar" role="progressbar" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100" style="width: 60%;">
+            60%
+          </div>
+        </div>
+    </div>
     </div>
 
+    <!-- Modal popups -->
+
+    <!-- chart modals -->
     <div class="modal fade" id="lecModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
       <div class="modal-dialog"  role="document">
         <div class="modal-content">
@@ -176,6 +234,12 @@
       </div>
     </div>
     
+
+
+    <!-- end modal popups -->
+
+
+
     <!-- UI libs -->
     <script type="text/javascript" src='qrc:/../Resources/js/jquery-1.11.3.min.js'></script>
     <script type="text/javascript" src='qrc:/../Resources/bootstrap/js/bootstrap.js'></script>
@@ -187,6 +251,7 @@
     <script type="text/javascript" src="qrc:/../Resources/PruneCluster/PruneCluster.min.js"></script>
     <script type="text/javascript" src="qrc:/../Resources/L.Geosearch/js/l.control.geosearch.js"></script>
     <script type="text/javascript" src="qrc:/../Resources/L.Geosearch/js/l.geosearch.provider.google.js"></script>
+    <script type="text/javascript" src="qrc:/../Resources/L.Loading/Control.Loading.js"></script>
 
     <!-- Chart libs -->
     <script type="text/javascript" src='qrc:/../Resources/js/Chart.min.js'></script>

@@ -1,0 +1,2 @@
+http://localhost:8080/geoserver/geotiff_maps/gwc/service/wmts
+geotiff_maps:River10Q200D_cm_lzw

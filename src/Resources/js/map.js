@@ -22,8 +22,12 @@ MT.MapController = function (){
     this.overLays = {}; // Holds any overlay layers added
     this.jcalfLayers = [];
     var tonerLite = new L.StamenTileLayer("toner-lite");
+    var toner = new L.StamenTileLayer("toner");
     var watercolor = new L.StamenTileLayer("watercolor");
-
+    var terrain = new L.StamenTileLayer("terrain");
+    var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+                              attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+                          });
     this.geocoder = new L.GeoSearch.Provider.Google();
 
 
@@ -32,7 +36,8 @@ MT.MapController = function (){
                       center: [53.952612,-2.090103],
                       layers: [tonerLite],
                       zoomControl: false,
-                      attributionControl: true
+                      attributionControl: true,
+                      loadingControl: true
                     });
 
     this.zoomControl = L.control.zoom({
@@ -41,7 +46,10 @@ MT.MapController = function (){
 
     var baseLayers = {
       "toner-lite": tonerLite,
-      "watercolor": watercolor
+      "toner": toner,
+      "watercolor": watercolor,
+      "terrain (North America only)": terrain,
+      "osm": osm
     };
 
     this.layerControl = L.control.layers(baseLayers).addTo(this.mmap);
@@ -124,45 +132,76 @@ MT.MapController.prototype.geocode = function(address)
     });
 }
 
+MT.ProgressBar = function(){
+
+    BRIDGE.progressUpdated.connect(this.update.bind(this));
+
+}
+
+MT.ProgressBar.prototype.show = function(){
+
+ this.update(0);
+ $("#progressOverlay").show();
+ //console.log("Shown");
+
+}
+
+MT.ProgressBar.prototype.hide = function(){
+    $("#progressOverlay").hide();
+    //console.log("hidden");
+}
+
+MT.ProgressBar.prototype.update = function(perc){
+    var strPerc = perc+"%";
+    console.log(strPerc);
+    $("#progress-bar").css("width", strPerc);
+    $("#progress-bar").val(strPerc);
+}
+
+
+
 /*
  * JcalfLayer
  *      A cluster layer whose markers can be defined by exposures from a JCalf database
  *
  */
 MT.JcalfLayer = function(mapCt, host, port, user, pwd){
-    console.log("Creating Jcalf Layer");
-    this.clusterLayer = new PruneClusterForLeaflet(); // The marker cluster layer
+
     this.mapCt = mapCt;
-    this.mapCt.addOverlay(this.clusterLayer, "Exposures");
+
     this.host = host;
     this.port = port;
     this.user = user;
-    this.pwd = pwd
-
-    /*
-    this.processView = function()
-    {
-        console.log("Process View");
-        console.log(this.clusterLayer);
-        this.clusterLayer.ProcessView();
-        this.clusterLayer.RedrawIcons();
-    }
-    */
-
+    this.pwd = pwd;
+    this.lastUpdate = +new Date();
 
     status = BRIDGE.setJcalfDatabase(host,port,user,pwd);
+
+
     if (status === "true")
     {
-        this.update();
+        BRIDGE.riskUpdated.connect(this.addRiskMarker.bind(this));
+        BRIDGE.updatesFinished.connect(this.processView.bind(this));
+        // Connect map move events to updating jcalf layers
+        var self = this;
+        mapCt.mmap.on('moveend', function(){self.warnUpdate()});
+        this.clusterLayer = new PruneClusterForLeaflet(); // The marker cluster layer
+        this.mapCt.addOverlay(this.clusterLayer, "Exposures");
+        this.warnUpdate();
+        //this.addClusterSizeWidget();
     }
     else
     {
-        bootbox.alert("Unable to connect to the database");
+        err = BRIDGE.getLastError();
+        bootbox.dialog({ message: err,
+                         title: "Unable to connect to the database",
+                         buttons: {main: {label: "Ok",
+                               className: "btn-primary"}}
+                       });
     }
 
-    // Connect map move events to updating jcalf layers
-    var self = this;
-    mapCt.mmap.on('moveend', function(){self.update()});
+
+
 
 
 }
@@ -170,11 +209,8 @@ MT.JcalfLayer = function(mapCt, host, port, user, pwd){
 
 MT.JcalfLayer.prototype.processView = function()
 {
-    console.log("Process View");
-    console.log(this.clusterLayer);
-    console.log(self);
     this.clusterLayer.ProcessView();
-    this.clusterLayer.RedrawIcons();
+    //this.clusterLayer.RedrawIcons();
 }
 
 /**
@@ -185,12 +221,25 @@ MT.JcalfLayer.prototype.processView = function()
  *  A Leaflet LatLngBounds instance
  *
  */
-MT.JcalfLayer.prototype.update = function(){
+MT.JcalfLayer.prototype.warnUpdate = function(){
+    $("#map").trigger("dataloading");
+    var pb = new MT.ProgressBar();
+    //pb.show();
+    this.doUpdate();
+    $("#map").trigger("dataload");
+    //pb.hide();
+}
 
+MT.JcalfLayer.prototype.doUpdate = function(){
     var bounds = this.mapCt.mmap.getBounds();
     // Call the C++ bridge object to get the lat longs from the jcalf database within this bounding box
     this.clusterLayer.RemoveMarkers();
-    BRIDGE.refreshExposures(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
+
+    // Only update the risks if the layer is displayed
+    if (this.mapCt.mmap.hasLayer(this.clusterLayer))
+    {
+        BRIDGE.refreshExposures(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
+    }
 }
 
 /*
@@ -202,17 +251,41 @@ MT.JcalfLayer.prototype.update = function(){
  */
 MT.JcalfLayer.prototype.addRiskMarker = function(lat, lon){
     var marker = new PruneCluster.Marker(lat, lon);
-    //marker.data.icon = createIcon;
-    marker.data.forceIconRedraw = true;
+    marker.data.icon = createIcon;
+    //marker.data.forceIconRedraw = true;
     this.clusterLayer.RegisterMarker(marker);
 }
 
-function showModal(id){
-	$("#" + id).modal("show");
+MT.JcalfLayer.prototype.addClusterSizeWidget = function(){
+
+    $('<div href="#" id="size">Cluster size: <input type="range" value="160" min="35" max="500" step="1" id="sizeInput"><span id="currentSize">112</span></div>').insertAfter("#map");
+    $("#sizeInput").onChange = this.updateSize.bind(this);
+    $("#sizeInput").onChange = this.updateSize.bind(this);
+
 }
 
-/** Jcalf interrogation **/
+MT.JcalfLayer.prototype.updateSize = function(){
 
+    var newSize = $("#sizeInput").val();
+    this.clusterLayer.Cluster.Size = parseInt(newSize);
+    $("#currentSize").firstChild.data = newSize;
+    var now = +new Date();
+    if ((now - this.lastUpdate) < 400) {
+        return;
+    }
+    this.clusterLayer.ProcessView();
+    this.lastUpdate = now;
+}
+
+
+
+
+
+
+/** Jcalf interrogation
+* To be integrated into the jcalfLayer class above
+**/
+/*
 function getResultsForRisksInView()
 {
     var bnds = map.getBounds();
@@ -258,7 +331,9 @@ function getResultsForRisksInView()
     lecChart = new Chart(ctx).Line(data);
     
 }
+*/
 
+// Icon creation function for cluster layers
 function createIcon(data, category)
 {
 
@@ -269,6 +344,10 @@ function createIcon(data, category)
         popupAnchor: [16,0]
     });
 
+}
+
+function showModal(id){
+    $("#" + id).modal("show");
 }
 
 /*
@@ -316,6 +395,12 @@ function initMap(){
       return false;
     });
 
+    $("#csv-btn").click(function() {
+      $('#csv-sidebar').toggle();
+      mapCtrl.mmap.invalidateSize();
+      return false;
+    });
+
     $("#db-btn").click(function() {
       $('#db-sidebar').toggle();
       mapCtrl.mmap.invalidateSize();
@@ -345,6 +430,11 @@ function initMap(){
       return false;
     });
 
+    $("#csv-sidebar-hide-btn").click(function() {
+      $('#csv-sidebar').hide();
+      mapCtrl.mmap.invalidateSize();
+    });
+
     $("#db-sidebar-hide-btn").click(function() {
       $('#db-sidebar').hide();
       mapCtrl.mmap.invalidateSize();
@@ -371,11 +461,10 @@ function initMap(){
         var port = $("#port").val();
         var user = $("#user").val();
         var pwd = $("#pwd").val();
-        console.log(mapCtrl);
+
         var jcalflyr = new MT.JcalfLayer(mapCtrl, host, port, user, pwd);
         // connect signals from bridge
-        BRIDGE.riskUpdated.connect(jcalflyr.addRiskMarker);
-        BRIDGE.updatesFinished.connect(jcalflyr.processView);
+
 
     });
 
@@ -384,7 +473,6 @@ function initMap(){
     });
 
     $("#geocode-submit").click(function() {
-        console.log($("#address").val());
         mapCtrl.geocode($("#address").val());
     });
 
