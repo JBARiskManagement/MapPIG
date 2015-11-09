@@ -13,7 +13,7 @@ DataRequests::~DataRequests()
 
 }
 
-bool DataRequests::setJcalfDatabase(QString host, QString port, QString user, QString pwd)
+void DataRequests::setJcalfDatabase(QString host, QString port, QString user, QString pwd)
 {
     jcalfDb = QSqlDatabase::addDatabase("QPSQL");
     jcalfDb.setHostName(host);
@@ -23,18 +23,19 @@ bool DataRequests::setJcalfDatabase(QString host, QString port, QString user, QS
     jcalfDb.setPassword(pwd);
 
     bool ok = jcalfDb.open();
-    return ok;
+    emit databaseConnected(ok);
 }
 
-QString DataRequests::getLastError()
+void DataRequests::getLastError()
 {
     QSqlError err = jcalfDb.lastError();
-    return err.text();
+    emit error(err.text(), "Database error");
 
 }
 
 void DataRequests::refreshExposures(double minX, double minY, double maxX, double maxY)
 {
+    emit progressUpdated(0);
     QSqlQuery query(jcalfDb);
     query.prepare("SELECT pr.\"RiskID\", \"Latitude\", \"Longitude\", \"TIV\", \"Limit\", \"Deductible\", \"LineOfBusinessID\" "
                    "FROM \"PieceRisk\" pr "
@@ -55,8 +56,9 @@ void DataRequests::refreshExposures(double minX, double minY, double maxX, doubl
 
     if (size > 0)
     {
+
         int increment = 0.01 * size;
-        int percent = 0;
+        int percent = -1;
         int countdown = increment;
 
         while (query.next()){
@@ -67,12 +69,17 @@ void DataRequests::refreshExposures(double minX, double minY, double maxX, doubl
                 emit progressUpdated(percent);
                 countdown = increment;
 
+                //QCoreApplication::processEvents();
+
             }
             double lat = query.value(1).toDouble();
             double lng = query.value(2).toDouble();
             emit riskUpdated(lat, lng);
+
+
         }
-        emit updatesFinished();
+
     }
+    emit updatesFinished();
 
 }

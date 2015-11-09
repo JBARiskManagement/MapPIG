@@ -22,6 +22,7 @@ input[type="radio"], input[type="checkbox"] {
   width: auto;
   height: 100%;
   box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  cursor: 'grab';
 }
 #loading {
   position: absolute;
@@ -51,6 +52,9 @@ input[type="radio"], input[type="checkbox"] {
     height: 100%;
     width: 100%;
     z-index: 1000;
+    background: black;
+    opacity: 0.1;
+    pointer-events:none;
 }
 
 .progress {
@@ -64,6 +68,7 @@ input[type="radio"], input[type="checkbox"] {
 
 .progress-bar {
     background-color: #e98300;
+    color: #595959;
 }
 
 

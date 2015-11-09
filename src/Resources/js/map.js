@@ -18,7 +18,6 @@ var MT = MT || {};
 * Controls creation of map, base layers and overlays
 */
 MT.MapController = function (){
-
     this.overLays = {}; // Holds any overlay layers added
     this.jcalfLayers = [];
     var tonerLite = new L.StamenTileLayer("toner-lite");
@@ -53,6 +52,34 @@ MT.MapController = function (){
     };
 
     this.layerControl = L.control.layers(baseLayers).addTo(this.mmap);
+}
+
+/**
+  * Disable all map interaction
+  *
+  */
+MT.MapController.prototype.disable = function()
+{
+    this.mmap.scrollWheelZoom.disable();
+    this.mmap.dragging.disable();
+    this.mmap.touchZoom.disable();
+    this.mmap.doubleClickZoom.disable();
+    this.mmap.boxZoom.disable();
+    this.mmap.keyboard.disable();
+}
+
+/**
+  * Enable all map interaction
+  *
+  */
+MT.MapController.prototype.enable = function()
+{
+    this.mmap.scrollWheelZoom.enable();
+    this.mmap.dragging.enable();
+    this.mmap.touchZoom.enable();
+    this.mmap.doubleClickZoom.enable();
+    this.mmap.boxZoom.enable();
+    this.mmap.keyboard.enable();
 }
 
 /**
@@ -132,34 +159,6 @@ MT.MapController.prototype.geocode = function(address)
     });
 }
 
-MT.ProgressBar = function(){
-
-    BRIDGE.progressUpdated.connect(this.update.bind(this));
-
-}
-
-MT.ProgressBar.prototype.show = function(){
-
- this.update(0);
- $("#progressOverlay").show();
- //console.log("Shown");
-
-}
-
-MT.ProgressBar.prototype.hide = function(){
-    $("#progressOverlay").hide();
-    //console.log("hidden");
-}
-
-MT.ProgressBar.prototype.update = function(perc){
-    var strPerc = perc+"%";
-    console.log(strPerc);
-    $("#progress-bar").css("width", strPerc);
-    $("#progress-bar").val(strPerc);
-}
-
-
-
 /*
  * JcalfLayer
  *      A cluster layer whose markers can be defined by exposures from a JCalf database
@@ -175,41 +174,44 @@ MT.JcalfLayer = function(mapCt, host, port, user, pwd){
     this.pwd = pwd;
     this.lastUpdate = +new Date();
 
-    status = BRIDGE.setJcalfDatabase(host,port,user,pwd);
+    BRIDGE.databaseConnected.connect(this.maybeCreateLayer.bind(this))
+    BRIDGE.error.connect(MT.showError);
+    BRIDGE.connectDatabase(host,port,user,pwd);
+}
 
 
-    if (status === "true")
+MT.JcalfLayer.prototype.maybeCreateLayer = function(status)
+{
+    if (status === true)
     {
-        BRIDGE.riskUpdated.connect(this.addRiskMarker.bind(this));
+        console.log("Setting up layer");
+        BRIDGE.exposureUpdated.connect(this.addRiskMarker.bind(this));
         BRIDGE.updatesFinished.connect(this.processView.bind(this));
-        // Connect map move events to updating jcalf layers
+          // Connect map move events to updating jcalf layers
         var self = this;
-        mapCt.mmap.on('moveend', function(){self.warnUpdate()});
+        this.mapCt.mmap.on('moveend', function(){self.update()});
         this.clusterLayer = new PruneClusterForLeaflet(); // The marker cluster layer
-        this.mapCt.addOverlay(this.clusterLayer, "Exposures");
-        this.warnUpdate();
+        this.mapCt.addOverlay(this.clusterLayer, this.host);
+        this.update();
         //this.addClusterSizeWidget();
     }
     else
     {
-        err = BRIDGE.getLastError();
-        bootbox.dialog({ message: err,
-                         title: "Unable to connect to the database",
-                         buttons: {main: {label: "Ok",
-                               className: "btn-primary"}}
-                       });
+        //err = BRIDGE.getLastError();
+        MT.showError("Unknown error", "Unable to connect to the database");
     }
-
-
-
-
-
 }
 
 
 MT.JcalfLayer.prototype.processView = function()
 {
+    $("#map").trigger("dataloading");
     this.clusterLayer.ProcessView();
+    $("#map").trigger("dataload");
+    $("#disable-overlay").hide();
+    this.mapCt.enable();
+    //pb.hide();
+    //BRIDGE.progressUpdated.disconnect(pb.update);
     //this.clusterLayer.RedrawIcons();
 }
 
@@ -221,23 +223,16 @@ MT.JcalfLayer.prototype.processView = function()
  *  A Leaflet LatLngBounds instance
  *
  */
-MT.JcalfLayer.prototype.warnUpdate = function(){
-    $("#map").trigger("dataloading");
-    var pb = new MT.ProgressBar();
-    //pb.show();
-    this.doUpdate();
-    $("#map").trigger("dataload");
-    //pb.hide();
-}
-
-MT.JcalfLayer.prototype.doUpdate = function(){
-    var bounds = this.mapCt.mmap.getBounds();
-    // Call the C++ bridge object to get the lat longs from the jcalf database within this bounding box
-    this.clusterLayer.RemoveMarkers();
+MT.JcalfLayer.prototype.update = function(){
 
     // Only update the risks if the layer is displayed
     if (this.mapCt.mmap.hasLayer(this.clusterLayer))
     {
+        // Prevent user from issuing another move command while we update
+        $("#disable-overlay").show();
+        this.mapCt.disable();
+        var bounds = this.mapCt.mmap.getBounds();
+        this.clusterLayer.RemoveMarkers();
         BRIDGE.refreshExposures(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
     }
 }
@@ -254,6 +249,7 @@ MT.JcalfLayer.prototype.addRiskMarker = function(lat, lon){
     marker.data.icon = createIcon;
     //marker.data.forceIconRedraw = true;
     this.clusterLayer.RegisterMarker(marker);
+    //console.log("Add risk");
 }
 
 MT.JcalfLayer.prototype.addClusterSizeWidget = function(){
@@ -279,7 +275,14 @@ MT.JcalfLayer.prototype.updateSize = function(){
 
 
 
-
+MT.showError = function(msg, title)
+{
+    bootbox.dialog({ message: msg,
+                     title: title,
+                     buttons: {main: {label: "Ok",
+                           className: "btn-primary"}}
+                   });
+}
 
 
 /** Jcalf interrogation
@@ -375,6 +378,9 @@ function addClusterLayer(npoints)
 */
 
 function initMap(){
+    // Connect bridge
+
+
     var mapCtrl = new MT.MapController();
 
     // Button events

@@ -2,6 +2,7 @@
 #define MAINWINDOW_H
 
 #include "datarequests.h"
+#include "bridge.h"
 
 #include <QMainWindow>
 #include <QWebView>
@@ -9,6 +10,8 @@
 #include <QWebInspector>
 #include <QToolBar>
 #include <QThread>
+#include <QStatusBar>
+#include <QProgressBar>
 
 class MainWindow : public QMainWindow
 {
@@ -20,6 +23,9 @@ public:
 
 public slots:
     void toggleInspector();
+    void showProgress(int percent);
+    void resetStatusBar();
+    void showProgressBar();
 
 
 private:
@@ -29,8 +35,11 @@ private:
     QToolBar *toolBar;
     QAction *dataA;
     QAction *mapA;
-    DataRequests *bridge;
+    DataRequests *dataRequest;
+    Bridge *bridge;
     QThread *workerThread;
+    QStatusBar *sb;
+    QProgressBar *progressBar;
 
     /**
      * @brief MainWindow::setSize Resizes the application to a nice proportion of the screen

@@ -18,6 +18,14 @@ MainWindow::MainWindow(QWidget *parent)
     // all objects that inherit from QObject and we pass a "parent" to (i.e. this)
     webview = new QWebView(this);
 
+    sb = this->statusBar();
+    progressBar = new QProgressBar(this);
+    progressBar->setFixedHeight(15);
+    progressBar->setMinimumHeight(10);
+    sb->setSizeGripEnabled(false);
+    sb->addPermanentWidget(progressBar, 1);
+    progressBar->hide();
+
     QWebPage *page = webview->page();
     page->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
     page->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
@@ -26,13 +34,16 @@ MainWindow::MainWindow(QWidget *parent)
 
     // The bridge forms the link between C++ and javascript.
     // bridge methods can be called from both sides (use signals/slots) and pass data
-    bridge = new DataRequests(this);
+    dataRequest = new DataRequests();
+
+
+    bridge = new Bridge(this);
     page->mainFrame()->addToJavaScriptWindowObject("BRIDGE", bridge);
 
 
     // Thread for the bridge
     workerThread = new QThread(this);
-    bridge->moveToThread(workerThread);
+    dataRequest->moveToThread(workerThread);
     workerThread->start();
 
     // Web inspector only really required for debugging so should not
@@ -46,10 +57,21 @@ MainWindow::MainWindow(QWidget *parent)
     // Setup the size of the window
     setSize();
 
-    //loadStyleSheet();
-    setWindowIcon(QIcon(":/../Resources/img/TransLogo.png"));
+    loadStyleSheet();
+    setWindowIcon(QIcon(":/icon"));
 
     setCentralWidget(webview);
+
+    connect(bridge, &Bridge::refreshExposures, dataRequest, &DataRequests::refreshExposures);
+    connect(bridge, &Bridge::refreshExposures, this, &MainWindow::showProgressBar);
+    connect(bridge, &Bridge::connectDatabase, dataRequest, &DataRequests::setJcalfDatabase);
+    //connect(dataRequest, &DataRequests::progressUpdated, bridge, &Bridge::progressUpdated);
+    connect(dataRequest, &DataRequests::progressUpdated, this, &MainWindow::showProgress);
+    connect(dataRequest, &DataRequests::riskUpdated, bridge, &Bridge::exposureUpdated);
+    connect(dataRequest, &DataRequests::databaseConnected, bridge, &Bridge::databaseConnected);
+    connect(dataRequest, &DataRequests::error, bridge, &Bridge::error);
+    connect(dataRequest, &DataRequests::updatesFinished, bridge, &Bridge::updatesFinished);
+    connect(dataRequest, &DataRequests::updatesFinished, this, &MainWindow::resetStatusBar);
 
     // set up the HTML UI
     showMap();
@@ -58,7 +80,6 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     workerThread->deleteLater();
-
 }
 
 void MainWindow::setSize()
@@ -78,7 +99,7 @@ void MainWindow::setSize()
 
 void MainWindow::loadStyleSheet()
 {
-  QFile *ssheet = new QFile(":/stylesheet.qss");
+  QFile *ssheet = new QFile(":/stylesheet");
   if (!ssheet->open(QIODevice::ReadOnly | QIODevice::Text))
     printf("Could not open\n");
 
@@ -103,4 +124,20 @@ void MainWindow::toggleInspector()
 void MainWindow::quit()
 {
     qApp->quit();
+}
+
+void MainWindow::showProgress(int percent){
+
+    progressBar->setValue(percent);
+
+}
+
+void MainWindow::showProgressBar()
+{
+    progressBar->show();
+}
+
+void MainWindow::resetStatusBar(){
+    progressBar->setValue(0);
+    progressBar->hide();
 }
