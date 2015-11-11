@@ -63,15 +63,18 @@ MainWindow::MainWindow(QWidget *parent)
     setCentralWidget(webview);
 
     connect(bridge, &Bridge::refreshExposures, dataRequest, &DataRequests::refreshExposures);
-    connect(bridge, &Bridge::refreshExposures, this, &MainWindow::showProgressBar);
+    //connect(bridge, &Bridge::refreshExposures, this, &MainWindow::showProgressBar);
     connect(bridge, &Bridge::connectDatabase, dataRequest, &DataRequests::setJcalfDatabase);
+    connect(bridge, &Bridge::fileLoad, dataRequest, &DataRequests::loadCsv);
+
     //connect(dataRequest, &DataRequests::progressUpdated, bridge, &Bridge::progressUpdated);
     connect(dataRequest, &DataRequests::progressUpdated, this, &MainWindow::showProgress);
     connect(dataRequest, &DataRequests::riskUpdated, bridge, &Bridge::exposureUpdated);
     connect(dataRequest, &DataRequests::databaseConnected, bridge, &Bridge::databaseConnected);
     connect(dataRequest, &DataRequests::error, bridge, &Bridge::error);
-    connect(dataRequest, &DataRequests::updatesFinished, bridge, &Bridge::updatesFinished);
-    connect(dataRequest, &DataRequests::updatesFinished, this, &MainWindow::resetStatusBar);
+    connect(dataRequest, &DataRequests::workStarted, this, &MainWindow::showProgressBar);
+    connect(dataRequest, &DataRequests::workFinished, bridge, &Bridge::workFinished);
+    connect(dataRequest, &DataRequests::workFinished, this, &MainWindow::resetStatusBar);
 
     // set up the HTML UI
     showMap();

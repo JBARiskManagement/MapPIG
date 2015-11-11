@@ -97,19 +97,17 @@
                 <div class="col-xs-12 col-md-12">
                   <form role="form" class="csv-form">
                       <div class="form-group">
-                        <label for="csv-select">Existing files</label>
-                        <select class="form-control" id="csv-select"></select>
-                        <button type="button" class="btn btn-default" id="csv-add">Add</button>
-                        <button type="button" class="btn btn-default" id="csv-remove">Remove</button>
+                        <label for="open-file">Load file</label>
+                        <div class="input-group">
+                            <span class="input-group-btn"><button type="button" class="btn btn-default" id="open-file">Browse...</button></span>
+                            <span class="form-control" id="file-path"></span>
+                        </div>
                       </div>
                       <div class="form-group">
-                        <label for="open-file">Load file</label>
-                        <input type="file" id="open-file">
                         <label for="file-format">Format</label>
                         <select class="form-control" id="file-format">
                             <option>JCalf Portfolio</option>
-                            <option>ELECT exposures</option>
-                            <option>Oasis Exposures</option>
+                            <option>Lat Long only</option>
                         </select>
                       </div>
                       <button type="button" class="btn btn-default" id="csv-submit">Submit</button>
@@ -251,13 +249,14 @@
     <!-- Chart libs -->
     <script type="text/javascript" src='qrc:/../Resources/js/Chart.min.js'></script>
 
-
     <!--Always ensure our own JS is loaded last so it has access to the above libs -->
     <script type="text/javascript" src='qrc:/../Resources/js/map.js'></script>
+    <script type="text/javascript" src='qrc:/../Resources/js/jcalflayer.js'></script>
+
+
 
     <script type="text/javascript">
         $(document).ready(initMap);
     </script>
-
     </body>
 </html>

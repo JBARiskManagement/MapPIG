@@ -3,6 +3,8 @@
 
 #include <QObject>
 #include <QString>
+#include <QWebElement>
+#include <QDir>
 
 class Bridge : public QObject
 {
@@ -19,14 +21,24 @@ signals:
     Q_INVOKABLE void refreshExposures(double minX, double minY, double maxX, double maxY);
     Q_INVOKABLE void connectDatabase(QString host, QString port, QString user, QString pwd);
 
-    void exposureUpdated(double lat, double lng);
+    void exposureUpdated(double lat, double lng, QString lob);
     void progressUpdated(int percent);
     void databaseConnected(bool status);
-    void updatesFinished();
+    void workStarted();
+    void workFinished();
     void error(QString err, QString title);
-
+    void fileLoad(QString);
 
 public slots:
+
+    void showOpenFileDialog();
+    void connectToPathField(const QWebElement &msg);
+    void loadFile();
+
+private:
+     QWebElement msgSpan;
+     QString lastFile;
+     QDir lastDir;
 
 };
 

@@ -18,8 +18,9 @@ public:
     QSqlDatabase jcalfDb;
 
 signals:
-    void riskUpdated(double lat, double lng);
-    void updatesFinished();
+    void riskUpdated(double lat, double lng, QString lob);
+    void workFinished();
+    void workStarted();
     void progressUpdated(int perc);
     void databaseConnected(bool status);
     void error(QString err, QString title);
@@ -29,6 +30,7 @@ public slots:
     void refreshExposures(double minX, double minY, double maxX, double maxY);
     void getLastError();
     void setJcalfDatabase(QString host, QString port, QString user, QString pwd);
+    void loadCsv(QString fpath);
 
 };
 

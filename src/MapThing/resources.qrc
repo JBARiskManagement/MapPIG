@@ -37,5 +37,6 @@
         <file>../Resources/L.Loading/Control.Loading.css</file>
         <file>../Resources/L.Loading/Control.Loading.js</file>
         <file alias="stylesheet">../Resources/stylesheet.qss</file>
+        <file>../Resources/js/jcalflayer.js</file>
     </qresource>
 </RCC>

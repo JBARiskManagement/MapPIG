@@ -159,121 +159,6 @@ MT.MapController.prototype.geocode = function(address)
     });
 }
 
-/*
- * JcalfLayer
- *      A cluster layer whose markers can be defined by exposures from a JCalf database
- *
- */
-MT.JcalfLayer = function(mapCt, host, port, user, pwd){
-
-    this.mapCt = mapCt;
-
-    this.host = host;
-    this.port = port;
-    this.user = user;
-    this.pwd = pwd;
-    this.lastUpdate = +new Date();
-
-    BRIDGE.databaseConnected.connect(this.maybeCreateLayer.bind(this))
-    BRIDGE.error.connect(MT.showError);
-    BRIDGE.connectDatabase(host,port,user,pwd);
-}
-
-
-MT.JcalfLayer.prototype.maybeCreateLayer = function(status)
-{
-    if (status === true)
-    {
-        console.log("Setting up layer");
-        BRIDGE.exposureUpdated.connect(this.addRiskMarker.bind(this));
-        BRIDGE.updatesFinished.connect(this.processView.bind(this));
-          // Connect map move events to updating jcalf layers
-        var self = this;
-        this.mapCt.mmap.on('moveend', function(){self.update()});
-        this.clusterLayer = new PruneClusterForLeaflet(); // The marker cluster layer
-        this.mapCt.addOverlay(this.clusterLayer, this.host);
-        this.update();
-        //this.addClusterSizeWidget();
-    }
-    else
-    {
-        //err = BRIDGE.getLastError();
-        MT.showError("Unknown error", "Unable to connect to the database");
-    }
-}
-
-
-MT.JcalfLayer.prototype.processView = function()
-{
-    $("#map").trigger("dataloading");
-    this.clusterLayer.ProcessView();
-    $("#map").trigger("dataload");
-    $("#disable-overlay").hide();
-    this.mapCt.enable();
-    //pb.hide();
-    //BRIDGE.progressUpdated.disconnect(pb.update);
-    //this.clusterLayer.RedrawIcons();
-}
-
-/**
- * update
- *     Redraws the marker layer with all the risks in the current bounding box
- *
- * bounds:
- *  A Leaflet LatLngBounds instance
- *
- */
-MT.JcalfLayer.prototype.update = function(){
-
-    // Only update the risks if the layer is displayed
-    if (this.mapCt.mmap.hasLayer(this.clusterLayer))
-    {
-        // Prevent user from issuing another move command while we update
-        $("#disable-overlay").show();
-        this.mapCt.disable();
-        var bounds = this.mapCt.mmap.getBounds();
-        this.clusterLayer.RemoveMarkers();
-        BRIDGE.refreshExposures(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
-    }
-}
-
-/*
- * addRiskMarker
- *      Add a new marker to the cluster layer. Normally this would be
- *      called by the C++ 'bridge' object which has access to the JCalf
- *      database
- *
- */
-MT.JcalfLayer.prototype.addRiskMarker = function(lat, lon){
-    var marker = new PruneCluster.Marker(lat, lon);
-    marker.data.icon = createIcon;
-    //marker.data.forceIconRedraw = true;
-    this.clusterLayer.RegisterMarker(marker);
-    //console.log("Add risk");
-}
-
-MT.JcalfLayer.prototype.addClusterSizeWidget = function(){
-
-    $('<div href="#" id="size">Cluster size: <input type="range" value="160" min="35" max="500" step="1" id="sizeInput"><span id="currentSize">112</span></div>').insertAfter("#map");
-    $("#sizeInput").onChange = this.updateSize.bind(this);
-    $("#sizeInput").onChange = this.updateSize.bind(this);
-
-}
-
-MT.JcalfLayer.prototype.updateSize = function(){
-
-    var newSize = $("#sizeInput").val();
-    this.clusterLayer.Cluster.Size = parseInt(newSize);
-    $("#currentSize").firstChild.data = newSize;
-    var now = +new Date();
-    if ((now - this.lastUpdate) < 400) {
-        return;
-    }
-    this.clusterLayer.ProcessView();
-    this.lastUpdate = now;
-}
-
-
 
 MT.showError = function(msg, title)
 {
@@ -353,34 +238,9 @@ function showModal(id){
     $("#" + id).modal("show");
 }
 
-/*
-function addClusterLayer(npoints)
-{
-    console.log("Adding cluster layer");
-    var pruneCluster = new PruneClusterForLeaflet();
-    var lat, lon;    
-    for (i = 0; i < npoints; i++) { 
-        pyBridge.nextExposure();
-        lat = pyBridge.getRiskLat();
-        lon = pyBridge.getRiskLong();
-        var lob = pyBridge.getRiskLobId();
-        var tiv = pyBridge.getRiskTiv();
-        var marker = new PruneCluster.Marker(lat, lon);
-        marker.data.ID = pyBridge.getRiskId();
-        marker.category = lob;
-        marker.data.popup = "<b>TIV</b> = " + tiv //Example of popup content
-        marker.data.icon = createIcon;
-        pruneCluster.RegisterMarker(marker);
-    }
-    map.addLayer(pruneCluster);
-    layerControl.addOverlay(pruneCluster, "Exposures");
-}
-*/
-
 function initMap(){
-    // Connect bridge
 
-
+    // Sets up the actual map
     var mapCtrl = new MT.MapController();
 
     // Button events
@@ -468,10 +328,24 @@ function initMap(){
         var user = $("#user").val();
         var pwd = $("#pwd").val();
 
-        var jcalflyr = new MT.JcalfLayer(mapCtrl, host, port, user, pwd);
+        var jcalflyr = new MT.DataLayer(mapCtrl);
+        jcalflyr.jcalf(host, port, user, pwd)
         // connect signals from bridge
+    });
 
+    $("#open-file").click(function(){
+        // Connect the button event to the Qt bridge object in order to display a file browser widget/
+        // We dont do this in javascript as webkit purposefully hides the file path
+        BRIDGE.connectToPathField(document.getElementById("file-path"));
+        BRIDGE.showOpenFileDialog();
 
+    });
+
+    $("#csv-submit").click(function(){
+        var path = $("#file-path").text();
+        console.log(path);
+
+        var csvlyr = new MT.CsvLayer(mapCtrl, path);
     });
 
     $("#hazard-submit").click(function() {
@@ -502,15 +376,12 @@ function initMap(){
                             $(this).data('bs.modal', null);
                             });
         showModal("lecModal");
-
     });
-
 
     function sizeLayerControl() {
       $(".leaflet-control-layers").css("max-height", $("#map").height() - 50);
     }
-
-    }
+}
 
 
 

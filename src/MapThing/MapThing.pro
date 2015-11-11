@@ -18,16 +18,25 @@ SOURCES += main.cpp\
         mainwindow.cpp \
     datarequests.cpp \
     jcalfdb.cpp \
-    bridge.cpp
+    bridge.cpp \
+    C:/GIT/csv_parser/src/csvparser.c \
+    progresscounter.cpp
+
 
 HEADERS  += mainwindow.h \
     datarequests.h \
     constants.h \
     jcalfdb.h \
-    bridge.h
+    bridge.h \
+    C:/GIT/csv_parser/src/csvparser.h \
+    progresscounter.h
 
 RESOURCES += \
     resources.qrc
 
 DISTFILES += \
     ../Resources/js/map.js
+
+INCLUDEPATH += C:/GIT/csv_parser/src/
+
+
