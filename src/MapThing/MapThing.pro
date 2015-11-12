@@ -34,9 +34,6 @@ HEADERS  += mainwindow.h \
 RESOURCES += \
     resources.qrc
 
-DISTFILES += \
-    ../Resources/js/map.js
-
 INCLUDEPATH += C:/GIT/csv_parser/src/
 
 

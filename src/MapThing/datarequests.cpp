@@ -9,6 +9,7 @@ extern "C" {
 #include <QDebug>
 #include <QSqlQuery>
 #include <QCoreApplication>
+#include <time.h>
 
 DataRequests::DataRequests(QObject *parent) : QObject(parent)
 {
@@ -21,6 +22,7 @@ DataRequests::~DataRequests()
 void DataRequests::loadCsv(QString fpath)
 {
 
+    clock_t startTime = clock();
     emit workStarted();
 
     // Determine file size
@@ -93,7 +95,7 @@ void DataRequests::loadCsv(QString fpath)
 
 
 
-
+    std::cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << std::endl;
     emit workFinished();
 }
 
@@ -148,5 +150,8 @@ void DataRequests::refreshExposures(double minX, double minY, double maxX, doubl
             emit riskUpdated(lat, lng, lob);
         }
     }
+    QString name(jcalfDb.connectionName());
+    jcalfDb.close();
+    //QSqlDatabase::removeDatabase(name);
     emit workFinished();
 }
