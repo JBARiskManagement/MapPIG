@@ -806,6 +806,7 @@ L.Control.Search = L.Control.extend({
 		else
 			this._map.panTo(latlng);
 
+        this._map.invalidateSize();
 		if(this._markerLoc)
 		{
 			this._markerLoc.setLatLng(latlng);  //show circle/marker in location found
@@ -816,6 +817,7 @@ L.Control.Search = L.Control.extend({
 			//TODO showLocation: start animation after setView or panTo, maybe with map.on('moveend')...	
 		}
 		
+
 		//FIXME autoCollapse option hide this._markerLoc before that visualized!!
 		if(this.options.autoCollapse)
 			this.collapse();

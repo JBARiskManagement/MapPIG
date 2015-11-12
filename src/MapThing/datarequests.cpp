@@ -22,7 +22,7 @@ DataRequests::~DataRequests()
 void DataRequests::loadCsv(QString fpath)
 {
 
-    clock_t startTime = clock();
+    //clock_t startTime = clock();
     emit workStarted();
 
     // Determine file size
@@ -88,14 +88,15 @@ void DataRequests::loadCsv(QString fpath)
             prog.update(curPos - lastPos);
             lastPos = curPos;
         }
-        std::cout << emptyRows << " rows did not contain latitude and/or longitude values" << std::endl;
-        std::cout << rowCount << " exposures were added to the map" << std::endl;
+        emit markerLoadingStats(rowCount, emptyRows);
+        //std::cout << emptyRows << " rows did not contain latitude and/or longitude values" << std::endl;
+        //std::cout << rowCount << " exposures were added to the map" << std::endl;
     }
     CsvParser_destroy(parser);
 
 
 
-    std::cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << std::endl;
+    //std::cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << std::endl;
     emit workFinished();
 }
 

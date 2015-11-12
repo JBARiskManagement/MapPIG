@@ -24,6 +24,7 @@ signals:
     void progressUpdated(int perc);
     void databaseConnected(bool status);
     void error(QString err, QString title);
+    void markerLoadingStats(int nLoaded, int nSkipped);
 
 public slots:
 

@@ -43,7 +43,7 @@ MT.DataLayer.prototype.maybeCreateLayer = function(status)
     }
     else
     {
-        MT.showError("Unknown error", "Unable to connect to the database");
+        MT.showMessage("Unknown error", "Unable to connect to the database");
     }
 }
 
@@ -115,6 +115,15 @@ MT.DataLayer.prototype.updateSize = function(){
     this.lastUpdate = now;
 }
 
+MT.DataLayer.prototype.showLoadingStats = function(loaded, skipped)
+{
+    bootbox.dialog({message: loaded + " exposures were loaded, " + skipped + " rows were skipped (did not contain lat or long values)",
+                   title: "Loading finished",
+                   buttons: {main: {label: "Ok",
+                         className: "btn-primary"}}
+                   });
+}
+
 MT.CsvLayer = function(mapCt, path)
 {
     this.mapCt = mapCt;
@@ -131,8 +140,11 @@ MT.CsvLayer.prototype.constructor = MT.CsvLayer;
 
 MT.CsvLayer.prototype.createLayer = function(status)
 {
+    // Connect signals
     BRIDGE.exposureUpdated.connect(this.addRiskMarker.bind(this));
     BRIDGE.workFinished.connect(this.processView.bind(this));
+    BRIDGE.markerLoadingStats.connect(this.showLoadingStats.bind(this));
+
     this.clusterLayer = new PruneClusterForLeaflet(); // The marker cluster layer
     this.mapCt.addOverlay(this.clusterLayer, this.layerName);
     //this.addClusterSizeWidget();

@@ -76,6 +76,8 @@ MainWindow::MainWindow(QWidget *parent)
     connect(dataRequest, &DataRequests::workFinished, bridge, &Bridge::workFinished);
     connect(dataRequest, &DataRequests::workFinished, this, &MainWindow::resetStatusBar);
 
+    connect(dataRequest, &DataRequests::markerLoadingStats, bridge, &Bridge::markerLoadingStats);
+
     // set up the HTML UI
     showMap();
 }

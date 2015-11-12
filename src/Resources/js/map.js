@@ -171,7 +171,7 @@ MT.MapController.prototype.formatJSON = function(rawjson)
     return json;
 }
 
-MT.showError = function(msg, title)
+MT.showMessage = function(msg, title)
 {
     bootbox.dialog({ message: msg,
                      title: title,

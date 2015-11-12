@@ -28,6 +28,7 @@ signals:
     void workFinished();
     void error(QString err, QString title);
     void fileLoad(QString);
+    void markerLoadingStats(int nLoaded, int nSkipped);
 
 public slots:
 
