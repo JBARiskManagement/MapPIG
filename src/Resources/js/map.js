@@ -53,7 +53,7 @@ MT.MapController = function (){
       "osm": osm
     };
 
-    this.layerControl = L.control.layers(baseLayers).addTo(this.mmap);
+    this.layerControl = L.control.extendedlayers(baseLayers).addTo(this.mmap);
 
     this.searchControl = new L.Control.Search({
                                                   sourceData: this.googleGeocoding.bind(this),

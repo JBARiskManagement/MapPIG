@@ -42,5 +42,6 @@
         <file>../Resources/img/search-icon.png</file>
         <file>../Resources/css/leaflet-search.src.css</file>
         <file>../Resources/js/leaflet-search.src.js</file>
+        <file>../Resources/ExtendedLayers/ExtendedLayers.js</file>
     </qresource>
 </RCC>
