@@ -38,5 +38,9 @@
         <file>../Resources/L.Loading/Control.Loading.js</file>
         <file alias="stylesheet">../Resources/stylesheet.qss</file>
         <file>../Resources/js/jcalflayer.js</file>
+        <file>../Resources/img/loader.gif</file>
+        <file>../Resources/img/search-icon.png</file>
+        <file>../Resources/css/leaflet-search.src.css</file>
+        <file>../Resources/js/leaflet-search.src.js</file>
     </qresource>
 </RCC>

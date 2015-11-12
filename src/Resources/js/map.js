@@ -27,9 +27,9 @@ MT.MapController = function (){
     var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                               attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                           });
-    this.geocoder = new L.GeoSearch.Provider.Google();
+    this.geocoder = new google.maps.Geocoder();
 
-
+    // initialise the map
     this.mmap = L.map('map', {
                       zoom: 13,
                       center: [53.952612,-2.090103],
@@ -39,10 +39,12 @@ MT.MapController = function (){
                       loadingControl: true
                     });
 
+    // Add a zoom control
     this.zoomControl = L.control.zoom({
       position: "bottomright"
     }).addTo(this.mmap);
 
+    // Add a layer control with the base layers
     var baseLayers = {
       "toner-lite": tonerLite,
       "toner": toner,
@@ -52,6 +54,19 @@ MT.MapController = function (){
     };
 
     this.layerControl = L.control.layers(baseLayers).addTo(this.mmap);
+
+    this.searchControl = new L.Control.Search({
+                                                  sourceData: this.googleGeocoding.bind(this),
+                                                  formatData: this.formatJSON.bind(this),
+                                                  markerLocation: false,
+                                                  circleLocation: false,
+                                                  autoType: false,
+                                                  autoCollapse: true,
+                                                  position: 'bottomright',
+                                                  minLength: 2,
+                                                  zoom: 10
+                                              })
+    this.mmap.addControl(this.searchControl);
 }
 
 /**
@@ -135,30 +150,26 @@ MT.MapController.prototype.removeOverlay = function(displayName)
     this.mmap.removeLayer(this.overLays[displayName])
 }
 
-/*
- * geocode
- *      Use the google maps geocoding API to navigate to a location
- */
-MT.MapController.prototype.geocode = function(address)
+MT.MapController.prototype.googleGeocoding = function(text, callResponse)
 {
-    var mapctl = this;
-    this.geocoder.GetLocations(address, function(data){
-        if (data.length > 0)
-        {
-            var latlng= L.latLng(data[0].Y, data[0].X);
-            mapctl.mmap.fitBounds(data[0].bounds,
-                                   {
-                                       animate: true
-                                   });
-            //mapctrl.mmap.invalidateSize();
-        }
-        else
-        {
-            bootbox.alert("Geocoding was not successful! " + status);
-        }
-    });
+    this.geocoder.geocode({address: text}, callResponse);
 }
 
+
+MT.MapController.prototype.formatJSON = function(rawjson)
+{
+    var json = {},
+        key, loc, disp = [];
+    for(var i in rawjson)
+    {
+        key = rawjson[i].formatted_address;
+
+        loc = L.latLng( rawjson[i].geometry.location.lat(), rawjson[i].geometry.location.lng() );
+
+        json[ key ]= loc;	//key,value format
+    }
+    return json;
+}
 
 MT.showError = function(msg, title)
 {

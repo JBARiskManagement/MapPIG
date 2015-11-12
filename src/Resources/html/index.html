@@ -14,8 +14,8 @@
         <link href="qrc:/../Resources/PruneCluster/LeafletStyleSheet.css" rel='stylesheet' />
         <link href='qrc:/../Resources/L.Loading/Control.Loading.css' rel='stylesheet' />
         <link href='qrc:/../Resources/bootstrap/css/bootstrap.css' rel='stylesheet' />
+        <link href='qrc:/../Resources/css/leaflet-search.src.css' rel='stylesheet' />
         <link href='qrc:/../Resources/css/main.css' rel='stylesheet' />
-
         
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
@@ -38,7 +38,6 @@
             <li class="hidden-xs"><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="db-btn"><i class="fa fa-database"></i>&nbsp;&nbsp;Database</a></li>
             <li class="hidden-xs"><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="hazards-btn"><i class="fa fa-globe"></i>&nbsp;&nbsp;Overlays</a></li>
             <li><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="analysis-btn"><i class="fa fa-line-chart"></i>&nbsp;&nbsp;Analysis</a></li>
-            <li><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="geocode-btn"><i class="fa fa-search"></i>&nbsp;&nbsp;Locate</a></li>
           </ul>
         </div><!--/.navbar-collapse -->
       </div>
@@ -173,30 +172,6 @@
           </div>
         </div>
       </div>
-
-      <div id="geocode-sidebar" class="sidebar" hidden>
-        <div class="sidebar-wrapper">
-          <div class="panel panel-default" id="geocode-details">
-            <div class="panel-heading">
-              <h3 class="panel-title">Locate
-              <button type="button" class="btn btn-xs btn-default pull-right" id="geocode-sidebar-hide-btn"><i class="fa fa-chevron-left"></i></button></h3>
-            </div>
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-xs-12 col-md-12">
-                <form role="form" class="geocode-form">
-                    <div class="form-group">
-                      <label for="address">Address</label>
-                      <input type="input" class="form-control" id="address">
-                    </div>
-                    <button type="button" class="btn btn-default" id="geocode-submit">Search</button>
-                  </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
       <!-- end slide out menus -->
 
       <!-- This is where the actual map goes -->
@@ -242,12 +217,12 @@
     <script type="text/javascript" src='qrc:/../Resources/Leaflet/leaflet.js'></script>
     <script type="text/javascript" src="http://maps.stamen.com/js/tile.stamen.js?v1.3.0"></script>
     <script type="text/javascript" src="qrc:/../Resources/PruneCluster/PruneCluster.min.js"></script>
-    <script type="text/javascript" src="qrc:/../Resources/L.Geosearch/js/l.control.geosearch.js"></script>
-    <script type="text/javascript" src="qrc:/../Resources/L.Geosearch/js/l.geosearch.provider.google.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
     <script type="text/javascript" src="qrc:/../Resources/L.Loading/Control.Loading.js"></script>
 
     <!-- Chart libs -->
     <script type="text/javascript" src='qrc:/../Resources/js/Chart.min.js'></script>
+    <script type="text/javascript" src='qrc:/../Resources/js/leaflet-search.src.js'></script>
 
     <!--Always ensure our own JS is loaded last so it has access to the above libs -->
     <script type="text/javascript" src='qrc:/../Resources/js/map.js'></script>
