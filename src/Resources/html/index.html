@@ -15,12 +15,14 @@
         <link href='qrc:/../Resources/L.Loading/Control.Loading.css' rel='stylesheet' />
         <link href='qrc:/../Resources/bootstrap/css/bootstrap.css' rel='stylesheet' />
         <link href='qrc:/../Resources/css/leaflet-search.src.css' rel='stylesheet' />
+        <link href='qrc:/../Resources/css/leaflet-sidebar.css' rel='stylesheet' />
         <link href='qrc:/../Resources/css/main.css' rel='stylesheet' />
         
         <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 
     </head>
     <body>
+    <!--
     <div class="navbar navbar-default navbar-fixed-top" role="navigation">
       <div class="container-fluid">
         <div class="navbar-header">
@@ -39,9 +41,10 @@
             <li class="hidden-xs"><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="hazards-btn"><i class="fa fa-globe"></i>&nbsp;&nbsp;Overlays</a></li>
             <li><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="analysis-btn"><i class="fa fa-line-chart"></i>&nbsp;&nbsp;Analysis</a></li>
           </ul>
-        </div><!--/.navbar-collapse -->
+        </div>
       </div>
     </div>
+    -->
     
     <!--Main Window-->
      <div id="container">
@@ -174,8 +177,64 @@
       </div>
       <!-- end slide out menus -->
 
+      <!-- The sidebar -->
+      <div id="sidebar" class="sidebar collapsed">
+        <!-- Navigation tabs -->
+        <div class="sidebar-tabs">
+            <ul role="tablist">
+                <li><a href="#sb-layers" role="tab"><i class="mt-icon mt-layers"></i></a></li>
+                <li><a href="#overlays" role="tab"><i class="fa fa-globe"></i></a></li>
+                <li><a href="#profile" role="tab"><i class="fa fa-user"></i></a></li>
+
+            </ul>
+        </div>
+
+        <div class="sidebar-content">
+                <div class="sidebar-pane" id="sb-layers">
+                  <h1 class="sidebar-header">Layers<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+                </div>
+
+                <div class="sidebar-pane" id="overlays">
+                        <h1 class="sidebar-header">Overlays<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+                        <div class="row">
+                          <div class="col-xs-12 col-md-12">
+                            <form role="form" class="hazard-form">
+                                <div class="form-group">
+                                  <label for="hazardmaphost">Host URL</label>
+                                  <input type="input" class="form-control" id="hazardmaphost">
+                                </div>
+                                <div class="form-group">
+                                  <label for="layer">Layer</label>
+                                  <input type="input" class="form-control" id="layer">
+                                </div>
+                                <div class="form-group">
+                                  <label for="format">Format</label>
+                                  <input type="input" class="form-control" id="format" value="image/png">
+                                </div>
+                                <div class="form-group">
+                                  <label for="tms">TMS</label>
+                                  <input type="checkbox" class="form-control" id="tms">
+                                </div>
+                                <button type="button" class="btn btn-default" id="hazard-submit">Add Layer</button>
+                              </form>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+                <div class="sidebar-pane" id="profile">
+                    <h1 class="sidebar-header">profile<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+                </div>
+
+        </div>
+
+      </div>
+
+
+
       <!-- This is where the actual map goes -->
-      <div id="map">
+      <div id="map" class="sidebar-map">
       </div>
 
 
@@ -224,8 +283,10 @@
     <script type="text/javascript" src='qrc:/../Resources/js/Chart.min.js'></script>
     <script type="text/javascript" src='qrc:/../Resources/js/leaflet-search.src.js'></script>
 
+    <!-- Sidebar -->
+    <script type="text/javascript" src='qrc:/../Resources/js/leaflet-sidebar.js'></script>
+
     <!--Always ensure our own JS is loaded last so it has access to the above libs -->
-    <script type="text/javascript" src='qrc:/../Resources/ExtendedLayers/ExtendedLayers.js'></script>
     <script type="text/javascript" src='qrc:/../Resources/js/map.js'></script>
     <script type="text/javascript" src='qrc:/../Resources/js/jcalflayer.js'></script>
 

@@ -53,7 +53,10 @@ MT.MapController = function (){
       "osm": osm
     };
 
-    this.layerControl = L.control.extendedlayers(baseLayers).addTo(this.mmap);
+    //this.layerControl = L.control.extendedlayers(baseLayers).addTo(this.mmap);
+
+    this.sidebar = L.control.sidebar('sidebar').addTo(map);
+    this.layerControl = L.control.layerpanel(baseLayers, this.overLays, 'sb-layers').addTo(map);
 
     this.searchControl = new L.Control.Search({
                                                   sourceData: this.googleGeocoding.bind(this),
@@ -396,6 +399,52 @@ function initMap(){
 
 
 
+L.Control.LayerPanel = L.Control.Layers.extend({
 
+     initialize: function(baseLayers, overlays, id, options){
+
+         this._container = L.DomUtil.get(id);
+         return L.Control.Layers.prototype.initialize.call(this, baseLayers, overlays, options);
+
+
+     },
+
+    _initLayout: function(){
+        console.log("Init layout");
+        var className = 'leaflet-panel-layers',
+            container = this._container;
+
+        var form = this._form = L.DomUtil.create('form', className + '-list');
+
+        var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
+        link.href = '#';
+        link.title = 'Layers';
+
+        this._baseLayersList = L.DomUtil.create('div', className + '-base', form);
+        this._separator = L.DomUtil.create('div', className + '-separator', form);
+        this._overlaysList = L.DomUtil.create('div', className + '-overlays', form);
+
+        container.appendChild(form);
+        console.log("Finished init");
+
+    },
+    onAdd: function(map){
+        console.log("onAdd");
+        var result = L.Control.Layers.prototype.onAdd.call(this, map);
+        console.log(this._map);
+        return result;
+    },
+    onRemove: function(){
+        return L.Control.Layers.prototype.onRemove.call(this);
+    }
+
+
+
+
+});
+
+L.control.layerpanel = function (baseLayers, overlays, id, options) {
+    return new L.Control.LayerPanel(baseLayers, overlays, id,options);
+};
 
 
