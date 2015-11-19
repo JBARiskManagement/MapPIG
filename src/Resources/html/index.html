@@ -22,42 +22,86 @@
 
     </head>
     <body>
-    <!--
-    <div class="navbar navbar-default navbar-fixed-top" role="navigation">
-      <div class="container-fluid">
-        <div class="navbar-header">
-          <div class="navbar-icon-container">
-            <a href="#" class="navbar-icon pull-right visible-xs" id="nav-btn"><i class="fa fa-bars fa-lg"></i></a>
-            <a href="#" class="navbar-icon pull-right visible-xs" id="sidebar-toggle-btn"><i class="fa fa-search fa-lg"></i></a>
-          </div>
-          <a class="navbar-brand" href="#">
-            <img alt="MapThing" src="qrc:/icon" style="max-width: 100%; max-height: 100%">
-          </a>
-        </div>
-        <div class="navbar-collapse collapse">
-          <ul class="nav navbar-nav">            
-            <li class="hidden-xs"><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="csv-btn"><i class="fa fa-file-text"></i>&nbsp;&nbsp;File</a></li>
-            <li class="hidden-xs"><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="db-btn"><i class="fa fa-database"></i>&nbsp;&nbsp;Database</a></li>
-            <li class="hidden-xs"><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="hazards-btn"><i class="fa fa-globe"></i>&nbsp;&nbsp;Overlays</a></li>
-            <li><a href="#" class="grey" data-toggle="collapse" data-target=".navbar-collapse.in" id="analysis-btn"><i class="fa fa-line-chart"></i>&nbsp;&nbsp;Analysis</a></li>
-          </ul>
-        </div>
-      </div>
-    </div>
-    -->
     
     <!--Main Window-->
      <div id="container">
 
-      <!-- Slide out menus-->
-      <div id="db-sidebar" class="sidebar" hidden>
-        <div class="sidebar-wrapper">
-          <div class="panel panel-default" id="features">
-            <div class="panel-heading">
-              <h3 class="panel-title">Database
-              <button type="button" class="btn btn-xs btn-default pull-right" id="db-sidebar-hide-btn"><i class="fa fa-chevron-left"></i></button></h3>
+      <!-- The sidebar -->
+      <div id="sidebar" class="sidebar collapsed">
+        <!-- Navigation tabs -->
+        <div class="sidebar-tabs">
+            <ul role="tablist">
+                <li><a href="#sb-layers" role="tab" data-placement="right" data-toggle="tooltip" title="Map layers"><i class="mt-icon mt-layers"></i></a></li>
+                <li><a href="#sb-overlays" role="tab" data-placement="right" data-toggle="tooltip" title="Add overlay from a WMS"><i class="fa fa-globe"></i></a></li>
+                <li><a href="#sb-file" role="tab" data-placement="right" data-toggle="tooltip" title="Load file"><i class="fa fa-folder-open"></i></a></li>
+                <li><a href="#sb-database" role="tab" data-placement="right" data-toggle="tooltip" title="Connect to a Jcalf database"><i class="fa fa-database""></i></a></li>
+                <li><a href="#sb-analysis" role="tab" data-placement="right" data-toggle="tooltip" title="Analyse data"><i class="fa fa-line-chart"></i></a></li>
+
+            </ul>
+            <ul role="tablist">
+                <li><a href="#sb-about" role="tab"><i class="mt-icon mt-jbarml"></i></a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-content">
+            <div class="sidebar-pane" id="sb-layers">
+              <h1 class="sidebar-header">Layers<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
             </div>
-            <div class="panel-body">
+
+            <div class="sidebar-pane" id="sb-overlays">
+                    <h1 class="sidebar-header">Connect to WMS<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+                    <div class="row">
+                      <div class="col-xs-12 col-md-12">
+                        <form role="form" class="hazard-form">
+                            <div class="form-group">
+                              <label for="hazardmaphost">Host URL</label>
+                              <input type="input" class="form-control" id="hazardmaphost">
+                            </div>
+                            <div class="form-group">
+                              <label for="layer">Layer</label>
+                              <input type="input" class="form-control" id="layer">
+                            </div>
+                            <div class="form-group">
+                              <label for="format">Format</label>
+                              <input type="input" class="form-control" id="format" value="image/png">
+                            </div>
+                            <div class="form-group">
+                              <label for="tms">TMS</label>
+                              <input type="checkbox" class="form-control" id="tms">
+                            </div>
+                            <button type="button" class="btn btn-default" id="overlay-submit">Add Layer</button>
+                          </form>
+                      </div>
+                    </div>
+                  </div>
+
+            <div class="sidebar-pane" id="sb-file">
+                <h1 class="sidebar-header">Load CSV<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+                <div class="row">
+                  <div class="col-xs-12 col-md-12">
+                    <form role="form" class="csv-form">
+                        <div class="form-group">
+                          <label for="open-file">Load file</label>
+                          <div class="input-group">
+                              <span class="input-group-btn"><button type="button" class="btn btn-default" id="open-file">Browse...</button></span>
+                              <span class="form-control" id="file-path"></span>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="file-format">Format</label>
+                          <select class="form-control" id="file-format">
+                              <option>JCalf Portfolio</option>
+                              <option>Lat Long only</option>
+                          </select>
+                        </div>
+                        <button type="button" class="btn btn-default" id="csv-submit">Submit</button>
+                      </form>
+                  </div>
+                </div>
+            </div>
+
+            <div class="sidebar-pane" id="sb-database">
+              <h1 class="sidebar-header">Jcalf Database<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
               <div class="row">
                 <div class="col-xs-12 col-md-12">
                   <form role="form" class="db-form">
@@ -77,168 +121,41 @@
                         <label for="pwd">Password</label>
                         <input type="password" class="form-control" id="pwd">
                       </div>
-                      
+
                       <button type="button" class="btn btn-default" id="db-submit">Submit</button>
                     </form>
                 </div>
               </div>
             </div>
-          </div>
-        </div>
-      </div>
 
-      <div id="csv-sidebar" class="sidebar" hidden>
-        <div class="sidebar-wrapper">
-          <div class="panel panel-default" id="features">
-            <div class="panel-heading">
-              <h3 class="panel-title">File
-              <button type="button" class="btn btn-xs btn-default pull-right" id="csv-sidebar-hide-btn"><i class="fa fa-chevron-left"></i></button></h3>
-            </div>
-            <div class="panel-body">
+            <div class="sidebar-pane" id="sb-analysis">
+              <h1 class="sidebar-header">Analysis<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
               <div class="row">
                 <div class="col-xs-12 col-md-12">
-                  <form role="form" class="csv-form">
-                      <div class="form-group">
-                        <label for="open-file">Load file</label>
-                        <div class="input-group">
-                            <span class="input-group-btn"><button type="button" class="btn btn-default" id="open-file">Browse...</button></span>
-                            <span class="form-control" id="file-path"></span>
-                        </div>
-                      </div>
-                      <div class="form-group">
-                        <label for="file-format">Format</label>
-                        <select class="form-control" id="file-format">
-                            <option>JCalf Portfolio</option>
-                            <option>Lat Long only</option>
-                        </select>
-                      </div>
-                      <button type="button" class="btn btn-default" id="csv-submit">Submit</button>
-                    </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div id="hazards-sidebar" class="sidebar" hidden>
-        <div class="sidebar-wrapper">
-          <div class="panel panel-default" id="hazfeatures">
-            <div class="panel-heading">
-              <h3 class="panel-title">Add WMS Layer
-              <button type="button" class="btn btn-xs btn-default pull-right" id="hazards-sidebar-hide-btn"><i class="fa fa-chevron-left"></i></button></h3>
-            </div>
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-xs-12 col-md-12">
-                  <form role="form" class="hazard-form">
-                      <div class="form-group">
-                        <label for="hazardmaphost">Host URL</label>
-                        <input type="input" class="form-control" id="hazardmaphost">
-                      </div>
-                      <div class="form-group">
-                        <label for="layer">Layer</label>
-                        <input type="input" class="form-control" id="layer">
-                      </div>
-                      <div class="form-group">
-                        <label for="format">Format</label>
-                        <input type="input" class="form-control" id="format" value="image/png">
-                      </div>
-                      <div class="form-group">
-                        <label for="tms">TMS</label>
-                        <input type="checkbox" class="form-control" id="tms">
-                      </div>                      
-                      <button type="button" class="btn btn-default" id="hazard-submit">Add Layer</button>
-                    </form>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div>
-      
-      <div id="analysis-sidebar" class="sidebar" hidden>
-        <div class="sidebar-wrapper">
-          <div class="panel panel-default" id="hazfeatures">
-            <div class="panel-heading">
-              <h3 class="panel-title">Analysis
-              <button type="button" class="btn btn-xs btn-default pull-right" id="analysis-sidebar-hide-btn"><i class="fa fa-chevron-left"></i></button></h3>
-            </div>
-            <div class="panel-body">
-              <div class="row">
-                <div class="col-xs-12 col-md-12">
+                <!--
                   <button type="button" class="btn btn-default btn-block" id="summarize-view-btn">Summarize View</button>
                   <button type="button" class="btn btn-default btn-block" id="elect-btn">ELECT</button>
+                  -->
                 </div>
               </div>
             </div>
-          </div>
+
+            <div class="sidebar-pane" id="sb-about">
+              <h1 class="sidebar-header">About<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+              <p>MapThing</p>
+              <p>&copy JBA Risk Management Ltd 2015</p>
+            </div>
+
+
+
         </div>
       </div>
-      <!-- end slide out menus -->
 
-      <!-- The sidebar -->
-      <div id="sidebar" class="sidebar collapsed">
-        <!-- Navigation tabs -->
-        <div class="sidebar-tabs">
-            <ul role="tablist">
-                <li><a href="#sb-layers" role="tab"><i class="mt-icon mt-layers"></i></a></li>
-                <li><a href="#overlays" role="tab"><i class="fa fa-globe"></i></a></li>
-                <li><a href="#profile" role="tab"><i class="fa fa-user"></i></a></li>
+     <!-- This is where the actual map goes -->
+     <div id="map" class="sidebar-map">
+     </div>
 
-            </ul>
-        </div>
-
-        <div class="sidebar-content">
-                <div class="sidebar-pane" id="sb-layers">
-                  <h1 class="sidebar-header">Layers<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
-                </div>
-
-                <div class="sidebar-pane" id="overlays">
-                        <h1 class="sidebar-header">Overlays<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
-                        <div class="row">
-                          <div class="col-xs-12 col-md-12">
-                            <form role="form" class="hazard-form">
-                                <div class="form-group">
-                                  <label for="hazardmaphost">Host URL</label>
-                                  <input type="input" class="form-control" id="hazardmaphost">
-                                </div>
-                                <div class="form-group">
-                                  <label for="layer">Layer</label>
-                                  <input type="input" class="form-control" id="layer">
-                                </div>
-                                <div class="form-group">
-                                  <label for="format">Format</label>
-                                  <input type="input" class="form-control" id="format" value="image/png">
-                                </div>
-                                <div class="form-group">
-                                  <label for="tms">TMS</label>
-                                  <input type="checkbox" class="form-control" id="tms">
-                                </div>
-                                <button type="button" class="btn btn-default" id="hazard-submit">Add Layer</button>
-                              </form>
-                          </div>
-                        </div>
-                      </div>
-
-
-
-                <div class="sidebar-pane" id="profile">
-                    <h1 class="sidebar-header">profile<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
-                </div>
-
-        </div>
-
-      </div>
-
-
-
-      <!-- This is where the actual map goes -->
-      <div id="map" class="sidebar-map">
-      </div>
-
-
-    <!-- disable ui -->
+    <!-- Div for disabling the UI (e.g. when blocking work is happening, such as loading a file) -->
     <div class="overlay"  id="disable-overlay" hidden>
     </div>
     </div>
@@ -261,11 +178,7 @@
       </div>
     </div>
     
-
-
     <!-- end modal popups -->
-
-
 
     <!-- UI libs -->
     <script type="text/javascript" src='qrc:/../Resources/js/jquery-1.11.3.min.js'></script>

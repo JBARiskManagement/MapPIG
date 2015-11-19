@@ -216,7 +216,6 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 	color: #595959;
 }
 
-
 /* ICONS */
 .mt-icon {
     background-repeat: no-repeat;
@@ -229,6 +228,10 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 
 .mt-layers {
     background-image: url("qrc:/../Resources/img/layers.png");
+}
+
+.mt-jbarml {
+    background-image: url("qrc:/../Resources/img/blank.png");
 }
 
 @media (max-width: 992px) {

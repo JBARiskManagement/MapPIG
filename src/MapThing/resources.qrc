@@ -46,5 +46,6 @@
         <file>../Resources/js/leaflet-sidebar.js</file>
         <file>../Resources/css/leaflet-sidebar.css</file>
         <file>../Resources/img/layers.png</file>
+        <file>../Resources/img/blank.png</file>
     </qresource>
 </RCC>

@@ -22,8 +22,6 @@ MT.MapController = function (){
     this.jcalfLayers = [];
     var tonerLite = new L.StamenTileLayer("toner-lite");
     var toner = new L.StamenTileLayer("toner");
-    var watercolor = new L.StamenTileLayer("watercolor");
-    var terrain = new L.StamenTileLayer("terrain");
     var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
                               attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
                           });
@@ -48,15 +46,13 @@ MT.MapController = function (){
     var baseLayers = {
       "toner-lite": tonerLite,
       "toner": toner,
-      "watercolor": watercolor,
-      "terrain (North America only)": terrain,
       "osm": osm
     };
 
     //this.layerControl = L.control.extendedlayers(baseLayers).addTo(this.mmap);
 
-    this.sidebar = L.control.sidebar('sidebar').addTo(map);
-    this.layerControl = L.control.layerpanel(baseLayers, this.overLays, 'sb-layers').addTo(map);
+    this.sidebar = L.control.sidebar('sidebar').addTo(this.mmap);
+    this.layerControl = L.control.layerpanel(baseLayers, this.overLays, 'sb-layers').addTo(this.mmap);
 
     this.searchControl = new L.Control.Search({
                                                   sourceData: this.googleGeocoding.bind(this),
@@ -158,7 +154,6 @@ MT.MapController.prototype.googleGeocoding = function(text, callResponse)
     this.geocoder.geocode({address: text}, callResponse);
 }
 
-
 MT.MapController.prototype.formatJSON = function(rawjson)
 {
     var json = {},
@@ -254,6 +249,9 @@ function showModal(id){
 
 function initMap(){
 
+    //Setup tooltips!
+     $('[data-toggle="tooltip"]').tooltip();
+
     // Sets up the actual map
     var mapCtrl = new MT.MapController();
 
@@ -261,80 +259,6 @@ function initMap(){
     $(window).resize(function() {
       sizeLayerControl();
     });
-
-
-    $("#about-btn").click(function() {
-      $("#aboutModal").modal("show");
-      $(".navbar-collapse.in").collapse("hide");
-      return false;
-    });
-
-    $("#analysis-btn").click(function() {
-      $('#analysis-sidebar').toggle();
-      mapCtrl.mmap.invalidateSize();
-      return false;
-    });
-
-    $("#csv-btn").click(function() {
-      $('#csv-sidebar').toggle();
-      mapCtrl.mmap.invalidateSize();
-      return false;
-    });
-
-    $("#db-btn").click(function() {
-      $('#db-sidebar').toggle();
-      mapCtrl.mmap.invalidateSize();
-      return false;
-    });
-
-    $("#hazards-btn").click(function() {
-      $('#hazards-sidebar').toggle();
-      mapCtrl.mmap.invalidateSize();
-      return false;
-    });
-
-    $("#geocode-btn").click(function() {
-      $('#geocode-sidebar').toggle();
-      mapCtrl.mmap.invalidateSize();
-      return false;
-    });
-
-    $("#nav-btn").click(function() {
-      $(".navbar-collapse").collapse("toggle");
-      return false;
-    });
-
-    $("#sidebar-toggle-btn").click(function() {
-      $("#db-sidebar").toggle();
-      mapCtrl.mmap.invalidateSize();
-      return false;
-    });
-
-    $("#csv-sidebar-hide-btn").click(function() {
-      $('#csv-sidebar').hide();
-      mapCtrl.mmap.invalidateSize();
-    });
-
-    $("#db-sidebar-hide-btn").click(function() {
-      $('#db-sidebar').hide();
-      mapCtrl.mmap.invalidateSize();
-    });
-
-    $("#hazards-sidebar-hide-btn").click(function() {
-      $('#hazards-sidebar').hide();
-      mapCtrl.mmap.invalidateSize();
-    });
-
-    $("#analysis-sidebar-hide-btn").click(function() {
-      $('#analysis-sidebar').hide();
-      mapCtrl.mmap.invalidateSize();
-    });
-
-    $("#geocode-sidebar-hide-btn").click(function() {
-      $('#geocode-sidebar').hide();
-      mapCtrl.mmap.invalidateSize();
-    });
-
 
     $("#db-submit").click(function() {
         var host = $("#host").val();
@@ -362,7 +286,8 @@ function initMap(){
         var csvlyr = new MT.CsvLayer(mapCtrl, path);
     });
 
-    $("#hazard-submit").click(function() {
+    $("#overlay-submit").click(function() {
+        console.log("overlay submit");
         mapCtrl.addWmsOverlay();
     });
 
@@ -397,49 +322,93 @@ function initMap(){
     }
 }
 
-
-
 L.Control.LayerPanel = L.Control.Layers.extend({
 
-     initialize: function(baseLayers, overlays, id, options){
-
-         this._container = L.DomUtil.get(id);
-         return L.Control.Layers.prototype.initialize.call(this, baseLayers, overlays, options);
-
+    options: {
+       collapsed: false,
+       autoZIndex: false
 
      },
 
+     initialize: function(baseLayers, overlays, id, options){
+         this._container = L.DomUtil.get(id);
+         L.Control.Layers.prototype.initialize.call(this, baseLayers, overlays, options);
+     },
+
     _initLayout: function(){
-        console.log("Init layout");
         var className = 'leaflet-panel-layers',
             container = this._container;
 
         var form = this._form = L.DomUtil.create('form', className + '-list');
 
-        var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
-        link.href = '#';
-        link.title = 'Layers';
+        //var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
+        //link.href = '#';
+        //link.title = 'Layers';
 
         this._baseLayersList = L.DomUtil.create('div', className + '-base', form);
         this._separator = L.DomUtil.create('div', className + '-separator', form);
         this._overlaysList = L.DomUtil.create('div', className + '-overlays', form);
 
         container.appendChild(form);
-        console.log("Finished init");
+    },
+
+    addTo: function(map){
+        this.remove();
+        this._map = map;
+        var container = this._container = this.onAdd(map);
+        return this;
+    },
+
+    _addItem: function(obj){
+        var label = document.createElement('label'),
+            checked = this._map.hasLayer(obj.layer),
+            input,
+            holder = document.createElement('div');
+
+        if (obj.overlay){
+            holder.className = 'checkbox';
+            input = document.createElement('input');
+            input.className = 'leaflet-control-layers-selector';
+            input.type='checkbox';
+            input.defaultChecked = checked;
+
+        } else {
+            holder.className = 'radio';
+            input = this._createRadioElement('leaflet-base-layers', checked);
+        }
+
+        input.layerId = L.stamp(obj.layer);
+        L.DomEvent.on(input, 'click', this._onInputClick, this);
+
+        var name = document.createElement('span');
+        name.innerHTML = ' ' + obj.name;
+
+        label.appendChild(input);
+        label.appendChild(name);
+        holder.appendChild(label);
+        var container = obj.overlay ? this._overlaysList : this._baseLayersList;
+        container.appendChild(holder);
+        this._checkDisabledLayers();
+        return holder;
 
     },
-    onAdd: function(map){
-        console.log("onAdd");
-        var result = L.Control.Layers.prototype.onAdd.call(this, map);
-        console.log(this._map);
-        return result;
+
+    _checkDisabledLayers: function () {
+        var inputs = this._form.getElementsByTagName('input'),
+           input,
+           layer,
+           zoom = this._map.getZoom();
+
+        for (var i = inputs.length - 1; i >= 0; i--) {
+           input = inputs[i];
+           layer = this._layers[input.layerId].layer;
+           input.disabled = (layer.options.minZoom !== undefined && zoom < layer.options.minZoom) ||
+                            (layer.options.maxZoom !== undefined && zoom > layer.options.maxZoom);
+
+        }
     },
-    onRemove: function(){
-        return L.Control.Layers.prototype.onRemove.call(this);
-    }
-
-
-
+    _expand: function(){},
+    _collapse: function(){}
 
 });
 
