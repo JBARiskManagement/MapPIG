@@ -362,7 +362,7 @@ L.Control.LayerPanel = L.Control.Layers.extend({
     _addItem: function(obj){
         var label = document.createElement('label'),
             checked = this._map.hasLayer(obj.layer),
-            input,
+            input, expandBtn, deleteBtn,
             holder = document.createElement('div');
 
         if (obj.overlay){
@@ -377,6 +377,18 @@ L.Control.LayerPanel = L.Control.Layers.extend({
             input = this._createRadioElement('leaflet-base-layers', checked);
         }
 
+        expandBtn = document.createElement('button');
+        var expandIcon = document.createElement('i');
+        expandIcon.className = "fa fa-arrows-alt";
+        expandBtn.appendChild(expandIcon);
+
+
+        deleteBtn = document.createElement('button');
+        var deletIcon = document.createElement('i');
+        deletIcon.className = "fa fa-trash";
+        deleteBtn.appendChild(deletIcon);
+
+
         input.layerId = L.stamp(obj.layer);
         L.DomEvent.on(input, 'click', this._onInputClick, this);
 
@@ -386,6 +398,8 @@ L.Control.LayerPanel = L.Control.Layers.extend({
         label.appendChild(input);
         label.appendChild(name);
         holder.appendChild(label);
+        holder.appendChild(expandBtn);
+        holder.appendChild(deleteBtn);
         var container = obj.overlay ? this._overlaysList : this._baseLayersList;
         container.appendChild(holder);
         this._checkDisabledLayers();
