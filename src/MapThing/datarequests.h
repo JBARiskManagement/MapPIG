@@ -4,6 +4,7 @@
 #include <QObject>
 #include <QString>
 #include <QtSql>
+#include <stdlib.h>
 
 /**
  * @brief The DataRequests class
@@ -16,9 +17,10 @@ public:
     explicit DataRequests(QObject *parent = 0);
     ~DataRequests();
     QSqlDatabase jcalfDb;
+    std::map<QString, std::vector<double> *> portfolioTiv;
 
 signals:
-    void riskUpdated(double lat, double lng, QString lob);
+    void riskUpdated(double lat, double lng, double tiv);
     void workFinished();
     void workStarted();
     void progressUpdated(int perc);
@@ -32,6 +34,13 @@ public slots:
     void getLastError();
     void setJcalfDatabase(QString host, QString port, QString user, QString pwd);
     void loadCsv(QString fpath);
+
+    /**
+     * @brief computeHist
+     *  Get the histogram for a previously loaded portfolio
+     * @param fpath
+     */
+    void computeHist(QString fpath);
 
 };
 

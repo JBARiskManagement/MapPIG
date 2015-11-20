@@ -4,19 +4,10 @@ html, body, #container {
   overflow: hidden;
   font-size: 14px;
 }
-body {
-  /*padding-top: 50px;*/
-}
+
 input[type="radio"], input[type="checkbox"] {
   margin: 0;
 }
-/*.sidebar {
-  width: 200px;
-  height: 95%;
-  max-width: 100%;
-  float: left;
-  -webkit-transition: all 0.5s ease-out;
-}*/
 
 #map {
   width: auto;
@@ -33,18 +24,9 @@ input[type="radio"], input[type="checkbox"] {
   margin: -10px 0 0 -110px;
   z-index: 20001;
 }
-#db-sidebar-hide-btn {
-  margin-top: -2px;
-}
-#hazards-sidebar-hide-btn , #analysis-sidebar-hide-btn{
-  margin-top: -2px;
-}
-#aboutTabsContent {
-  padding-top: 10px;
-}
+
 
 /* Sidebar style */
-
 .sidebar-header {
     margin: -10px -20px 10px;
     background-color: rgba(233,131,0,0.5);
@@ -62,8 +44,28 @@ input[type="radio"], input[type="checkbox"] {
 }
 
 
+/* Layer control style */
+.layer-toolbar {
+    display: inline-block;
+}
 
-/* Overlays */
+
+label {font-weight: normal}
+
+.btn-layer-control {
+    border: 1px solid rgba(0,0,0,0.15);
+    padding: 3px 6px;
+    margin: 2px;
+}
+.btn-layer-control:hover{
+    background:rgba(0,0,0,0.10);
+}
+
+.row-layer-control {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+/* Overlay divs */
 
 .overlay {
     position: absolute;
@@ -140,24 +142,7 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 .progress-bar-full {
   width: 100%;
 }
-.white {
-  color: #FFFFFF;
-}
 
-/*
-.sidebar-wrapper {
-  width: 100%;
-  height: 100%;
-  position: relative;
-}
-.sidebar-table {
-  position: absolute;
-  width: 100%;
-  top: 103px;
-  bottom: 0px;
-  overflow: auto;
-}
-*/
 .leaflet-control-layers {
   overflow: auto;
 }
@@ -170,50 +155,6 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 }
 .table {
   margin-bottom: 0px;
-}
-
-
-.navbar .navbar-brand {
-  font-size: 18px;
-  color: #595959;
-}
-
-.navbar-brand {
-    padding: 10px 15px;
-}
-
-.navbar-collapse.in {
-  overflow-y: hidden;
-}
-.navbar-header .navbar-icon-container {
-  margin-right: 15px;
-}
-.navbar-header .navbar-icon {
-  line-height: 50px;
-  height: 50px;
-}
-.navbar-header a.navbar-icon {
-  margin-left: 25px;
-}
-
-.nav > li > a:hover{
-    background-color:rgba(233,131,0,0.35);
-}
-
-.nav > li > a:focus{
-    background-color: rgba(233,131,0,0);
-}
-
-.nav > li > a:active{
-    background-color: rgba(233,131,0,0);
-}
-
-.orange {
-	color: #e98300;
-}
-
-.grey {
-	color: #595959;
 }
 
 /* ICONS */
@@ -233,6 +174,8 @@ input[type=range]:focus::-webkit-slider-runnable-track {
 .mt-jbarml {
     background-image: url("qrc:/../Resources/img/blank.png");
 }
+
+
 
 @media (max-width: 992px) {
   .navbar .navbar-brand {

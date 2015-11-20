@@ -21,17 +21,18 @@ MT.MapController = function (){
     this.overLays = {}; // Holds any overlay layers added
     this.jcalfLayers = [];
     var tonerLite = new L.StamenTileLayer("toner-lite");
-    var toner = new L.StamenTileLayer("toner");
-    var osm = L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
-                              attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
-                          });
+    var jbaBasemap = L.tileLayer("https://api.mapbox.com/v4/ianmillinship.8850fe41/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiaWFubWlsbGluc2hpcCIsImEiOiJjaWg0eWx6OGwwMHVua3JrcjU1ZnA4bjFlIn0.mcnkt1qUDw7cH0cmhxcZ8w",
+                                 {
+                                    attribution: "&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
+                                 });
+
     this.geocoder = new google.maps.Geocoder();
 
     // initialise the map
-    this.mmap = L.map('map', {
+    this._map = L.map('map', {
                       zoom: 13,
                       center: [53.952612,-2.090103],
-                      layers: [tonerLite],
+                      layers: [jbaBasemap],
                       zoomControl: false,
                       attributionControl: true,
                       loadingControl: true
@@ -40,19 +41,17 @@ MT.MapController = function (){
     // Add a zoom control
     this.zoomControl = L.control.zoom({
       position: "bottomright"
-    }).addTo(this.mmap);
+    }).addTo(this._map);
 
     // Add a layer control with the base layers
     var baseLayers = {
+      "jba-rml": jbaBasemap,
       "toner-lite": tonerLite,
-      "toner": toner,
-      "osm": osm
     };
 
-    //this.layerControl = L.control.extendedlayers(baseLayers).addTo(this.mmap);
 
-    this.sidebar = L.control.sidebar('sidebar').addTo(this.mmap);
-    this.layerControl = L.control.layerpanel(baseLayers, this.overLays, 'sb-layers').addTo(this.mmap);
+    this.sidebar = L.control.sidebar('sidebar').addTo(this._map);
+    this.layerControl = L.control.layerpanel(baseLayers, this.overLays, 'sb-layers').addTo(this._map);
 
     this.searchControl = new L.Control.Search({
                                                   sourceData: this.googleGeocoding.bind(this),
@@ -65,7 +64,7 @@ MT.MapController = function (){
                                                   minLength: 2,
                                                   zoom: 10
                                               })
-    this.mmap.addControl(this.searchControl);
+    this._map.addControl(this.searchControl);
 }
 
 /**
@@ -74,12 +73,12 @@ MT.MapController = function (){
   */
 MT.MapController.prototype.disable = function()
 {
-    this.mmap.scrollWheelZoom.disable();
-    this.mmap.dragging.disable();
-    this.mmap.touchZoom.disable();
-    this.mmap.doubleClickZoom.disable();
-    this.mmap.boxZoom.disable();
-    this.mmap.keyboard.disable();
+    this._map.scrollWheelZoom.disable();
+    this._map.dragging.disable();
+    this._map.touchZoom.disable();
+    this._map.doubleClickZoom.disable();
+    this._map.boxZoom.disable();
+    this._map.keyboard.disable();
 }
 
 /**
@@ -88,12 +87,12 @@ MT.MapController.prototype.disable = function()
   */
 MT.MapController.prototype.enable = function()
 {
-    this.mmap.scrollWheelZoom.enable();
-    this.mmap.dragging.enable();
-    this.mmap.touchZoom.enable();
-    this.mmap.doubleClickZoom.enable();
-    this.mmap.boxZoom.enable();
-    this.mmap.keyboard.enable();
+    this._map.scrollWheelZoom.enable();
+    this._map.dragging.enable();
+    this._map.touchZoom.enable();
+    this._map.doubleClickZoom.enable();
+    this._map.boxZoom.enable();
+    this._map.keyboard.enable();
 }
 
 /**
@@ -131,14 +130,14 @@ MT.MapController.prototype.addWmsOverlay = function ()
      };
 
     this.overLays[displayName] = layer;
-    this.mmap.addLayer(layer);
+    this._map.addLayer(layer);
     this.layerControl.addOverlay(layer, displayName);
 }
 
 MT.MapController.prototype.addOverlay = function (layer, name)
 {
-    this.mmap.addLayer(layer);
-    this.layerControl.addOverlay(layer, name);
+    this._map.addLayer(layer);
+    //this.layerControl.addOverlay(layer, name);
 }
 
 /**
@@ -146,7 +145,7 @@ MT.MapController.prototype.addOverlay = function (layer, name)
  */
 MT.MapController.prototype.removeOverlay = function(displayName)
 {
-    this.mmap.removeLayer(this.overLays[displayName])
+    this._map.removeLayer(this.overLays[displayName])
 }
 
 MT.MapController.prototype.googleGeocoding = function(text, callResponse)
@@ -177,58 +176,6 @@ MT.showMessage = function(msg, title)
                            className: "btn-primary"}}
                    });
 }
-
-
-/** Jcalf interrogation
-* To be integrated into the jcalfLayer class above
-**/
-/*
-function getResultsForRisksInView()
-{
-    var bnds = map.getBounds();
-    var ulx = bnds.getWest();
-    var lrx = bnds.getEast();
-    var uly = bnds.getNorth();
-    var lry = bnds.getSouth();    
-    npoints = pyBridge.getLecByBounds(ulx, uly, lrx, lry);
-    
-    var positions = [1, 20, 75, 100, 200, 500, 1000, 1500];
-    
-    var loss = [];
-    var rp = [];
-    var thisloss;
-    
-    for (i=0; i < positions.length; i++){
-        pyBridge.nextLecResult(positions[i]-1);
-        thisloss = pyBridge.getLoss();
-        if (thisloss)
-        {
-            console.log(thisloss);
-            loss.push(thisloss);
-            rp.push(pyBridge.getRP());
-        }
-    }
-    
-    var data = {
-        labels: rp,
-        datasets: [
-            { 
-                label: "Loss Exceedance Curve (risks in view)",
-                fillColor: "rgba(233,131,0,0.2)",
-                strokeColor: "rgba(233,131,0,0.9)",
-                pointColor: "rgba(233,131,0,0.9)",
-                pointHighlightFill: "#fff",
-                pointHighlightStroke: "rgba(233,131,0,0.9)",
-                data: loss      
-            }                
-        ]    
-    };
-    
-    var ctx = document.getElementById("lecPopupChart").getContext("2d");
-    lecChart = new Chart(ctx).Line(data);
-    
-}
-*/
 
 // Icon creation function for cluster layers
 function createIcon(data, category)
@@ -359,35 +306,67 @@ L.Control.LayerPanel = L.Control.Layers.extend({
         return this;
     },
 
+    _createOverlayControl: function(obj){
+        var div = document.createElement('div');
+
+    },
+    _onExpandClick: function(layerId){
+        console.log("Expand click");
+        layer = this._layers[layerId].layer;
+        console.log(layer);
+        console.log(layer.Cluster.ComputeBounds());
+        console.log(layer.getBounds());
+
+    },
+    _onDeleteClick: function(layerId){
+        layer = this._layers[layerId].layer;
+        this._map.removeLayer(layer);
+        this.removeLayer(layer);
+        layer.remove && layer.remove();
+        delete layer;
+    },
+
     _addItem: function(obj){
         var label = document.createElement('label'),
             checked = this._map.hasLayer(obj.layer),
-            input, expandBtn, deleteBtn,
+            input, expandBtn, deleteBtn, pullLeft, pullRight,
             holder = document.createElement('div');
+        holder.className = "row row-layer-control";
+        pullLeft = document.createElement('div');
+        pullLeft.className = "pull-left";
+        pullRight = document.createElement('div');
+        pullRight.className = "pull-right";
 
         if (obj.overlay){
-            holder.className = 'checkbox';
+            //holder.className = 'checkbox';
             input = document.createElement('input');
             input.className = 'leaflet-control-layers-selector';
             input.type='checkbox';
             input.defaultChecked = checked;
 
+            var buttonClass = "btn btn-secondary btn-layer-control";
+            expandBtn = document.createElement('a');
+            expandBtn.className = buttonClass;
+            var expandIcon = document.createElement('i');
+            expandIcon.className = "fa fa-arrows-alt";
+            expandBtn.appendChild(expandIcon);
+
+            deleteBtn = document.createElement('a');
+            deleteBtn.className = buttonClass;
+            var deletIcon = document.createElement('i');
+            deletIcon.className = "fa fa-trash";
+            deleteBtn.appendChild(deletIcon);
+
+            pullRight.appendChild(expandBtn);
+            pullRight.appendChild(deleteBtn);
+
+            L.DomEvent.on(expandBtn, 'click', function(){this._onExpandClick(input.layerId)}, this);
+            L.DomEvent.on(deleteBtn, 'click', function(){this._onDeleteClick(input.layerId)}, this);
+
         } else {
-            holder.className = 'radio';
+
             input = this._createRadioElement('leaflet-base-layers', checked);
         }
-
-        expandBtn = document.createElement('button');
-        var expandIcon = document.createElement('i');
-        expandIcon.className = "fa fa-arrows-alt";
-        expandBtn.appendChild(expandIcon);
-
-
-        deleteBtn = document.createElement('button');
-        var deletIcon = document.createElement('i');
-        deletIcon.className = "fa fa-trash";
-        deleteBtn.appendChild(deletIcon);
-
 
         input.layerId = L.stamp(obj.layer);
         L.DomEvent.on(input, 'click', this._onInputClick, this);
@@ -397,9 +376,11 @@ L.Control.LayerPanel = L.Control.Layers.extend({
 
         label.appendChild(input);
         label.appendChild(name);
-        holder.appendChild(label);
-        holder.appendChild(expandBtn);
-        holder.appendChild(deleteBtn);
+        pullLeft.appendChild(label);
+
+        holder.appendChild(pullLeft);
+        holder.appendChild(pullRight);
+
         var container = obj.overlay ? this._overlaysList : this._baseLayersList;
         container.appendChild(holder);
         this._checkDisabledLayers();

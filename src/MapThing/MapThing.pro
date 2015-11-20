@@ -17,7 +17,6 @@ TEMPLATE = app
 SOURCES += main.cpp\
         mainwindow.cpp \
     datarequests.cpp \
-    jcalfdb.cpp \
     bridge.cpp \
     C:/GIT/csv_parser/src/csvparser.c \
     progresscounter.cpp
@@ -26,10 +25,10 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     datarequests.h \
     constants.h \
-    jcalfdb.h \
     bridge.h \
     C:/GIT/csv_parser/src/csvparser.h \
-    progresscounter.h
+    progresscounter.h \
+    fatof.h
 
 RESOURCES += \
     resources.qrc

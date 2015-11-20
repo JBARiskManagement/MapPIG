@@ -1,5 +1,6 @@
 #include "datarequests.h"
 #include "progresscounter.h"
+#include "fatof.h"
 
 extern "C" {
 #include "csvparser.h"
@@ -19,11 +20,19 @@ DataRequests::~DataRequests()
 {
 }
 
+void DataRequests::computeHist(QString fpath)
+{
+
+}
+
 void DataRequests::loadCsv(QString fpath)
 {
 
     //clock_t startTime = clock();
     emit workStarted();
+
+    // Vector for holding the TIV data
+    std::vector<double> *tivArr = new std::vector<double>;
 
     // Determine file size
     qint64 size;
@@ -42,7 +51,7 @@ void DataRequests::loadCsv(QString fpath)
 
     header = CsvParser_getHeader(parser);
     char **headerFields = CsvParser_getFields(header);
-    int idxLat = -1, idxLng = -1, idxLob = -1, i;
+    int idxLat = -1, idxLng = -1, idxTiv = -1, i;
 
     for (i = 0; i < CsvParser_getNumFields(header); i++)
     {
@@ -56,18 +65,17 @@ void DataRequests::loadCsv(QString fpath)
             idxLng = i;
             continue;
         }
-        if(strcmp(headerFields[i], "LOB") == 0)
+        if(strcmp(headerFields[i], "TIV1") == 0)
         {
-            idxLob = i;
+            idxTiv = i;
             continue;
         }
     }
 
-    //CsvParser_destroy_row(header);
     if (idxLat != -1 && idxLng  != -1)
     {
         int curPos, lastPos = 0, emptyRows = 0, rowCount = 0;
-        double lat, lng;
+        double lat, lng, tiv;
         char **rowFields;
         while((row = CsvParser_getRow(parser)))
         {
@@ -79,9 +87,11 @@ void DataRequests::loadCsv(QString fpath)
             else
             {
                 rowCount++;
-                lat = atof(rowFields[idxLat]);
-                lng = atof(rowFields[idxLng]);
-                emit riskUpdated(lat, lng, QString(rowFields[idxLob]));
+                lat = fatof(rowFields[idxLat]);
+                lng = fatof(rowFields[idxLng]);
+                tiv = fatof(rowFields[idxTiv]);
+                tivArr->push_back(tiv);
+                emit riskUpdated(lat, lng, tiv);
             }
             CsvParser_destroy_row(row);
             curPos = ftell(parser->fileHandler_);
@@ -89,15 +99,12 @@ void DataRequests::loadCsv(QString fpath)
             lastPos = curPos;
         }
         emit markerLoadingStats(rowCount, emptyRows);
-        //std::cout << emptyRows << " rows did not contain latitude and/or longitude values" << std::endl;
-        //std::cout << rowCount << " exposures were added to the map" << std::endl;
     }
+    portfolioTiv[fpath] = tivArr;
     CsvParser_destroy(parser);
-
-
-
     //std::cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << std::endl;
     emit workFinished();
+
 }
 
 void DataRequests::setJcalfDatabase(QString host, QString port, QString user, QString pwd)
@@ -143,15 +150,20 @@ void DataRequests::refreshExposures(double minX, double minY, double maxX, doubl
     connect(&prog, &ProgressCounter::progressUpdated, this, &DataRequests::progressUpdated);
     if (size > 0)
     {
+        double lat, lng, tiv;
         while (query.next()){
             prog.update();
-            double lat = query.value(0).toDouble();
-            double lng = query.value(1).toDouble();
-            QString lob = query.value(5).toString();
-            emit riskUpdated(lat, lng, lob);
+            lat = query.value(0).toDouble();
+            lng = query.value(1).toDouble();
+            tiv = query.value(2).toDouble();
+            emit riskUpdated(lat, lng, tiv);
         }
     }
-    QString name(jcalfDb.connectionName());
+    else
+    {
+        emit error(QString("No risks in database"), QString("Database error"));
+    }
+    //QString name(jcalfDb.connectionName());
     jcalfDb.close();
     //QSqlDatabase::removeDatabase(name);
     emit workFinished();

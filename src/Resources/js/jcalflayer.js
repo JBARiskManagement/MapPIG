@@ -22,8 +22,12 @@ MT.DataLayer.prototype.jcalf = function(host, port, user, pwd)
     this.lastUpdate = +new Date();
 
     BRIDGE.databaseConnected.connect(this.maybeCreateLayer.bind(this))
-    BRIDGE.error.connect(MT.showError);
+    BRIDGE.error.connect(MT.showMessage);
     BRIDGE.connectDatabase(host,port,user,pwd);
+}
+
+MT.DataLayer.prototype.remove = function(){
+       delete this.clusterLayer;
 }
 
 MT.DataLayer.prototype.maybeCreateLayer = function(status)
@@ -35,7 +39,7 @@ MT.DataLayer.prototype.maybeCreateLayer = function(status)
         BRIDGE.workFinished.connect(this.processView.bind(this));
         // Connect map move events to updating jcalf layers
         var self = this;
-        //this.mapCt.mmap.on('moveend', function(){self.update()});
+        //this.mapCt._map.on('moveend', function(){self.update()});
         this.clusterLayer = new PruneClusterForLeaflet(); // The marker cluster layer
         this.mapCt.addOverlay(this.clusterLayer, this.layerName);
         this.update();
@@ -61,18 +65,15 @@ MT.DataLayer.prototype.processView = function()
  * update
  *     Redraws the marker layer with all the risks in the current bounding box
  *
- * bounds:
- *  A Leaflet LatLngBounds instance
- *
  */
 MT.DataLayer.prototype.update = function(){
     // Only update the risks if the layer is displayed
-    if (this.mapCt.mmap.hasLayer(this.clusterLayer))
+    if (this.mapCt._map.hasLayer(this.clusterLayer))
     {
         // Prevent user from issuing another move command while we update
         $("#disable-overlay").show();
         this.mapCt.disable();
-        var bounds = this.mapCt.mmap.getBounds();
+        var bounds = this.mapCt._map.getBounds();
         this.clusterLayer.RemoveMarkers();
         BRIDGE.refreshExposures(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
     }
@@ -85,10 +86,11 @@ MT.DataLayer.prototype.update = function(){
  *      database
  *
  */
-MT.DataLayer.prototype.addRiskMarker = function(lat, lon, lob){
+MT.DataLayer.prototype.addRiskMarker = function(lat, lon, tiv){
     var marker = new PruneCluster.Marker(lat, lon);
     //marker.category = lob;
     marker.data.icon = createIcon;
+    marker.data.tiv = tiv;
     //marker.data.forceIconRedraw = true;
     this.clusterLayer.RegisterMarker(marker);
     //console.log("Add risk");

@@ -21,7 +21,7 @@ signals:
     Q_INVOKABLE void refreshExposures(double minX, double minY, double maxX, double maxY);
     Q_INVOKABLE void connectDatabase(QString host, QString port, QString user, QString pwd);
 
-    void exposureUpdated(double lat, double lng, QString lob);
+    void exposureUpdated(double lat, double lng, double tiv);
     void progressUpdated(int percent);
     void databaseConnected(bool status);
     void workStarted();
