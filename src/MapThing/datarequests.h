@@ -40,7 +40,7 @@ public slots:
      *  Get the histogram for a previously loaded portfolio
      * @param fpath
      */
-    void computeHist(QString fpath);
+    void computeHist(QString fpath, int nBins);
 
 };
 

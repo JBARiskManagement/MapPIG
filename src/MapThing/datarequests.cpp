@@ -20,7 +20,7 @@ DataRequests::~DataRequests()
 {
 }
 
-void DataRequests::computeHist(QString fpath)
+void DataRequests::computeHist(QString fpath, int nBins)
 {
 
 }
