@@ -20,6 +20,7 @@ signals:
     // Ask for a new set of exposures from jcalf db connection
     Q_INVOKABLE void refreshExposures(double minX, double minY, double maxX, double maxY);
     Q_INVOKABLE void connectDatabase(QString host, QString port, QString user, QString pwd);
+    Q_INVOKABLE void computeHistogram(QString ptf);
 
     void exposureUpdated(double lat, double lng, double tiv);
     void progressUpdated(int percent);
@@ -29,6 +30,7 @@ signals:
     void error(QString err, QString title);
     void fileLoad(QString);
     void markerLoadingStats(int nLoaded, int nSkipped);
+
 
 public slots:
 

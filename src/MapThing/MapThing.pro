@@ -19,7 +19,8 @@ SOURCES += main.cpp\
     datarequests.cpp \
     bridge.cpp \
     C:/GIT/csv_parser/src/csvparser.c \
-    progresscounter.cpp
+    progresscounter.cpp \
+    portfolio.cpp
 
 
 HEADERS  += mainwindow.h \
@@ -28,7 +29,8 @@ HEADERS  += mainwindow.h \
     bridge.h \
     C:/GIT/csv_parser/src/csvparser.h \
     progresscounter.h \
-    fatof.h
+    fatof.h \
+    portfolio.h
 
 RESOURCES += \
     resources.qrc

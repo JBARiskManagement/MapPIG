@@ -1,5 +1,6 @@
 #include "datarequests.h"
 #include "progresscounter.h"
+
 #include "fatof.h"
 
 extern "C" {
@@ -7,6 +8,7 @@ extern "C" {
 }
 #include <stdint.h>
 #include <iostream>
+#include <vector>
 #include <QDebug>
 #include <QSqlQuery>
 #include <QCoreApplication>
@@ -20,10 +22,6 @@ DataRequests::~DataRequests()
 {
 }
 
-void DataRequests::computeHist(QString fpath, int nBins)
-{
-
-}
 
 void DataRequests::loadCsv(QString fpath)
 {
@@ -31,8 +29,8 @@ void DataRequests::loadCsv(QString fpath)
     //clock_t startTime = clock();
     emit workStarted();
 
-    // Vector for holding the TIV data
-    std::vector<double> *tivArr = new std::vector<double>;
+    // Add a portfolio to the container
+    std::vector<double> *tivArr = ptf.addPortfolio(fpath);
 
     // Determine file size
     qint64 size;
@@ -100,8 +98,9 @@ void DataRequests::loadCsv(QString fpath)
         }
         emit markerLoadingStats(rowCount, emptyRows);
     }
-    portfolioTiv[fpath] = tivArr;
     CsvParser_destroy(parser);
+
+    ptf.computeHist(fpath, 10);
     //std::cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << std::endl;
     emit workFinished();
 
