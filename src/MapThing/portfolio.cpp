@@ -25,13 +25,13 @@ void Portfolio::computeHist(QString fpath, int nBins)
     minTiv = *std::min_element(tivArr->begin(), tivArr->end());
 
     double binWidth = (maxTiv-minTiv)/nBins;
-    int binIdx, i;
+    unsigned int binIdx, i;
     std::vector<int> hist(nBins, 0.0);
     //std::vector<double> centres(nBins, 0);
 
     for (i = 0; i < tivArr->size(); ++i)
     {
-        binIdx = (int)floor((*tivArr)[i]/ binWidth);
+        binIdx = (int)((*tivArr)[i]/ binWidth);
         hist[binIdx]++;
     }
     for (i = 0; i < hist.size(); ++i)
@@ -39,7 +39,7 @@ void Portfolio::computeHist(QString fpath, int nBins)
         count += hist[i];
         std::cout << hist[i] << std::endl;
     }
-    std::cout << count << std::endl;
+
 }
 
 std::vector<double> * Portfolio::addPortfolio(QString fpath)

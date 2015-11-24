@@ -11,6 +11,7 @@ public:
     Portfolio();
     ~Portfolio();
     std::map<QString, std::vector<double> *> portfolioTiv;
+    std::vector<int> hist;
 
     /**
      * @brief computeHist
