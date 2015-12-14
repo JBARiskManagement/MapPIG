@@ -30,6 +30,7 @@ public slots:
 
 private:
     QWebView *webview;
+    QWebPage *webpage;
     QWebFrame *mainFrame;
     QWebInspector *inspector;
     QToolBar *toolBar;
@@ -40,6 +41,8 @@ private:
     QThread *workerThread;
     QStatusBar *sb;
     QProgressBar *progressBar;
+    QDir pluginsDir;
+    QStringList pluginFileNames;
 
     /**
      * @brief MainWindow::setSize Resizes the application to a nice proportion of the screen
@@ -59,6 +62,14 @@ private:
     void showMap();
     void quit();
     void addDataRequestsObject();
+
+    /**
+     * @brief loadPlugins
+     *        Discover and load mapthing plugins from the plugin directory
+     */
+    void loadPlugins();
+
+    void addPlugin(QObject *plugin);
 };
 
 #endif // MAINWINDOW_H

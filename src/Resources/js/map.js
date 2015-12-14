@@ -146,7 +146,7 @@ MT.MapController.prototype.addWmsOverlay = function ()
 MT.MapController.prototype.addOverlay = function (layer, name)
 {
     this._map.addLayer(layer);
-    //this.layerControl.addOverlay(layer, name);
+    this.layerControl.addOverlay(layer, name);
 }
 
 /**

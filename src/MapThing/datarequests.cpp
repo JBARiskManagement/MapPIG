@@ -100,7 +100,7 @@ void DataRequests::loadCsv(QString fpath)
     }
     CsvParser_destroy(parser);
 
-    ptf.computeHist(fpath, 10);
+    //ptf.computeHist(fpath, 10);
     //std::cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << std::endl;
     emit workFinished();
 

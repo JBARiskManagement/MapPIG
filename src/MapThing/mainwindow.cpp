@@ -1,5 +1,6 @@
 #include "mainwindow.h"
 #include "constants.h"
+#include "plugininterface.h"
 
 
 // Qt Classes
@@ -9,6 +10,8 @@
 #include <QCoreApplication>
 #include <QWebSettings>
 #include <QShortcut>
+#include <QPluginLoader>
+
 
 
 MainWindow::MainWindow(QWidget *parent)
@@ -26,10 +29,10 @@ MainWindow::MainWindow(QWidget *parent)
     sb->addPermanentWidget(progressBar, 1);
     progressBar->hide();
 
-    QWebPage *page = webview->page();
-    page->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
-    page->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
-    page->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+    webpage = webview->page();
+    webpage->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
+    webpage->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
+    webpage->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
     webview->setContentsMargins(0,0,0,0);
 
     // The bridge forms the link between C++ and javascript.
@@ -38,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
 
 
     bridge = new Bridge(this);
-    page->mainFrame()->addToJavaScriptWindowObject("BRIDGE", bridge);
+    webpage->mainFrame()->addToJavaScriptWindowObject("BRIDGE", bridge);
 
 
     // Thread for the bridge
@@ -52,7 +55,7 @@ MainWindow::MainWindow(QWidget *parent)
     // This means we need to explicitly delete.
     inspector = new QWebInspector;
     //inspector->resize(950,700);
-    inspector->setPage(page);
+    inspector->setPage(webpage);
 
     // Setup the size of the window
     setSize();
@@ -146,3 +149,50 @@ void MainWindow::resetStatusBar(){
     progressBar->setValue(0);
     progressBar->hide();
 }
+
+void MainWindow::loadPlugins()
+{
+    pluginsDir = QDir(qApp->applicationDirPath());
+#if defined(Q_OS_WIN)
+    if (pluginsDir.dirName().toLower() == "debug" || pluginsDir.dirName().toLower() == "release")
+        pluginsDir.cdUp();
+#elif defined(Q_OS_MAC)
+    if (pluginsDir.dirName() == "MacOS")
+    {
+        pluginsDir.cdUp();
+        pluginsDir.cdUp();
+        pluginsDir.cdUp();
+    }
+#endif
+    pluginsDir.cd("plugins");
+
+    foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
+        QPluginLoader loader(pluginsDir.absoluteFilePath(fileName));
+        QObject *plugin = loader.instance();
+        if (plugin)
+        {
+            addPlugin(plugin);
+            pluginFileNames += fileName;
+        }
+    }
+}
+
+void MainWindow::addPlugin(QObject *plugin)
+{
+    PluginInterface *iPlugin = qobject_cast<PluginInterface *>(plugin);
+    if (iPlugin)
+    {
+        // Create a button for the plugin
+        webpage->mainFrame()->evaluateJavaScript(QString("MT.addPluginLauncher(\"%1\")").arg(iPlugin->getName()));
+
+        // Get the javascript for the plugin UI and run it
+        webpage->mainFrame()->evaluateJavaScript(iPlugin->initialiseUi(this->progressBar));
+
+        // Get the bridge object for the plugin and add it to the page
+        webpage->mainFrame()->addToJavaScriptWindowObject(iPlugin->getBridgeObjectName(), iPlugin->getBridgeObject());
+
+
+    }
+}
+
+

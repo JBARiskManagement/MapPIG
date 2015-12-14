@@ -30,7 +30,8 @@ HEADERS  += mainwindow.h \
     C:/GIT/csv_parser/src/csvparser.h \
     progresscounter.h \
     fatof.h \
-    portfolio.h
+    portfolio.h \
+    plugininterface.h
 
 RESOURCES += \
     resources.qrc

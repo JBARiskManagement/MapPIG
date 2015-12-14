@@ -27,3 +27,4 @@ void Bridge::connectToPathField(const QWebElement &msg)
 void Bridge::loadFile(){
     emit fileLoad(lastFile);
 }
+
