@@ -41,7 +41,10 @@ MT.addPluginLauncher = function(pluginName, setupFunc){
 /**
 * Controls creation of map, base layers and overlays
 */
-MT.MapController = function (){
+MT.MapController = function (id){
+
+    if (typeof(id)==='undefined') id = 'map';
+
     this.overLays = {}; // Holds any overlay layers added
     this.jcalfLayers = [];
     //var tonerLite = new L.StamenTileLayer("toner-lite");
@@ -61,7 +64,7 @@ MT.MapController = function (){
     this.geocoder = new google.maps.Geocoder();
 
     // initialise the map
-    this._map = L.map('map', {
+    this._map = L.map(id, {
                       zoom: 13,
                       center: [53.952612,-2.090103],
                       layers: [jbaBasemap],

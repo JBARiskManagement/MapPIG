@@ -9,7 +9,7 @@ class PluginInterface
     public:
         virtual ~PluginInterface(){}
         virtual QString initialiseUi(QProgressBar *);
-        virtual QString getUiSetupFunc();
+        virtual QString getUiSetupFunction();
         virtual QString getName();
         virtual QObject * getBridgeObject();
         virtual QString getBridgeObjectName();

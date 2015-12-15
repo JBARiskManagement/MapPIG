@@ -119,7 +119,7 @@ MT.DataLayer.prototype.updateSize = function(){
 
 MT.DataLayer.prototype.showLoadingStats = function(loaded, skipped)
 {
-    bootbox.dialog({message: loaded + " exposures were loaded, " + skipped + " rows were skipped (did not contain lat or long values)",
+    bootbox.dialog({message: loaded + " markers were loaded, " + skipped + " rows were skipped (did not contain lat or long values)",
                    title: "Loading finished",
                    buttons: {main: {label: "Ok",
                          className: "btn-primary"}}
