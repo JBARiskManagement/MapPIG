@@ -12,6 +12,30 @@
 // global namespace
 var MT = MT || {};
 
+/**
+* Adds a button to the 'plugin' sidebar with the name of this plugin
+*/
+MT.addPluginLauncher = function(pluginName, setupFunc){
+
+    // Create an id for the launcher button
+    var id = pluginName + 'Launch';
+
+    // Get the JS function which sets up the UI
+    var fn = window[setupFunc];
+
+    // Create the button
+    var button = $('<button/>', {
+                       text: pluginName,
+                       id: id,
+                       click: function(){ fn();}
+                   });
+
+    // Get the area in which to create the plugin launcher button
+    $("#sb-plugin-button-area").append(button);
+
+
+}
+
 
 
 /**

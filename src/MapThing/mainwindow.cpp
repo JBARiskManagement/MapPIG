@@ -182,14 +182,18 @@ void MainWindow::addPlugin(QObject *plugin)
     PluginInterface *iPlugin = qobject_cast<PluginInterface *>(plugin);
     if (iPlugin)
     {
-        // Create a button for the plugin
-        webpage->mainFrame()->evaluateJavaScript(QString("MT.addPluginLauncher(\"%1\")").arg(iPlugin->getName()));
-
-        // Get the javascript for the plugin UI and run it
+        // Get the javascript for the plugin UI and add it to the page
         webpage->mainFrame()->evaluateJavaScript(iPlugin->initialiseUi(this->progressBar));
+
+        // Create a button for the plugin
+        webpage->mainFrame()->evaluateJavaScript(QString("MT.addPluginLauncher(\"%1\", \"%2\")").arg(iPlugin->getName(), iPlugin->getUiSetupFunction()));
 
         // Get the bridge object for the plugin and add it to the page
         webpage->mainFrame()->addToJavaScriptWindowObject(iPlugin->getBridgeObjectName(), iPlugin->getBridgeObject());
+
+        // Get the worker object and move it to the worker thread
+        QObject *worker = iPlugin->getWorkerObject();
+        worker->moveToThread(workerThread);
 
 
     }
