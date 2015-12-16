@@ -20,7 +20,7 @@ A plugin will consist of 5 main components:
 1. The plugin interface implementation. This is a small class which inherits from MapThings' ``PluginInterface`` (in ``plugininterface.h``) and implements the methods declared by the interface. This is all that is required for
    mapthing to recognise and use the plugin. 
 2. Javascript code which will setup the plugins' user interface in the mapthing window. 
-3. A `Bridge` class which facilitates communication between Javascript and the C++ backend. See the `Accessing QObjects` section of `this page<http://doc.qt.io/qt-5/qtwebkit-bridge.html>`_.
+3. A `Bridge` class which facilitates communication between Javascript and the C++ backend. See the `Accessing QObjects` section of `this page <http://doc.qt.io/qt-5/qtwebkit-bridge.html>`_.
 4. A `Worker` class which will pass messages from the `Bridge` to the underlying logic. This object will be moved to a separate thread by MapThing in order to keep the UI responsive.
 5. The logic code of the application. This would normally be compiled as a separate library and provides all the calculation logic of the plugin.
 
@@ -31,7 +31,7 @@ The following diagram shows how the plugin components interact
    MapThing plugin components. The worker class is placed in a separate thread to the bridge and front end. 
 
 
-As the ``Bridge`` and ``Worker`` classes will be run in separate threads, it is crucial that they communicate via the `Qt Signal/Slot system<http://doc.qt.io/qt-5/signalsandslots.html>`_ in order to keep the GUI responsive. 
+As the ``Bridge`` and ``Worker`` classes will be run in separate threads, it is crucial that they communicate via the `Qt Signal/Slot system <http://doc.qt.io/qt-5/signalsandslots.html>`_ in order to keep the GUI responsive. 
 
 PluginInterface
 ---------------
@@ -109,7 +109,7 @@ You can use the plugin sidebar itself to implement some or all of the GUI. That 
    The plugin sidebar. The sidebar in the image is empty, indicating no plugins available. 
    
 The ``div`` element under which you can place your own GUI elements has the following id: ``sb-plugin-area``. 
-You should clear the ``div`` of existing elements and then add your own. `Note: Utility functions to ease this process will be added, see `T1242<http://10.0.0.11/T1242>`_.`
+You should clear the ``div`` of existing elements and then add your own. `Note: Utility functions to ease this process will be added, see `T1242 <http://10.0.0.11/T1242>`_.`
 
 
 2. Modal Windows
@@ -125,7 +125,7 @@ A modal window looks like this:
    
 The window has a title (although this can of course be removed) and a `body` in which you may append elements. It is possible to resize the window
 although currently MapThing offers no easy-access method for doing this. 
-The modal window is created using bootstrap and the `documentation explains how to use the windows<http://getbootstrap.com/javascript/#modals>`_.
+The modal window is created using bootstrap and the `documentation explains how to use the windows <http://getbootstrap.com/javascript/#modals>`_.
 
 While a modal window is displayed, the user cannot interact with the map or sidebar.
 
