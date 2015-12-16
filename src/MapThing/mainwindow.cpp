@@ -81,6 +81,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(dataRequest, &DataRequests::markerLoadingStats, bridge, &Bridge::markerLoadingStats);
 
+    // Load the plugins
+    loadPlugins();
+
     // set up the HTML UI
     showMap();
 }

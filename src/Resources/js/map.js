@@ -135,13 +135,18 @@ MT.MapController.prototype.enable = function()
  * addOverlay
  *      Add an overlay WMS layer to the map
  */
-MT.MapController.prototype.addWmsOverlay = function ()
+MT.MapController.prototype.addWmsOverlay = function (host, layerName, format)
 {
-    // Get the values from the hazards-sidebar
-    var host = $("#hazardmaphost").val();
-    var layerName = $("#layer").val();
-    var format = $("#format").val();
-    var tms = $("#tms").is(':checked');
+    // Get the values from the hazards-sidebar if they are not passed in
+    if (host === 'undefined')
+        host = $("#hazardmaphost").val();
+
+    if (layerName === 'undefined')
+        layerName = $("#layer").val();
+
+    if (format === 'undefined')
+        format = $("#format").val();
+
     var displayName;
 
     if (tms === false){
