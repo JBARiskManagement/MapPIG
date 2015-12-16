@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <title>MapThing Prototype</title>
+
+
+        <link href='vendors/Leaflet/leaflet.css' rel='stylesheet' />
+        <link href="vendors/PruneCluster/LeafletStyleSheet.css" rel='stylesheet' />
+        <link href='vendors/L.Loading/Control.Loading.css' rel='stylesheet' />
+        <link href='vendors/bootstrap/css/bootstrap.css' rel='stylesheet' />
+        <link href='vendors/css/leaflet-sidebar.css' rel='stylesheet' />
+        <link href='mapthing/css/leaflet-search.src.css' rel='stylesheet' />
+        <link href='mapthing/css/main.css' rel='stylesheet' />
+        
+        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+
+    </head>
+    <body>
+    
+    <!--Main Window-->
+     <div id="container">
+
+      <!-- The sidebar -->
+      <div id="sidebar" class="sidebar collapsed">
+        <!-- Navigation tabs -->
+        <div class="sidebar-tabs">
+            <ul role="tablist">
+                <li><a href="#sb-layers" role="tab" data-placement="right" data-toggle="tooltip" title="Map layers"><i class="mt-icon mt-layers"></i></a></li>
+                <li><a href="#sb-overlays" role="tab" data-placement="right" data-toggle="tooltip" title="Add overlay from a WMS"><i class="fa fa-globe"></i></a></li>
+                <li><a href="#sb-file" role="tab" data-placement="right" data-toggle="tooltip" title="Load file"><i class="fa fa-folder-open"></i></a></li>
+                <li><a href="#sb-database" role="tab" data-placement="right" data-toggle="tooltip" title="Connect to a Jcalf database"><i class="fa fa-database""></i></a></li>
+                <li><a href="#sb-plugin" role="tab" data-placement="right" data-toggle="tooltip" title="Plugins"><i class="fa fa-plug"></i></a></li>
+
+            </ul>
+            <ul role="tablist">
+                <li><a href="#sb-about" role="tab"><i class="mt-icon mt-jbarml"></i></a></li>
+            </ul>
+        </div>
+
+        <div class="sidebar-content">
+            <div class="sidebar-pane" id="sb-layers">
+              <h1 class="sidebar-header">Layers<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+            </div>
+
+            <div class="sidebar-pane" id="sb-overlays">
+                    <h1 class="sidebar-header">Connect to WMS<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+                    <div class="row">
+                      <div class="col-xs-12 col-md-12">
+                        <form role="form" class="hazard-form">
+                            <div class="form-group">
+                              <label for="hazardmaphost">Host URL</label>
+                              <input type="input" class="form-control" id="hazardmaphost">
+                            </div>
+                            <div class="form-group">
+                              <label for="layer">Layer</label>
+                              <input type="input" class="form-control" id="layer">
+                            </div>
+                            <div class="form-group">
+                              <label for="format">Format</label>
+                              <input type="input" class="form-control" id="format" value="image/png">
+                            </div>
+                            <!--
+                            <div class="form-group">
+                              <label for="tms">TMS</label>
+                              <input type="checkbox" class="form-control" id="tms">
+                            </div>
+                            -->
+                            <button type="button" class="btn btn-default" id="overlay-submit">Add Layer</button>
+                          </form>
+                      </div>
+                    </div>
+                  </div>
+
+            <div class="sidebar-pane" id="sb-file">
+                <h1 class="sidebar-header">Load CSV<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+                <div class="row">
+                  <div class="col-xs-12 col-md-12">
+                    <form role="form" class="csv-form">
+                        <div class="form-group">
+                          <label for="open-file">Load file</label>
+                          <div class="input-group">
+                              <span class="input-group-btn"><button type="button" class="btn btn-default" id="open-file">Browse...</button></span>
+                              <span class="form-control" id="file-path"></span>
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label for="file-format">Format</label>
+                          <select class="form-control" id="file-format">
+                              <option>JCalf Portfolio</option>
+                              <option>Lat Long only</option>
+                          </select>
+                        </div>
+                        <button type="button" class="btn btn-default" id="csv-submit">Submit</button>
+                      </form>
+                  </div>
+                </div>
+            </div>
+
+            <div class="sidebar-pane" id="sb-database">
+              <h1 class="sidebar-header">Jcalf Database<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+              <div class="row">
+                <div class="col-xs-12 col-md-12">
+                  <form role="form" class="db-form">
+                      <div class="form-group">
+                        <label for="host">Host</label>
+                        <input type="input" class="form-control" id="host">
+                      </div>
+                      <div class="form-group">
+                        <label for="port">Port</label>
+                        <input type="input" class="form-control" id="port">
+                      </div>
+                      <div class="form-group">
+                        <label for="user">User</label>
+                        <input type="input" class="form-control" id="user">
+                      </div>
+                      <div class="form-group">
+                        <label for="pwd">Password</label>
+                        <input type="password" class="form-control" id="pwd">
+                      </div>
+
+                      <button type="button" class="btn btn-default" id="db-submit">Submit</button>
+                    </form>
+                </div>
+              </div>
+            </div>
+
+            <div class="sidebar-pane" id="sb-plugin">
+              <h1 class="sidebar-header" id="sb-plugin-header">Extensions<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+              <div class="row">
+
+                <!-- Important that the id below is named such -->
+                <div id="sb-plugin-area" class="col-xs-12 col-md-12">
+                <!--
+                  <button type="button" class="btn btn-default btn-block" id="summarize-view-btn">Summarize View</button>
+                  <button type="button" class="btn btn-default btn-block" id="elect-btn">ELECT</button>
+                  -->
+                </div>
+              </div>
+            </div>
+
+            <div class="sidebar-pane" id="sb-about">
+              <h1 class="sidebar-header">About<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+              <p>MapThing</p>
+              <p>&copy JBA Risk Management Ltd 2015</p>
+            </div>
+
+
+
+        </div>
+      </div>
+
+     <!-- This is where the actual map goes -->
+     <div id="map" class="sidebar-map">
+     </div>
+
+    <!-- Div for disabling the UI (e.g. when blocking work is happening, such as loading a file) -->
+    <div class="overlay"  id="disable-overlay" hidden>
+    </div>
+    </div>
+
+    <!-- Modal popups -->
+
+    <!-- chart modals -->
+    <div class="modal fade" id="lecModal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
+      <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 class="modal-title" id="myModalLabel">LEC Curve</h4>
+          </div>
+          <div class="modal-body">
+            <p>Loss Exceedance for Risks in View</p>
+            <canvas id="lecPopupChart" width="568" height="300"></canvas>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    </div>
+    <!-- end modal popups -->
+
+    <!-- UI libs -->
+    <script type="text/javascript" src='vendors/js/jquery-1.11.3.min.js'></script>
+    <script type="text/javascript" src='vendors/bootstrap/js/bootstrap.js'></script>
+    <script type="text/javascript" src='vendors/js/bootbox.min.js'></script>
+
+    <!-- Mapping libs -->
+    <script type="text/javascript" src='vendors/Leaflet/leaflet.js'></script>
+    <script type="text/javascript" src="vendors/PruneCluster/PruneCluster.min.js"></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
+    <script type="text/javascript" src="vendors/L.Loading/Control.Loading.js"></script>
+
+    <!-- Chart libs -->
+    <script type="text/javascript" src='vendors/js/Chart.min.js'></script>
+    <script type="text/javascript" src='vendors/js/leaflet-search.src.js'></script>
+
+    <!-- Sidebar -->
+    <script type="text/javascript" src='vendors/js/leaflet-sidebar.js'></script>
+
+    <!--Always ensure our own JS is loaded last so it has access to the above libs -->
+    <script type="text/javascript" src='mapthing/js/map.js'></script>
+    <script type="text/javascript" src='mapthing/js/jcalflayer.js'></script>
+
+
+
+    <script type="text/javascript">
+        $(document).ready(initMap);
+    </script>
+    </body>
+</html>
