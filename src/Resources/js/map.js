@@ -36,7 +36,17 @@ MT.addPluginLauncher = function(pluginName, setupFunc){
 
 }
 
+/**
+ * Register a MapController as the main instance
+ */
+MT._registerMap = function(mapCtrl){
+    MT._mCtrl = mapCtrl;
+}
 
+MT.getMap = function()
+{
+    return MT._mCtrl;
+}
 
 /**
 * Controls creation of map, base layers and overlays
@@ -242,6 +252,7 @@ function initMap(){
 
     // Sets up the actual map
     var mapCtrl = new MT.MapController();
+    MT._registerMap(mapCtrl);
 
     // Button events
     $(window).resize(function() {
@@ -451,5 +462,4 @@ L.Control.LayerPanel = L.Control.Layers.extend({
 L.control.layerpanel = function (baseLayers, overlays, id, options) {
     return new L.Control.LayerPanel(baseLayers, overlays, id,options);
 };
-
 
