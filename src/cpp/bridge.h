@@ -30,11 +30,13 @@ signals:
     void error(QString err, QString title);
     void fileLoad(QString);
     void markerLoadingStats(int nLoaded, int nSkipped);
+    void printRequest(QString path);
 
 
 public slots:
 
     void showOpenFileDialog();
+    void showSaveFileDialog();
     void connectToPathField(const QWebElement &msg);
     void loadFile();
 

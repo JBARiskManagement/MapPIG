@@ -26,6 +26,7 @@ public slots:
     void showProgress(int percent);
     void resetStatusBar();
     void showProgressBar();
+    void frameToPdf(QString filepath);
 
 
 private:

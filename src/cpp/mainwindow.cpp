@@ -9,10 +9,13 @@
 #include <QFile>
 #include <QCoreApplication>
 #include <QWebSettings>
+#include <QWebFrame>
 #include <QShortcut>
 #include <QPluginLoader>
-
-
+//#include <QtPrintSupport/QPrinter>
+#include <QPixMap>
+#include <QImage>
+#include <QtSvg/QSvgRenderer>
 
 MainWindow::MainWindow(QWidget *parent)
     : QMainWindow(parent)
@@ -69,6 +72,7 @@ MainWindow::MainWindow(QWidget *parent)
     //connect(bridge, &Bridge::refreshExposures, this, &MainWindow::showProgressBar);
     connect(bridge, &Bridge::connectDatabase, dataRequest, &DataRequests::setJcalfDatabase);
     connect(bridge, &Bridge::fileLoad, dataRequest, &DataRequests::loadCsv);
+    connect(bridge, &Bridge::printRequest, this, &MainWindow::frameToPdf);
 
     //connect(dataRequest, &DataRequests::progressUpdated, bridge, &Bridge::progressUpdated);
     connect(dataRequest, &DataRequests::progressUpdated, this, &MainWindow::showProgress);
@@ -207,6 +211,28 @@ void MainWindow::addPlugin(QObject *plugin)
 
 
     }
+}
+
+void MainWindow::frameToPdf(QString filepath)
+{
+    QWebFrame *frame = webpage->mainFrame();
+    frame->evaluateJavaScript(QString("MT.prepareMapForPrint();"));
+
+    QImage image(webview->size(), QImage::Format_ARGB32_Premultiplied);
+    image.fill(Qt::transparent);
+    QPainter painter(&image);
+    webview->render(&painter, QPoint(), QRegion(), QWidget::DrawChildren);
+
+    painter.setCompositionMode(QPainter::CompositionMode_SourceOver);
+    QSvgRenderer rend(QString(":/logo_svg"));
+    QRectF rect(10.0, 10.0, 64.0, 64.0); // 1.0795 is the width/height ratio of the standard jba logo
+    rend.render(&painter, rect);
+
+    frame->evaluateJavaScript(QString("MT.resetMapAfterPrint();"));
+    image.save(filepath, 0, 100);
+
+    frame->evaluateJavaScript(QString("MT.showMessage('Image saved to %1', 'Print info')").arg(filepath));
+
 }
 
 

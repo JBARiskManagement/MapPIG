@@ -48,6 +48,29 @@ MT.getMap = function()
     return MT._mCtrl;
 }
 
+MT.hideSidebar = function(){
+    $('#sidebar').hide();
+}
+
+MT.showSidebar = function(){
+    $('#sidebar').show();
+}
+
+MT.prepareMapForPrint = function(){
+    MT.hideSidebar();
+    var mc = MT.getMap();
+    mc.zoomControl.remove();
+    mc.searchControl.remove();
+}
+
+MT.resetMapAfterPrint = function(){
+    MT.showSidebar();
+    var mc = MT.getMap();
+    mc.zoomControl.addTo(mc._map);
+    mc.searchControl.addTo(mc._map);
+}
+
+
 /**
 * Controls creation of map, base layers and overlays
 */
@@ -276,11 +299,21 @@ function initMap(){
 
     });
 
+    $("#choose-file").click(function(){
+        BRIDGE.connectToPathField(document.getElementById("choose-file-path"));
+        BRIDGE.showSaveFileDialog();
+
+    });
+
     $("#csv-submit").click(function(){
         var path = $("#file-path").text();
-        console.log(path);
-
         var csvlyr = new MT.CsvLayer(mapCtrl, path);
+    });
+
+    $("#print-submit").click(function(){
+        var path = $("#choose-file-path").text();
+        console.log(path);
+        BRIDGE.printRequest(path);
     });
 
     $("#overlay-submit").click(function() {

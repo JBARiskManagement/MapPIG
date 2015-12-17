@@ -18,6 +18,13 @@ void Bridge::showOpenFileDialog(){
     msgSpan.setPlainText(lastFile);
 }
 
+void Bridge::showSaveFileDialog(){
+    lastFile = QFileDialog::getSaveFileName(0, tr("Save File"), lastDir.absolutePath());
+    lastDir = QFileInfo(lastFile).absoluteDir();
+    msgSpan.setPlainText(lastFile);
+}
+
+
 void Bridge::connectToPathField(const QWebElement &msg)
 {
     msgSpan = msg;
