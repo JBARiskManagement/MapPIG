@@ -26,8 +26,13 @@ public slots:
     void showProgress(int percent);
     void resetStatusBar();
     void showProgressBar();
-    void frameToPdf(QString filepath);
-
+    void frameToImage(QString filepath);
+    /**
+     * @brief loadPlugins
+     *        Discover and load mapthing plugins from the plugin directory
+     */
+    void loadPlugins();
+    void addJsObject();
 
 private:
     QWebView *webview;
@@ -62,14 +67,6 @@ private:
      */
     void showMap();
     void quit();
-    void addDataRequestsObject();
-
-    /**
-     * @brief loadPlugins
-     *        Discover and load mapthing plugins from the plugin directory
-     */
-    void loadPlugins();
-
     void addPlugin(QObject *plugin);
 };
 

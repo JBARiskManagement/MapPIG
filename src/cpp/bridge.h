@@ -31,7 +31,7 @@ signals:
     void fileLoad(QString);
     void markerLoadingStats(int nLoaded, int nSkipped);
     void printRequest(QString path);
-
+    void pageInitFinished();
 
 public slots:
 

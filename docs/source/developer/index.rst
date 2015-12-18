@@ -285,7 +285,25 @@ In the javascript code, you may have a button press function handler like so::
 
 In the above, calling ``onButtonPress`` will cause the function ``doCalculation`` to be called in the ``Worker`` class.
 
+The Worker Class
+--------------------
 
+
+Initialisation Order
+---------------------
+
+When your plugin is loaded, it will be initialised in the following order:
+
+1. The ``Bridge`` object is requested and added to the main ``QWebView`` object of MapThing
+2. The ``Worker`` object is requested and moved to the worker thread
+3. The javascript code is requested and added to the web page
+4. A `plugin launch` button is added to the plugin sidebar, with a callback function to the function provided by ``getUiSetupFunction``.
+
+This means that:
+
+- The ``Bridge`` object should not attempt to communicate with ``Worker`` or the javascript when it is initialised.
+- The ``Worker`` object should not attempt to communicate with the javascript (e.g. by invoking a signal on the ``Bridge`` object) when it is initialised.
+- The javascript code may call the ``Bridge`` object, although this is bad practice; normally nothing would be executed until the user presses the plugin launch button
 
 
 

@@ -38,13 +38,12 @@ MainWindow::MainWindow(QWidget *parent)
     webpage->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
     webview->setContentsMargins(0,0,0,0);
 
-    // The bridge forms the link between C++ and javascript.
-    // bridge methods can be called from both sides (use signals/slots) and pass data
     dataRequest = new DataRequests();
 
-
+    // The bridge forms the link between C++ and javascript.
+    // bridge methods can be called from both sides (use signals/slots) and pass data
     bridge = new Bridge(this);
-    webpage->mainFrame()->addToJavaScriptWindowObject("BRIDGE", bridge);
+
 
 
     // Thread for the bridge
@@ -68,11 +67,13 @@ MainWindow::MainWindow(QWidget *parent)
 
     setCentralWidget(webview);
 
+    connect(webpage->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(addJsObject()));
+    connect(webpage, &QWebPage::loadFinished, this, &MainWindow::loadPlugins);
     connect(bridge, &Bridge::refreshExposures, dataRequest, &DataRequests::refreshExposures);
     //connect(bridge, &Bridge::refreshExposures, this, &MainWindow::showProgressBar);
     connect(bridge, &Bridge::connectDatabase, dataRequest, &DataRequests::setJcalfDatabase);
     connect(bridge, &Bridge::fileLoad, dataRequest, &DataRequests::loadCsv);
-    connect(bridge, &Bridge::printRequest, this, &MainWindow::frameToPdf);
+    connect(bridge, &Bridge::printRequest, this, &MainWindow::frameToImage);
 
     //connect(dataRequest, &DataRequests::progressUpdated, bridge, &Bridge::progressUpdated);
     connect(dataRequest, &DataRequests::progressUpdated, this, &MainWindow::showProgress);
@@ -85,11 +86,11 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(dataRequest, &DataRequests::markerLoadingStats, bridge, &Bridge::markerLoadingStats);
 
-    // Load the plugins
-    loadPlugins();
-
     // set up the HTML UI
     showMap();
+
+    // Load the plugins - !Must come after showMap() as it requires JS to be available!
+    //loadPlugins();
 }
 
 MainWindow::~MainWindow()
@@ -97,19 +98,19 @@ MainWindow::~MainWindow()
     workerThread->deleteLater();
 }
 
+void MainWindow::addJsObject()
+{
+    webpage->mainFrame()->addToJavaScriptWindowObject(QString("BRIDGE"), bridge);
+}
+
 void MainWindow::setSize()
 {
   QDesktopWidget desktop;
   QRect screenSize = desktop.availableGeometry(desktop.primaryScreen());
 
-  int width = screenSize.width()*0.7;
-  int height = screenSize.height()*0.75;
-  //int webViewWidth = width*0.85;
-
-  //QList<int> list;
-  //list << width - webViewWidth << webViewWidth;
+  int width = screenSize.width()*0.75;
+  int height = screenSize.height()*0.8;
   resize(width, height);
-  //mainWidget->setSizes(list);
 }
 
 void MainWindow::loadStyleSheet()
@@ -148,10 +149,9 @@ void MainWindow::quit()
     qApp->quit();
 }
 
-void MainWindow::showProgress(int percent){
-
+void MainWindow::showProgress(int percent)
+{
     progressBar->setValue(percent);
-
 }
 
 void MainWindow::showProgressBar()
@@ -178,6 +178,7 @@ void MainWindow::loadPlugins()
         pluginsDir.cdUp();
     }
 #endif
+    pluginsDir.cdUp();
     pluginsDir.cd("plugins");
 
     foreach (QString fileName, pluginsDir.entryList(QDir::Files)) {
@@ -196,12 +197,6 @@ void MainWindow::addPlugin(QObject *plugin)
     PluginInterface *iPlugin = qobject_cast<PluginInterface *>(plugin);
     if (iPlugin)
     {
-        // Get the javascript for the plugin UI and add it to the page
-        webpage->mainFrame()->evaluateJavaScript(iPlugin->initialiseUi(this->progressBar));
-
-        // Create a button for the plugin
-        webpage->mainFrame()->evaluateJavaScript(QString("MT.addPluginLauncher(\"%1\", \"%2\")").arg(iPlugin->getName(), iPlugin->getUiSetupFunction()));
-
         // Get the bridge object for the plugin and add it to the page
         webpage->mainFrame()->addToJavaScriptWindowObject(iPlugin->getBridgeObjectName(), iPlugin->getBridgeObject());
 
@@ -209,14 +204,22 @@ void MainWindow::addPlugin(QObject *plugin)
         QObject *worker = iPlugin->getWorkerObject();
         worker->moveToThread(workerThread);
 
+        // Get the javascript for the plugin UI and add it to the page
+        QString pluginJs = iPlugin->initialiseUi();
+        webpage->mainFrame()->evaluateJavaScript(pluginJs);
 
+        // Create a button for the plugin
+        QString js = QString("MT.Dom.addPluginLauncher('%1', '%2', '%3');").arg(iPlugin->getName(),
+                                                                          iPlugin->getUiSetupFunction(),
+                                                                          iPlugin->getDescription());
+        webpage->mainFrame()->evaluateJavaScript(js);
     }
 }
 
-void MainWindow::frameToPdf(QString filepath)
+void MainWindow::frameToImage(QString filepath)
 {
     QWebFrame *frame = webpage->mainFrame();
-    frame->evaluateJavaScript(QString("MT.prepareMapForPrint();"));
+    frame->evaluateJavaScript(QString("MT.Dom.prepareMapForPrint();"));
 
     QImage image(webview->size(), QImage::Format_ARGB32_Premultiplied);
     image.fill(Qt::transparent);
@@ -228,11 +231,10 @@ void MainWindow::frameToPdf(QString filepath)
     QRectF rect(10.0, 10.0, 64.0, 64.0); // 1.0795 is the width/height ratio of the standard jba logo
     rend.render(&painter, rect);
 
-    frame->evaluateJavaScript(QString("MT.resetMapAfterPrint();"));
+    frame->evaluateJavaScript(QString("MT.Dom.resetMapAfterPrint();"));
     image.save(filepath, 0, 100);
 
     frame->evaluateJavaScript(QString("MT.showMessage('Image saved to %1', 'Print info')").arg(filepath));
-
 }
 
 

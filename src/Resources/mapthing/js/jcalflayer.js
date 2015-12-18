@@ -131,7 +131,6 @@ MT.CsvLayer = function(mapCt, path)
     this.mapCt = mapCt;
     this.layerName = "unknown"
     this.layerName = path.split('\\').pop().split('/').pop();
-    console.log(this.layerName);
     this.createLayer(true);
     BRIDGE.loadFile();
 

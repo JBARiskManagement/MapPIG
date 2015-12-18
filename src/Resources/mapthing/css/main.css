@@ -27,6 +27,10 @@ input[type="radio"], input[type="checkbox"] {
 
 
 /* Sidebar style */
+.sidebar{
+  z-index: 1000;
+}
+
 .sidebar-header {
     margin: -10px -20px 10px;
     background-color: rgba(233,131,0,0.5);
@@ -175,6 +179,10 @@ input[type=range]:focus::-webkit-slider-runnable-track {
     background-image: url("../img/blank.png");
 }
 
+/* Ensure that modal dialogs are on top */
+.bootbox.modal > .modal-dialog {
+  z-index: 2000 !important;
+}
 
 
 @media (max-width: 992px) {

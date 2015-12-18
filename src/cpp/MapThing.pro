@@ -39,6 +39,8 @@ RESOURCES += \
 
 INCLUDEPATH += C:/GIT/csv_parser/src/
 
+system(uglifyjs ../resources/mapthing/js/map.js ../resources/mapthing/js/jcalflayer.js  ../resources/mapthing/js/layerpanel.js --screw-ie8 --compress --output ../resources/mapthing/js/mapthing.min.js)
+
 DISTFILES += \
     ../resources/mapthing/js/jcalflayer.js \
     ../resources/mapthing/js/map.js \
@@ -97,6 +99,9 @@ DISTFILES += \
     ../resources/vendors/bootstrap/css/bootstrap-theme.css.map \
     ../resources/vendors/bootstrap/css/bootstrap.css.map \
     ../resources/vendors/PruneCluster/PruneCluster.js.map \
-    ../resources/stylesheet.qss
+    ../resources/stylesheet.qss \
+    ../resources/mapthing/js/layerpanel.js \
+    ../resources/mapthing/js/dom.js \
+    ../resources/mapthing/js/bubbelayer.js
 
 
