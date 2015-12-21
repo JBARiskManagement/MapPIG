@@ -18,10 +18,6 @@ L.Control.LayerPanel = L.Control.Layers.extend({
 
         var form = this._form = L.DomUtil.create('form', className + '-list');
 
-        //var link = this._layersLink = L.DomUtil.create('a', className + '-toggle', container);
-        //link.href = '#';
-        //link.title = 'Layers';
-
         this._baseLayersList = L.DomUtil.create('div', className + '-base', form);
         this._separator = L.DomUtil.create('div', className + '-separator', form);
         this._overlaysList = L.DomUtil.create('div', className + '-overlays', form);
@@ -40,16 +36,44 @@ L.Control.LayerPanel = L.Control.Layers.extend({
         var div = document.createElement('div');
 
     },
-    _onExpandClick: function(layerId){
-        console.log("Expand click");
-        layer = this._layers[layerId].layer;
-        console.log(layer);
-        console.log(layer.Cluster.ComputeBounds());
-        console.log(layer.getBounds());
 
+    _onLegendClick: function(layerId){
+
+        // TODO
+        var layer = this._layers[layerId].layer;
+        if (typeof layer.legendObjs === 'undefined')
+        {
+            layer.legendObjs = MT.Wms.createLegend(layer);
+        }
+        else
+        {
+            for (var name in layer.legendObjs)
+                var control = layer.legendObjs[name];
+                console.log(control);
+                if (control.container.hidden === false)
+                {
+                    console.log("Hide Control");
+                    control.container.hidden = true;
+                    control.container.style.visibility = 'hidden';
+                    console.log(control.container.isActive);
+                }
+                else
+                {
+                    console.log("Show Control");
+                    control.container.hidden = false;
+                    control.container.style.visibility = 'visible';
+                }
+        }
     },
     _onDeleteClick: function(layerId){
         layer = this._layers[layerId].layer;
+
+        if (typeof layer.legendObjs != 'undefined')
+            for (var name in layer.legendObjs)
+            {
+                layer._map.removeControl(layer.legendObjs[name]);
+            }
+
         this._map.removeLayer(layer);
         this.removeLayer(layer);
         layer.remove && layer.remove();
@@ -59,7 +83,7 @@ L.Control.LayerPanel = L.Control.Layers.extend({
     _addItem: function(obj){
         var label = document.createElement('label'),
             checked = this._map.hasLayer(obj.layer),
-            input, expandBtn, deleteBtn, pullLeft, pullRight,
+            input, legendBtn, deleteBtn, pullLeft, pullRight,
             holder = document.createElement('div');
         holder.className = "row row-layer-control";
         pullLeft = document.createElement('div');
@@ -75,11 +99,11 @@ L.Control.LayerPanel = L.Control.Layers.extend({
             input.defaultChecked = checked;
 
             var buttonClass = "btn btn-secondary btn-layer-control";
-            expandBtn = document.createElement('a');
-            expandBtn.className = buttonClass;
-            var expandIcon = document.createElement('i');
-            expandIcon.className = "fa fa-arrows-alt";
-            expandBtn.appendChild(expandIcon);
+            legendBtn = document.createElement('a');
+            legendBtn.className = buttonClass;
+            var legendIcon = document.createElement('i');
+            legendIcon.className = "fa fa-list-ul";
+            legendBtn.appendChild(legendIcon);
 
             deleteBtn = document.createElement('a');
             deleteBtn.className = buttonClass;
@@ -87,10 +111,10 @@ L.Control.LayerPanel = L.Control.Layers.extend({
             deletIcon.className = "fa fa-trash";
             deleteBtn.appendChild(deletIcon);
 
-            pullRight.appendChild(expandBtn);
+            pullRight.appendChild(legendBtn);
             pullRight.appendChild(deleteBtn);
 
-            L.DomEvent.on(expandBtn, 'click', function(){this._onExpandClick(input.layerId)}, this);
+            L.DomEvent.on(legendBtn, 'click', function(){this._onLegendClick(input.layerId)}, this);
             L.DomEvent.on(deleteBtn, 'click', function(){this._onDeleteClick(input.layerId)}, this);
 
         } else {

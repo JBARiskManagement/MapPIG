@@ -13,6 +13,65 @@
 var MT = MT || {};
 
 
+MT.Wms = {
+    capabilities: function(url,callback){
+
+        if(url.indexOf('?') === -1)
+            url += '?';
+        else
+            url += '&';
+
+        $.ajax({
+                type: "GET",
+                url: url + 'request=GetCapabilities&service=wms',
+                dataType: "xml",
+                success: function(xml) {
+                    callback(xml);
+                }
+            });
+    },
+
+    createLegend: function(layer){
+        var legends = layer.getLegendGraphic()
+        var legendObjs = null;
+        for (var name in legends)
+        {
+            var url = legends[name];
+            $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: "xml",
+                    success: function(xml) {
+                        var result = $(xml).find('ServiceException[code="LayerNotDefined"]');
+                        if (result)
+                            console.log(result[0]);
+                            MT.showMessage("No legend is available for this layer:\n"+result[0].textContent, "WMS does not provide legend");
+                    },
+
+                   /*
+                    * Because we specified the dataType as xml, then if the URL is valid an image will be
+                    * returned, which will cause jquery to invoke the error function...
+                    */
+                   error: function(xhr, status, error){
+                       if (status === 'parererror')
+                       {
+                            if (legendObjs === undefined)
+                                legendObjs = {};
+                            legendObjs[name] = L.wmsLegend(url, layer._map);
+                       }
+                       else{
+                           console.log(status);
+                           console.log(error);
+                           MT.showMessage(error, "Error creating legend");
+                       }
+
+                   }
+                });
+        }
+        return legendObjs;
+    }
+}
+
 
 /**
  * Register a MapController as the main instance
@@ -120,18 +179,25 @@ MT.MapController.prototype.enable = function(){
  * addOverlay
  *      Add an overlay WMS layer to the map
  */
-MT.MapController.prototype.addWmsOverlay = function (host, layerName, format){
+MT.MapController.prototype.addWmsOverlay = function (host, layerName, displayName, format, attr){
     // Get the values from the hazards-sidebar if they are not passed in
     if (typeof host === 'undefined')
-        host = $("#hazardmaphost").val();
+        host = $("#wms-host-select").val();
 
     if (typeof layerName === 'undefined')
-        layerName = $("#layer").val();        
+        layerName = $('#wms-layer-select').val();
+
+    if (typeof displayName === 'undefined')
+        displayName = $('#wms-layer-select').find("option:selected").text();
 
     if (typeof format == 'undefined')
-        format = $("#format").val();
+        format = "image/png";
 
-    var displayName;    
+    if(typeof attr == 'undefined')
+        attr = "&copy 2015 JBA Risk Management Ltd";
+
+    console.log(host);
+    console.log(layerName);
     var layer = L.tileLayer.wms(host,
         {
         maxZoom: 30,
@@ -139,17 +205,9 @@ MT.MapController.prototype.addWmsOverlay = function (host, layerName, format){
         format: format,
         transparent: true,
         version: '1.1.0',
-        attribution: "&copy 2015 JBA Risk Management Ltd"
+        attribution: attr
     });
-    var layerNameParts = layerName.split(":");
-    if (layerNameParts.length === 2)
-    {
-    displayName = layerNameParts[1];
-    }
-    else
-    {
-    displayName = layerName;
-    }
+
 
 
     this.overLays[displayName] = layer;
@@ -214,7 +272,7 @@ function showModal(id){
 function initMap(){
 
     //Setup tooltips!
-     $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="tooltip"]').tooltip();
 
     // Sets up the actual map
     var mapCtrl = new MT.MapController();
@@ -252,12 +310,10 @@ function initMap(){
 
     $("#print-submit").click(function(){
         var path = $("#choose-file-path").text();
-        console.log(path);
         BRIDGE.printRequest(path);
     });
 
     $("#overlay-submit").click(function() {
-        console.log("overlay submit");
         mapCtrl.addWmsOverlay();
     });
 
@@ -290,4 +346,17 @@ function initMap(){
     function sizeLayerControl() {
       $(".leaflet-control-layers").css("max-height", $("#map").height() - 50);
     }
+
+    $('.selectpicker').selectpicker();
+    $('#wms-host-select').on('change', function(e){
+        var url = $(this).find("option:selected").val();
+        $('#wms-layer-select').find('option').remove();
+        MT.Wms.capabilities(url, function(xml){
+            $(xml).find('Layer').each(function(){
+                var option = '<option value="' + $(this).children("Name").text() + '">' + $(this).children("Title").text() + '</option>';
+                $("#wms-layer-select").append(option);
+            });
+            $("#wms-layer-select").selectpicker('refresh');
+        });
+    });
 }

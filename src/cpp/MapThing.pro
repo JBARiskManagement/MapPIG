@@ -102,6 +102,7 @@ DISTFILES += \
     ../resources/stylesheet.qss \
     ../resources/mapthing/js/layerpanel.js \
     ../resources/mapthing/js/dom.js \
-    ../resources/mapthing/js/bubbelayer.js
+    ../resources/mapthing/js/bubblelayer.js \
+    ../resources/mapthing/js/leaflet-legendcontrol.js
 
 

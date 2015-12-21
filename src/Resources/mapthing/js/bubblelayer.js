@@ -37,7 +37,7 @@ MT.BubbleLayer.prototype.addBubble = function(x, y, value, scaledValue){
     this._layer.addData(circleJson);
 }
 
-MT.BubbleLayer.prototype.addToMap(styleFn){
+MT.BubbleLayer.prototype.addToMap = function(styleFn){
 
     if (typeof styleFn === 'undefined')
         styleFn = default_style;

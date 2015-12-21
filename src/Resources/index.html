@@ -6,20 +6,20 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <meta name="description" content="">
-        <meta name="author" content="">
-        <title>MapThing Prototype</title>
+        <meta name="author" content="james.ramm@jbarisk.com">
+        <title>MapThing</title>
 
 
         <link href='vendors/Leaflet/leaflet.css' rel='stylesheet' />
         <link href="vendors/PruneCluster/LeafletStyleSheet.css" rel='stylesheet' />
         <link href='vendors/L.Loading/Control.Loading.css' rel='stylesheet' />
         <link href='vendors/bootstrap/css/bootstrap.css' rel='stylesheet' />
+        <link href='vendors/css/bootstrap-select.min.css' rel='stylesheet' />
         <link href='vendors/css/leaflet-sidebar.css' rel='stylesheet' />
+        <link href="vendors/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href='mapthing/css/leaflet-legendcontrol.css' rel='stylesheet' />
         <link href='mapthing/css/leaflet-search.src.css' rel='stylesheet' />
-        <link href='mapthing/css/main.css' rel='stylesheet' />
-        
-        <link rel="stylesheet" href="vendors/font-awesome-4.5.0/css/font-awesome.min.css">
-
+        <link href='mapthing/css/main.css' rel='stylesheet' />        
     </head>
     <body>
     
@@ -50,33 +50,42 @@
             </div>
 
             <div class="sidebar-pane" id="sb-overlays">
-                    <h1 class="sidebar-header">Connect to WMS<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
-                    <div class="row">
-                      <div class="col-xs-12 col-md-12">
-                        <form role="form" class="hazard-form">
+                <h1 class="sidebar-header">WMS Layers<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+                <div class="row">
+                    <div class="col-xs-12 col-md-12">
+                        <form role="form" class="wms-form">
                             <div class="form-group">
-                              <label for="hazardmaphost">Host URL</label>
-                              <input type="input" class="form-control" id="hazardmaphost">
+                                <label for="hazardmaphost">WMS Host</label>
+                                <select class="selectpicker form-control" id="wms-host-select" title="Choose WMS service">
+                                    <option value="">JBA Risk Management WMS</option>
+                                    <option value="http://www.geostore.com/OGC/OGCInterface?UID=UDATAGOV2011&PASSWORD=datagov2011&INTERFACE=ENVIRONMENT&LC=0">Environment Agency</option>
+                                    <option value="http://hazards.fema.gov/gis/nfhl/services/public/NFHLWMS/MapServer/WMSServer">FEMA</option>
+                                </select>
+                                <!--
+                                <input type="text" class="form-control" id='wms-host'>
+                                <div class="input-group-btn">
+                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Host <span class="caret"></span></button>
+                                    <ul class="dropdown-menu dropdown-menu-right" id="wms-server-select">
+                                        <li data-url="Unavailable"><a href="#">RML Data</a></li>
+                                        <li data-url="http://www.geostore.com/OGC/OGCInterface?UID=UDATAGOV2011&PASSWORD=datagov2011&INTERFACE=ENVIRONMENT&LC=0">
+                                            <a href="#">EA Data</a>
+                                        </li>
+                                        <li data-url="http://hazards.fema.gov/gis/nfhl/services/public/NFHLWMS/MapServer/WMSServer">
+                                            <a href="#">FEMA Data</a>
+                                        </li>
+                                    </ul>
+                                </div>
+                                -->
                             </div>
-                            <div class="form-group">
-                              <label for="layer">Layer</label>
-                              <input type="input" class="form-control" id="layer">
+                            <div class="form-group" style="width: 100%">
+                                <select class="selectpicker form-control" data-width="100%" data-live-search="true" id="wms-layer-select">
+                                </select>
                             </div>
-                            <div class="form-group">
-                              <label for="format">Format</label>
-                              <input type="input" class="form-control" id="format" value="image/png">
-                            </div>
-                            <!--
-                            <div class="form-group">
-                              <label for="tms">TMS</label>
-                              <input type="checkbox" class="form-control" id="tms">
-                            </div>
-                            -->
                             <button type="button" class="btn btn-default" id="overlay-submit">Add Layer</button>
-                          </form>
-                      </div>
+                        </form>
                     </div>
-                  </div>
+                </div>
+            </div>
 
             <div class="sidebar-pane" id="sb-file">
                 <h1 class="sidebar-header">Load CSV<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
@@ -200,9 +209,11 @@
     <script type="text/javascript" src='vendors/js/jquery-1.11.3.min.js'></script>
     <script type="text/javascript" src='vendors/bootstrap/js/bootstrap.js'></script>
     <script type="text/javascript" src='vendors/js/bootbox.min.js'></script>
+    <script type="text/javascript" src='vendors/js/bootstrap-select.min.js'></script>
 
     <!-- Mapping libs -->
     <script type="text/javascript" src='vendors/Leaflet/leaflet.js'></script>
+    <script type="text/javascript" src='vendors/js/leaflet-wms-getlegendgraphic.js'></script>
     <script type="text/javascript" src="vendors/PruneCluster/PruneCluster.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
     <script type="text/javascript" src="vendors/L.Loading/Control.Loading.js"></script>
@@ -213,6 +224,8 @@
 
     <!-- Sidebar -->
     <script type="text/javascript" src='vendors/js/leaflet-sidebar.js'></script>
+
+
 
     <!--Always ensure our own JS is loaded last so it has access to the above libs -->
     <script type="text/javascript" src='mapthing/js/mapthing.min.js'></script>

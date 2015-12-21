@@ -36,6 +36,9 @@ MainWindow::MainWindow(QWidget *parent)
     webpage->settings()->setAttribute(QWebSettings::PluginsEnabled, true);
     webpage->settings()->setAttribute(QWebSettings::JavascriptEnabled, true);
     webpage->settings()->setAttribute(QWebSettings::DeveloperExtrasEnabled, true);
+    webpage->settings()->setAttribute(QWebSettings::SpatialNavigationEnabled, true);
+    webpage->settings()->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
+    webpage->settings()->setAttribute(QWebSettings::LocalContentCanAccessFileUrls, true);
     webview->setContentsMargins(0,0,0,0);
 
     dataRequest = new DataRequests();
