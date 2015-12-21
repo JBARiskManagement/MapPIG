@@ -6,8 +6,8 @@
 
 QT       += core gui
 QT       += webkitwidgets
-QT       += sql
 QT       += svg
+QT       += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
@@ -17,27 +17,19 @@ TEMPLATE = app
 
 SOURCES += main.cpp\
         mainwindow.cpp \
-    datarequests.cpp \
     bridge.cpp \
-    C:/GIT/csv_parser/src/csvparser.c \
-    progresscounter.cpp \
-    portfolio.cpp
 
 
 HEADERS  += mainwindow.h \
-    datarequests.h \
     constants.h \
     bridge.h \
-    C:/GIT/csv_parser/src/csvparser.h \
-    progresscounter.h \
-    fatof.h \
-    portfolio.h \
     plugininterface.h
 
 RESOURCES += \
     resources.qrc
 
-INCLUDEPATH += C:/GIT/csv_parser/src/
+INCLUDEPATH += libmapthing/
+LIBS += -L../cpp/build-libmapthing/debug -lmapthing
 
 system(uglifyjs ../resources/mapthing/js/map.js ../resources/mapthing/js/jcalflayer.js  ../resources/mapthing/js/layerpanel.js --screw-ie8 --compress --output ../resources/mapthing/js/mapthing.min.js)
 

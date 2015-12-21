@@ -29,6 +29,14 @@ MT.Dom = {
         mc.searchControl.addTo(mc._map);
     },
 
+    showLoading: function(selector){
+        $(selector).LoadingOverlay("show");
+    },
+
+    hideLoading: function(selector){
+        $(selector).LoadingOverlay("hide");
+    },
+
     makePluginSidebarUi: function(name){
         var header = $('#sb-plugin-header').html();
         MT.header = header;
@@ -86,6 +94,42 @@ MT.Dom = {
                        });
         // Get the area in which to create the plugin launcher button
         $("#sb-plugin-area").append(button);
+    },
+
+    addFileOpenForm: function(id)
+    {
+        var btnId = id+'-open-file-btn';
+        var spanId = id+'-file-path-span';
+        // form for file input
+        var form = $('<form/>', {
+              class: 'csv-form'
+          });
+
+        // The form group div contains the file browser button
+        var fgrp = $('<div/>', {class: 'form-group'});
+        var label = $('<label/>', {for: btnId, text: 'Load file'});
+        var input = $('<div/>', {class: 'input-group'});
+        var brwsSpan = $('<span/>', {class: 'input-group-btn'});
+        var brwsBtn = $('<button/>', {class: 'btn btn-default',
+                        type: 'button',
+                        id: btnId,
+                        text: 'Browse...'});
+
+        var pthSpan = $('<span/>', {class: 'form-control',
+                                    id: spanId});
+
+        MT.Dom.addFileOpenHandler(btnId, spanId);
+
+        brwsSpan.append(brwsBtn);
+        input.append(brwsSpan);
+        input.append(pthSpan);
+        fgrp.append(label);
+        fgrp.append(input);
+        form.append(fgrp);
+
+        return form;
+
+
     },
 
     addFileOpenHandler: function(buttonId, inputId){

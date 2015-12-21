@@ -34,7 +34,7 @@
                 <li><a href="#sb-layers" role="tab" data-placement="right" data-toggle="tooltip" title="Map layers"><i class="mt-icon mt-layers"></i></a></li>
                 <li><a href="#sb-overlays" role="tab" data-placement="right" data-toggle="tooltip" title="Add overlay from a WMS"><i class="fa fa-globe"></i></a></li>
                 <li><a href="#sb-file" role="tab" data-placement="right" data-toggle="tooltip" title="Load file"><i class="fa fa-folder-open"></i></a></li>
-                <li><a href="#sb-database" role="tab" data-placement="right" data-toggle="tooltip" title="Connect to a Jcalf database"><i class="fa fa-database""></i></a></li>
+                <!--<li><a href="#sb-database" role="tab" data-placement="right" data-toggle="tooltip" title="Connect to a Jcalf database"><i class="fa fa-database""></i></a></li>-->
                 <li><a href="#sb-plugin" role="tab" data-placement="right" data-toggle="tooltip" title="Plugins"><i class="fa fa-plug"></i></a></li>
                 <li><a href="#sb-print" role="tab" data-placement="right" data-toggle="tooltip" title="Print"><i class="fa fa-print"></i></a></li>
 
@@ -55,33 +55,19 @@
                     <div class="col-xs-12 col-md-12">
                         <form role="form" class="wms-form">
                             <div class="form-group">
-                                <label for="hazardmaphost">WMS Host</label>
-                                <select class="selectpicker form-control" id="wms-host-select" title="Choose WMS service">
+                                <label for="wms-host-select">WMS Host</label>
+                                <select class="selectpicker form-control" id="wms-host-select" title="Choose WMS service" data-placement="bottom" data-toggle="tooltip" title="Select a WMS service to browse layers">
                                     <option value="">JBA Risk Management WMS</option>
                                     <option value="http://www.geostore.com/OGC/OGCInterface?UID=UDATAGOV2011&PASSWORD=datagov2011&INTERFACE=ENVIRONMENT&LC=0">Environment Agency</option>
                                     <option value="http://hazards.fema.gov/gis/nfhl/services/public/NFHLWMS/MapServer/WMSServer">FEMA</option>
                                 </select>
-                                <!--
-                                <input type="text" class="form-control" id='wms-host'>
-                                <div class="input-group-btn">
-                                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">Host <span class="caret"></span></button>
-                                    <ul class="dropdown-menu dropdown-menu-right" id="wms-server-select">
-                                        <li data-url="Unavailable"><a href="#">RML Data</a></li>
-                                        <li data-url="http://www.geostore.com/OGC/OGCInterface?UID=UDATAGOV2011&PASSWORD=datagov2011&INTERFACE=ENVIRONMENT&LC=0">
-                                            <a href="#">EA Data</a>
-                                        </li>
-                                        <li data-url="http://hazards.fema.gov/gis/nfhl/services/public/NFHLWMS/MapServer/WMSServer">
-                                            <a href="#">FEMA Data</a>
-                                        </li>
-                                    </ul>
-                                </div>
-                                -->
                             </div>
                             <div class="form-group" style="width: 100%">
-                                <select class="selectpicker form-control" data-width="100%" data-live-search="true" id="wms-layer-select">
+                                <label for="wms-layer-select">Layer</label>
+                                <select class="selectpicker form-control" data-width="100%" data-live-search="true" id="wms-layer-select" data-placement="bottom" data-toggle="tooltip" title="Select a layer to add to the map">
                                 </select>
                             </div>
-                            <button type="button" class="btn btn-default" id="overlay-submit">Add Layer</button>
+                            <button type="button" class="btn btn-default" id="overlay-submit" data-placement="bottom" data-toggle="tooltip" title="Add the selected WMS layer as an overlay on the map">Add Layer</button>
                         </form>
                     </div>
                 </div>
@@ -170,8 +156,6 @@
               <p>&copy JBA Risk Management Ltd 2015</p>
             </div>
 
-
-
         </div>
       </div>
 
@@ -210,6 +194,7 @@
     <script type="text/javascript" src='vendors/bootstrap/js/bootstrap.js'></script>
     <script type="text/javascript" src='vendors/js/bootbox.min.js'></script>
     <script type="text/javascript" src='vendors/js/bootstrap-select.min.js'></script>
+    <script type="text/javascript" src='vendors/jquery-loading-overlay/loadingoverlay.min.js'></script>
 
     <!-- Mapping libs -->
     <script type="text/javascript" src='vendors/Leaflet/leaflet.js'></script>

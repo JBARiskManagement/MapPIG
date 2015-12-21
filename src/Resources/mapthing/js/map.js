@@ -33,7 +33,7 @@ MT.Wms = {
 
     createLegend: function(layer){
         var legends = layer.getLegendGraphic()
-        var legendObjs = null;
+        var legendObjs = {};
         for (var name in legends)
         {
             var url = legends[name];
@@ -53,16 +53,14 @@ MT.Wms = {
                     * returned, which will cause jquery to invoke the error function...
                     */
                    error: function(xhr, status, error){
-                       if (status === 'parererror')
+                       if (status === 'parsererror')
                        {
-                            if (legendObjs === undefined)
-                                legendObjs = {};
                             legendObjs[name] = L.wmsLegend(url, layer._map);
                        }
                        else{
                            console.log(status);
                            console.log(error);
-                           MT.showMessage(error, "Error creating legend");
+                           MT.showMessage(error.message, "Error creating legend");
                        }
 
                    }
@@ -194,7 +192,9 @@ MT.MapController.prototype.addWmsOverlay = function (host, layerName, displayNam
         format = "image/png";
 
     if(typeof attr == 'undefined')
-        attr = "&copy 2015 JBA Risk Management Ltd";
+        if ($("wms-host-select").text().indexOf("JBA") > -1)
+            attr = "&copy 2015 JBA Risk Management Ltd";
+
 
     console.log(host);
     console.log(layerName);
@@ -271,8 +271,14 @@ function showModal(id){
 
 function initMap(){
 
+    $.LoadingOverlaySetup({
+                        color: "rgba(255,255,255,0.8)",
+                        image: "mapthing/img/big_roller.gif",
+                        maxSize: "40px"
+                          });
+
     //Setup tooltips!
-    $('[data-toggle="tooltip"]').tooltip();
+    $('[data-toggle="tooltip"]').tooltip({ container: 'body' });
 
     // Sets up the actual map
     var mapCtrl = new MT.MapController();
@@ -349,14 +355,17 @@ function initMap(){
 
     $('.selectpicker').selectpicker();
     $('#wms-host-select').on('change', function(e){
+        MT.Dom.showLoading("#sb-overlays");
         var url = $(this).find("option:selected").val();
         $('#wms-layer-select').find('option').remove();
         MT.Wms.capabilities(url, function(xml){
-            $(xml).find('Layer').each(function(){
+            var layers = $(xml).find('Layer');
+            layers.each(function(index, value){
                 var option = '<option value="' + $(this).children("Name").text() + '">' + $(this).children("Title").text() + '</option>';
                 $("#wms-layer-select").append(option);
             });
             $("#wms-layer-select").selectpicker('refresh');
+            MT.Dom.hideLoading("#sb-overlays");
         });
     });
 }

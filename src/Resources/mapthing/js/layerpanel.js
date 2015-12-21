@@ -98,15 +98,23 @@ L.Control.LayerPanel = L.Control.Layers.extend({
             input.type='checkbox';
             input.defaultChecked = checked;
 
+            //data-placement="bottom" data-toggle="tooltip" title="Select a WMS service to browse layers
+
             var buttonClass = "btn btn-secondary btn-layer-control";
             legendBtn = document.createElement('a');
             legendBtn.className = buttonClass;
             var legendIcon = document.createElement('i');
             legendIcon.className = "fa fa-list-ul";
+            legendBtn.setAttribute("data-placement", "left");
+            legendBtn.setAttribute("data-toggle", "tooltip");
+            legendBtn.setAttribute("title", "Add the layer's legend to the map (if available)");
             legendBtn.appendChild(legendIcon);
 
             deleteBtn = document.createElement('a');
             deleteBtn.className = buttonClass;
+            deleteBtn.setAttribute("data-placement", "left");
+            deleteBtn.setAttribute("data-toggle", "tooltip");
+            deleteBtn.setAttribute("title", "Delete layer");
             var deletIcon = document.createElement('i');
             deletIcon.className = "fa fa-trash";
             deleteBtn.appendChild(deletIcon);

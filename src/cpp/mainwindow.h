@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "datarequests.h"
+#include "mapthingutil.h"
 #include "bridge.h"
 
 #include <QMainWindow>
@@ -42,7 +42,7 @@ private:
     QToolBar *toolBar;
     QAction *dataA;
     QAction *mapA;
-    DataRequests *dataRequest;
+    MapThingUtil *dataRequest;
     Bridge *bridge;
     QThread *workerThread;
     QStatusBar *sb;

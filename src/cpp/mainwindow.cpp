@@ -41,7 +41,7 @@ MainWindow::MainWindow(QWidget *parent)
     webpage->settings()->setAttribute(QWebSettings::LocalContentCanAccessFileUrls, true);
     webview->setContentsMargins(0,0,0,0);
 
-    dataRequest = new DataRequests();
+    dataRequest = new MapThingUtil();
 
     // The bridge forms the link between C++ and javascript.
     // bridge methods can be called from both sides (use signals/slots) and pass data
@@ -72,28 +72,25 @@ MainWindow::MainWindow(QWidget *parent)
 
     connect(webpage->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(addJsObject()));
     connect(webpage, &QWebPage::loadFinished, this, &MainWindow::loadPlugins);
-    connect(bridge, &Bridge::refreshExposures, dataRequest, &DataRequests::refreshExposures);
+    connect(bridge, &Bridge::refreshExposures, dataRequest, &MapThingUtil::refreshExposures);
     //connect(bridge, &Bridge::refreshExposures, this, &MainWindow::showProgressBar);
-    connect(bridge, &Bridge::connectDatabase, dataRequest, &DataRequests::setJcalfDatabase);
-    connect(bridge, &Bridge::fileLoad, dataRequest, &DataRequests::loadCsv);
+    connect(bridge, &Bridge::connectDatabase, dataRequest, &MapThingUtil::setJcalfDatabase);
+    //connect(bridge, &Bridge::fileLoad, dataRequest, &MapThingUtil::loadCsv);
     connect(bridge, &Bridge::printRequest, this, &MainWindow::frameToImage);
 
     //connect(dataRequest, &DataRequests::progressUpdated, bridge, &Bridge::progressUpdated);
-    connect(dataRequest, &DataRequests::progressUpdated, this, &MainWindow::showProgress);
-    connect(dataRequest, &DataRequests::riskUpdated, bridge, &Bridge::exposureUpdated);
-    connect(dataRequest, &DataRequests::databaseConnected, bridge, &Bridge::databaseConnected);
-    connect(dataRequest, &DataRequests::error, bridge, &Bridge::error);
-    connect(dataRequest, &DataRequests::workStarted, this, &MainWindow::showProgressBar);
-    connect(dataRequest, &DataRequests::workFinished, bridge, &Bridge::workFinished);
-    connect(dataRequest, &DataRequests::workFinished, this, &MainWindow::resetStatusBar);
+    connect(dataRequest, &MapThingUtil::progressUpdated, this, &MainWindow::showProgress);
+    connect(dataRequest, &MapThingUtil::riskUpdated, bridge, &Bridge::exposureUpdated);
+    connect(dataRequest, &MapThingUtil::databaseConnected, bridge, &Bridge::databaseConnected);
+    connect(dataRequest, &MapThingUtil::error, bridge, &Bridge::error);
+    connect(dataRequest, &MapThingUtil::workStarted, this, &MainWindow::showProgressBar);
+    connect(dataRequest, &MapThingUtil::workFinished, bridge, &Bridge::workFinished);
+    connect(dataRequest, &MapThingUtil::workFinished, this, &MainWindow::resetStatusBar);
 
-    connect(dataRequest, &DataRequests::markerLoadingStats, bridge, &Bridge::markerLoadingStats);
+    connect(dataRequest, &MapThingUtil::markerLoadingStats, bridge, &Bridge::markerLoadingStats);
 
     // set up the HTML UI
     showMap();
-
-    // Load the plugins - !Must come after showMap() as it requires JS to be available!
-    //loadPlugins();
 }
 
 MainWindow::~MainWindow()

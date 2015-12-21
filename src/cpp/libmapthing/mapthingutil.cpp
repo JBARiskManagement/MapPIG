@@ -1,4 +1,4 @@
-#include "datarequests.h"
+#include "mapthingutil.h"
 #include "progresscounter.h"
 
 #include "fatof.h"
@@ -14,23 +14,20 @@ extern "C" {
 #include <QCoreApplication>
 #include <time.h>
 
-DataRequests::DataRequests(QObject *parent) : QObject(parent)
+MapThingUtil::MapThingUtil(QObject *parent) : QObject(parent)
 {
 }
 
-DataRequests::~DataRequests()
+MapThingUtil::~MapThingUtil()
 {
 }
 
 
-void DataRequests::loadCsv(QString fpath)
+void MapThingUtil::loadCsv(QString fpath, void(*callback)(char **fields, int numFields, int index))
 {
 
     //clock_t startTime = clock();
     emit workStarted();
-
-    // Add a portfolio to the container
-    std::vector<double> *tivArr = ptf.addPortfolio(fpath);
 
     // Determine file size
     qint64 size;
@@ -43,70 +40,38 @@ void DataRequests::loadCsv(QString fpath)
     CsvParser *parser = CsvParser_new(fpath.toStdString().c_str(), ",", 1);
 
     ProgressCounter prog((int64_t)size, 1);
-    connect(&prog, &ProgressCounter::progressUpdated, this, &DataRequests::progressUpdated);
+    connect(&prog, &ProgressCounter::progressUpdated, this, &MapThingUtil::progressUpdated);
 
     CsvRow *header, *row;
 
     header = CsvParser_getHeader(parser);
     char **headerFields = CsvParser_getFields(header);
-    int idxLat = -1, idxLng = -1, idxTiv = -1, i;
 
-    for (i = 0; i < CsvParser_getNumFields(header); i++)
+    callback(headerFields, CsvParser_getNumFields(header), 0);
+
+    int curPos, lastPos = 0, rowCount = 0;
+    char **rowFields;
+    while((row = CsvParser_getRow(parser)))
     {
-        if (strcmp(headerFields[i], "Lat") == 0)
-        {
-            idxLat = i;
-            continue;
-        }
-        if (strcmp(headerFields[i], "Long") == 0)
-        {
-            idxLng = i;
-            continue;
-        }
-        if(strcmp(headerFields[i], "TIV1") == 0)
-        {
-            idxTiv = i;
-            continue;
-        }
+        rowCount++;
+        rowFields = CsvParser_getFields(row);
+        callback(rowFields, CsvParser_getNumFields(row), rowCount);
+        CsvParser_destroy_row(row);
+        curPos = ftell(parser->fileHandler_);
+        prog.update(curPos - lastPos);
+        lastPos = curPos;
     }
 
-    if (idxLat != -1 && idxLng  != -1)
-    {
-        int curPos, lastPos = 0, emptyRows = 0, rowCount = 0;
-        double lat, lng, tiv;
-        char **rowFields;
-        while((row = CsvParser_getRow(parser)))
-        {
-            rowFields = CsvParser_getFields(row);
-            if (rowFields[idxLat][0] == '\0' || rowFields[idxLng] == '\0')
-            {
-                emptyRows++;
-            }
-            else
-            {
-                rowCount++;
-                lat = fatof(rowFields[idxLat]);
-                lng = fatof(rowFields[idxLng]);
-                tiv = fatof(rowFields[idxTiv]);
-                tivArr->push_back(tiv);
-                emit riskUpdated(lat, lng, tiv);
-            }
-            CsvParser_destroy_row(row);
-            curPos = ftell(parser->fileHandler_);
-            prog.update(curPos - lastPos);
-            lastPos = curPos;
-        }
-        emit markerLoadingStats(rowCount, emptyRows);
-    }
     CsvParser_destroy(parser);
-
-    //ptf.computeHist(fpath, 10);
     //std::cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << std::endl;
     emit workFinished();
 
+
 }
 
-void DataRequests::setJcalfDatabase(QString host, QString port, QString user, QString pwd)
+
+
+void MapThingUtil::setJcalfDatabase(QString host, QString port, QString user, QString pwd)
 {
     jcalfDb = QSqlDatabase::addDatabase("QPSQL");
     jcalfDb.setHostName(host);
@@ -119,13 +84,14 @@ void DataRequests::setJcalfDatabase(QString host, QString port, QString user, QS
     emit databaseConnected(ok);
 }
 
-void DataRequests::getLastError()
+void MapThingUtil::getLastError()
 {
     QSqlError err = jcalfDb.lastError();
     emit error(err.text(), "Database error");
 }
 
-void DataRequests::refreshExposures(double minX, double minY, double maxX, double maxY)
+
+void MapThingUtil::refreshExposures()
 {
     emit workStarted();
     QSqlQuery query(jcalfDb);
@@ -146,7 +112,7 @@ void DataRequests::refreshExposures(double minX, double minY, double maxX, doubl
 
     int size = query.size();
     ProgressCounter prog(size, 1);
-    connect(&prog, &ProgressCounter::progressUpdated, this, &DataRequests::progressUpdated);
+    connect(&prog, &ProgressCounter::progressUpdated, this, &MapThingUtil::progressUpdated);
     if (size > 0)
     {
         double lat, lng, tiv;
@@ -167,3 +133,4 @@ void DataRequests::refreshExposures(double minX, double minY, double maxX, doubl
     //QSqlDatabase::removeDatabase(name);
     emit workFinished();
 }
+
