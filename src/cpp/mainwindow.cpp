@@ -197,12 +197,18 @@ void MainWindow::addPlugin(QObject *plugin)
     PluginInterface *iPlugin = qobject_cast<PluginInterface *>(plugin);
     if (iPlugin)
     {
-        // Get the bridge object for the plugin and add it to the page
-        webpage->mainFrame()->addToJavaScriptWindowObject(iPlugin->getBridgeObjectName(), iPlugin->getBridgeObject());
+        iPlugin->setup();
+        QObject *bridge = iPlugin->getBridgeObject();
+        if (bridge)
+        {
+            // Get the bridge object for the plugin and add it to the page
+            webpage->mainFrame()->addToJavaScriptWindowObject(iPlugin->getBridgeObjectName(), bridge);
+        }
 
         // Get the worker object and move it to the worker thread
         QObject *worker = iPlugin->getWorkerObject();
-        worker->moveToThread(workerThread);
+        if (worker)
+            worker->moveToThread(workerThread);
 
         // Get the javascript for the plugin UI and add it to the page
         QString pluginJs = iPlugin->initialiseUi();

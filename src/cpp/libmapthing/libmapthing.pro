@@ -22,7 +22,7 @@ HEADERS += \
     progresscounter.h \
     C:/GIT/csv_parser/src/csvparser.h \
     mapthingutil.h \
-    fatof.h
+    plugininterface.h
 
 INCLUDEPATH += C:/GIT/csv_parser/src/
 

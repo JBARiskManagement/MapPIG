@@ -7,6 +7,7 @@ class PluginInterface
 {
     public:
         virtual ~PluginInterface(){}
+        virtual void setup() = 0;
         virtual QString initialiseUi() = 0;
         virtual QString getUiSetupFunction() = 0;
         virtual QString getName() = 0;

@@ -22,7 +22,7 @@ MT.DataLayer.prototype.jcalf = function(host, port, user, pwd)
     this.lastUpdate = +new Date();
 
     BRIDGE.databaseConnected.connect(this.maybeCreateLayer.bind(this))
-    BRIDGE.error.connect(MT.showMessage);
+    BRIDGE.error.connect(MT.Dom.showMessage);
     BRIDGE.connectDatabase(host,port,user,pwd);
 }
 
@@ -47,7 +47,7 @@ MT.DataLayer.prototype.maybeCreateLayer = function(status)
     }
     else
     {
-        MT.showMessage("Unknown error", "Unable to connect to the database");
+        MT.Dom.showMessage("Unknown error", "Unable to connect to the database");
     }
 }
 

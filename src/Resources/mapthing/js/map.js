@@ -45,7 +45,7 @@ MT.Wms = {
                         var result = $(xml).find('ServiceException[code="LayerNotDefined"]');
                         if (result)
                             console.log(result[0]);
-                            MT.showMessage("No legend is available for this layer:\n"+result[0].textContent, "WMS does not provide legend");
+                            MT.Dom.showMessage("No legend is available for this layer:\n"+result[0].textContent, "WMS does not provide legend");
                     },
 
                    /*
@@ -60,7 +60,7 @@ MT.Wms = {
                        else{
                            console.log(status);
                            console.log(error);
-                           MT.showMessage(error.message, "Error creating legend");
+                           MT.Dom.showMessage(error.message, "Error creating legend");
                        }
 
                    }
@@ -243,14 +243,6 @@ MT.MapController.prototype.formatJSON = function(rawjson){
         json[ key ]= loc;	//key,value format
     }
     return json;
-}
-
-MT.showMessage = function(msg, title){
-    bootbox.dialog({ message: msg,
-                     title: title,
-                     buttons: {main: {label: "Ok",
-                           className: "btn-primary"}}
-                   });
 }
 
 // Icon creation function for cluster layers

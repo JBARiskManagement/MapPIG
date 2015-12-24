@@ -8,6 +8,11 @@
 
 #include "portfolio.h"
 
+
+#define white_space(c) ((c) == ' ' || (c) == '\t')
+#define valid_digit(c) ((c) >= '0' && (c) <= '9')
+double fatof (const char *p);
+
 /**
  * @brief The DataRequests class
  *          Handles requests for JCALF data

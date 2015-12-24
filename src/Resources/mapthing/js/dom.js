@@ -7,6 +7,15 @@
 var MT = MT || {};
 
 MT.Dom = {
+    showMessage: function(msg, title){
+        bootbox.dialog({ message: msg,
+                         title: title,
+                         buttons: {main: {label: "Ok",
+                               className: "btn-primary"}}
+                       });
+    },
+
+
     hideSidebar: function(){
         $('#sidebar').hide();
     },
@@ -113,12 +122,18 @@ MT.Dom = {
         var brwsBtn = $('<button/>', {class: 'btn btn-default',
                         type: 'button',
                         id: btnId,
-                        text: 'Browse...'});
+                        text: 'Browse...',
+                        click: function(){
+                            console.log(btnId + ' was clicked');
+                            BRIDGE.connectToPathField(document.getElementById(spanId));
+                            BRIDGE.showOpenFileDialog();
+
+                        }});
 
         var pthSpan = $('<span/>', {class: 'form-control',
                                     id: spanId});
 
-        MT.Dom.addFileOpenHandler(btnId, spanId);
+        //MT.Dom.addFileOpenHandler(btnId, spanId);
 
         brwsSpan.append(brwsBtn);
         input.append(brwsSpan);
@@ -133,7 +148,9 @@ MT.Dom = {
     },
 
     addFileOpenHandler: function(buttonId, inputId){
-        $(document.getElementById(buttonId)).click(function(){
+        console.log("file open handler " + buttonId);
+        $('#'+buttonId).click(function(){
+            console.log(buttonId + " was clicked");
             // Connect the button event to the Qt bridge object in order to display a file browser widget/
             // We dont do this in javascript as webkit purposefully hides the file path
             BRIDGE.connectToPathField(document.getElementById(inputId));

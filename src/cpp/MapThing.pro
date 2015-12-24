@@ -23,7 +23,6 @@ SOURCES += main.cpp\
 HEADERS  += mainwindow.h \
     constants.h \
     bridge.h \
-    plugininterface.h
 
 RESOURCES += \
     resources.qrc

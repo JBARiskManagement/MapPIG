@@ -23,9 +23,7 @@ MT.BubbleLayer = function(layerName){
 
     this._layer = L.geoJson();
     this.name = layerName;
-
 }
-
 
 MT.BubbleLayer.prototype.addBubble = function(x, y, value, scaledValue){
     var circle = L.circle([x,y], scaledValue * 10000);
