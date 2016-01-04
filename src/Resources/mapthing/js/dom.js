@@ -74,6 +74,17 @@ MT.Dom = {
         return uiArea;
     },
 
+    makeModalWindow: function(name, contents){
+        var modal = $("#modalWindow");
+        modal.find('.modal-title').text(name);
+
+        modal.find('.modal-body').html(contents);
+
+        modal.modal();
+        return modal;
+    },
+
+
     /**
     * Adds a button to the 'plugin' sidebar with the name of this plugin
     */

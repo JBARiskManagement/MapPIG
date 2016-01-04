@@ -28,14 +28,10 @@ L.Control.LayerPanel = L.Control.Layers.extend({
     addTo: function(map){
         this.remove();
         this._map = map;
-        var container = this._container = this.onAdd(map);
+        this._container = this.onAdd(map);
         return this;
     },
 
-    _createOverlayControl: function(obj){
-        var div = document.createElement('div');
-
-    },
 
     _onLegendClick: function(layerId){
 

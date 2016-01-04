@@ -233,7 +233,7 @@ MT.MapController.prototype.googleGeocoding = function(text, callResponse){
 
 MT.MapController.prototype.formatJSON = function(rawjson){
     var json = {},
-        key, loc, disp = [];
+        key, loc = [];
     for(var i in rawjson)
     {
         key = rawjson[i].formatted_address;
