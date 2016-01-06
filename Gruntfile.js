@@ -10,9 +10,9 @@ module.exports = function(grunt) {
       },
       dist: {
         // the files to concatenate
-        src: ['src/resources/mapthing/js/*.js'],
+        src: ['resources/mapthing/js/*.js'],
         // the location of the resulting JS file
-        dest: 'src/resources/mapthing/dist/<%= pkg.name %>.js'
+        dest: 'resources/mapthing/dist/<%= pkg.name %>.js'
       }
     },
     uglify: {
@@ -22,7 +22,7 @@ module.exports = function(grunt) {
       },
       dist: {
         files: {
-        'src/resources/mapthing/dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
+        'resources/mapthing/dist/<%= pkg.name %>.min.js': ['<%= concat.dist.dest %>']
         }
       }
     },
@@ -33,13 +33,13 @@ module.exports = function(grunt) {
           },
       combine: {
           files:{
-                'src/resources/mapthing/dist/mapthing.min.css': ['src/resources/mapthing/css/*.css']                
+                'resources/mapthing/dist/mapthing.min.css': ['resources/mapthing/css/*.css']                
                 }
           }
     },
     jshint: {
   // define the files to lint
-  files: ['gruntfile.js', 'src/resources/mapthing/js/*.js'],
+  files: ['gruntfile.js', 'resources/mapthing/js/*.js'],
   // configure JSHint (documented at http://www.jshint.com/docs/)
   options: {
       // more options here if you want to override JSHint defaults
