@@ -66,7 +66,7 @@ MT.Dom = {
                                 $('#sb-plugin-header').html(header);
                             }
                         });
-        var hr = $('<hr>')
+        var hr = $('<hr>');
 
         uiArea.append(exitBtn);
         uiArea.append(hr);
@@ -171,4 +171,4 @@ MT.Dom = {
 
     }
 
-}
+};

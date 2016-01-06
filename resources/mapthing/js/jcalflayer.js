@@ -8,8 +8,8 @@ var MT = MT || {};
  */
 MT.DataLayer = function(mapCt){
     this.mapCt = mapCt;
-    this.layerName = "unknown"
-}
+    this.layerName = "unknown";
+};
 
 
 MT.DataLayer.prototype.jcalf = function(host, port, user, pwd)
@@ -18,17 +18,17 @@ MT.DataLayer.prototype.jcalf = function(host, port, user, pwd)
     this.port = port;
     this.user = user;
     this.pwd = pwd;
-    this.layerName = "JCalf: " + host
+    this.layerName = "JCalf: " + host;
     this.lastUpdate = +new Date();
 
-    BRIDGE.databaseConnected.connect(this.maybeCreateLayer.bind(this))
+    BRIDGE.databaseConnected.connect(this.maybeCreateLayer.bind(this));
     BRIDGE.error.connect(MT.Dom.showMessage);
     BRIDGE.connectDatabase(host,port,user,pwd);
-}
+};
 
 MT.DataLayer.prototype.remove = function(){
        delete this.clusterLayer;
-}
+};
 
 MT.DataLayer.prototype.maybeCreateLayer = function(status)
 {
@@ -49,7 +49,7 @@ MT.DataLayer.prototype.maybeCreateLayer = function(status)
     {
         MT.Dom.showMessage("Unknown error", "Unable to connect to the database");
     }
-}
+};
 
 
 MT.DataLayer.prototype.processView = function()
@@ -59,7 +59,7 @@ MT.DataLayer.prototype.processView = function()
     $("#map").trigger("dataload");
     $("#disable-overlay").hide();
     this.mapCt.enable();
-}
+};
 
 /**
  * update
@@ -77,7 +77,7 @@ MT.DataLayer.prototype.update = function(){
         this.clusterLayer.RemoveMarkers();
         BRIDGE.refreshExposures(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
     }
-}
+};
 
 /*
  * addRiskMarker
@@ -94,7 +94,7 @@ MT.DataLayer.prototype.addRiskMarker = function(lat, lon, tiv){
     //marker.data.forceIconRedraw = true;
     this.clusterLayer.RegisterMarker(marker);
     //console.log("Add risk");
-}
+};
 
 MT.DataLayer.prototype.addClusterSizeWidget = function(){
 
@@ -102,7 +102,7 @@ MT.DataLayer.prototype.addClusterSizeWidget = function(){
     $("#sizeInput").onChange = this.updateSize.bind(this);
     $("#sizeInput").onChange = this.updateSize.bind(this);
 
-}
+};
 
 MT.DataLayer.prototype.updateSize = function(){
 
@@ -115,7 +115,7 @@ MT.DataLayer.prototype.updateSize = function(){
     }
     this.clusterLayer.ProcessView();
     this.lastUpdate = now;
-}
+};
 
 MT.DataLayer.prototype.showLoadingStats = function(loaded, skipped)
 {
@@ -124,17 +124,17 @@ MT.DataLayer.prototype.showLoadingStats = function(loaded, skipped)
                    buttons: {main: {label: "Ok",
                          className: "btn-primary"}}
                    });
-}
+};
 
 MT.CsvLayer = function(mapCt, path)
 {
     this.mapCt = mapCt;
-    this.layerName = "unknown"
+    this.layerName = "unknown";
     this.layerName = path.split('\\').pop().split('/').pop();
     this.createLayer(true);
     BRIDGE.loadFile();
 
-}
+};
 
 MT.CsvLayer.prototype = new MT.DataLayer();
 MT.CsvLayer.prototype.constructor = MT.CsvLayer;
@@ -149,4 +149,4 @@ MT.CsvLayer.prototype.createLayer = function(status)
     this.clusterLayer = new PruneClusterForLeaflet(); // The marker cluster layer
     this.mapCt.addOverlay(this.clusterLayer, this.layerName);
     //this.addClusterSizeWidget();
-}
+};

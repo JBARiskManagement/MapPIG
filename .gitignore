@@ -2,3 +2,13 @@
 .pro.*
 .smproj
 src/build-*
+build-*
+plugins
+docs/build
+.project
+.pydevproject
+*.pro.user
+*.smproj
+Makefile
+Makefile.*
+node_modules

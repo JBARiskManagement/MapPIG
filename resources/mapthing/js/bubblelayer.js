@@ -23,7 +23,7 @@ MT.BubbleLayer = function(layerName){
 
     this._layer = L.geoJson();
     this.name = layerName;
-}
+};
 
 MT.BubbleLayer.prototype.addBubble = function(x, y, value, scaledValue){
     var circle = L.circle([x,y], scaledValue * 10000);
@@ -33,7 +33,7 @@ MT.BubbleLayer.prototype.addBubble = function(x, y, value, scaledValue){
     //circleJson.properties.nrisks = nrisks;
 
     this._layer.addData(circleJson);
-}
+};
 
 MT.BubbleLayer.prototype.addToMap = function(styleFn){
 
@@ -45,7 +45,7 @@ MT.BubbleLayer.prototype.addToMap = function(styleFn){
 
     mapCtrl.addOverlay(this._layer, this.layerName);
 
-}
+};
 
 function getColor(d) {
     return d > 0.8 ? '#7f2704' :

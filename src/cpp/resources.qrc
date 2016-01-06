@@ -1,8 +1,8 @@
 <RCC>
     <qresource prefix="/">
-        <file alias="stylesheet">../Resources/stylesheet.qss</file>
-        <file alias="logo">../resources/mapthing/img/TransLogo.png</file>
-        <file alias="logo_svg">../resources/mapthing/img/logo_cmyk.svg</file>
-        <file alias="logo_62">../resources/mapthing/img/logo-62px.png</file>
+        <file alias="stylesheet">../../resources/stylesheet.qss</file>
+        <file alias="logo">../../resources/mapthing/img/TransLogo.png</file>
+        <file alias="logo_svg">../../resources/mapthing/img/logo_cmyk.svg</file>
+        <file alias="logo_62">../../resources/mapthing/img/logo-62px.png</file>
     </qresource>
 </RCC>

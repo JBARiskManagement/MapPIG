@@ -28,13 +28,9 @@ RESOURCES += \
     resources.qrc
 
 INCLUDEPATH += libmapthing/
-LIBS += -L../cpp/build-libmapthing/debug -lmapthing
-
-system(uglifyjs ../resources/mapthing/js/map.js ../resources/mapthing/js/jcalflayer.js  ../resources/mapthing/js/layerpanel.js --screw-ie8 --compress --output ../resources/mapthing/js/mapthing.min.js)
+LIBS += -L../build-libmapthing/debug -lmapthing
 
 DISTFILES += \
-    ../resources/mapthing/js/jcalflayer.js \
-    ../resources/mapthing/js/map.js \
     ../resources/vendors/bootstrap/js/bootstrap.js \
     ../resources/vendors/bootstrap/js/bootstrap.min.js \
     ../resources/vendors/bootstrap/js/npm.js \
@@ -61,20 +57,12 @@ DISTFILES += \
     ../resources/vendors/bootstrap/fonts/glyphicons-halflings-regular.ttf \
     ../resources/vendors/bootstrap/fonts/glyphicons-halflings-regular.woff \
     ../resources/vendors/bootstrap/fonts/glyphicons-halflings-regular.woff2 \
-    ../resources/mapthing/img/loader.gif \
-    ../resources/mapthing/img/blank.png \
-    ../resources/mapthing/img/ffa500-marker-32.png \
-    ../resources/mapthing/img/layers.png \
-    ../resources/mapthing/img/search-icon.png \
-    ../resources/mapthing/img/TransLogo.png \
     ../resources/vendors/Leaflet/images/layers-2x.png \
     ../resources/vendors/Leaflet/images/layers.png \
     ../resources/vendors/Leaflet/images/marker-icon-2x.png \
     ../resources/vendors/Leaflet/images/marker-icon.png \
     ../resources/vendors/Leaflet/images/marker-shadow.png \
     ../resources/vendors/bootstrap/fonts/glyphicons-halflings-regular.svg \
-    ../resources/mapthing/css/leaflet-search.src.css \
-    ../resources/mapthing/css/main.css \
     ../resources/vendors/bootstrap/css/bootstrap-theme.css \
     ../resources/vendors/bootstrap/css/bootstrap-theme.min.css \
     ../resources/vendors/bootstrap/css/bootstrap.css \
@@ -86,14 +74,31 @@ DISTFILES += \
     ../resources/vendors/MarkerCluster/MarkerCluster.css \
     ../resources/vendors/MarkerCluster/MarkerCluster.Default.css \
     ../resources/vendors/PruneCluster/LeafletStyleSheet.css \
-    ../resources/index.html \
     ../resources/vendors/bootstrap/css/bootstrap-theme.css.map \
     ../resources/vendors/bootstrap/css/bootstrap.css.map \
     ../resources/vendors/PruneCluster/PruneCluster.js.map \
     ../resources/stylesheet.qss \
-    ../resources/mapthing/js/layerpanel.js \
-    ../resources/mapthing/js/dom.js \
-    ../resources/mapthing/js/bubblelayer.js \
-    ../resources/mapthing/js/leaflet-legendcontrol.js
+    ../resources/mapthing/dist/mapthing.min.js \
+    ../resources/mapthing/dist/mapthing.min.css \
+    ../resources/mapthing/img/loader.gif \
+    ../resources/mapthing/img/blank.png \
+    ../resources/mapthing/img/ffa500-marker-32.png \
+    ../resources/mapthing/img/layers.png \
+    ../resources/mapthing/img/search-icon.png \
+    ../resources/mapthing/img/TransLogo.png \
+    ../resources/index.html \
+
+
+Release:DESTDIR = release
+Release:OBJECTS_DIR = release/.obj
+Release:MOC_DIR = release/.moc
+Release:RCC_DIR = release/.rcc
+Release:UI_DIR = release/.ui
+
+Debug:DESTDIR = debug
+Debug:OBJECTS_DIR = debug/.obj
+Debug:MOC_DIR = debug/.moc
+Debug:RCC_DIR = debug/.rcc
+Debug:UI_DIR = debug/.ui
 
 

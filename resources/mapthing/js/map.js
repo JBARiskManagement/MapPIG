@@ -32,27 +32,15 @@ MT.Wms = {
     },
 
     createLegend: function(layer){
-        var legends = layer.getLegendGraphic()
-        var legendObjs = {};
-        for (var name in legends)
-        {
-            var url = legends[name];
-            $.ajax({
-                    type: "GET",
-                    url: url,
-                    dataType: "xml",
-                    success: function(xml) {
+        
+        var successFunc = function(xml) {
                         var result = $(xml).find('ServiceException[code="LayerNotDefined"]');
                         if (result)
                             console.log(result[0]);
                             MT.Dom.showMessage("No legend is available for this layer:\n"+result[0].textContent, "WMS does not provide legend");
-                    },
-
-                   /*
-                    * Because we specified the dataType as xml, then if the URL is valid an image will be
-                    * returned, which will cause jquery to invoke the error function...
-                    */
-                   error: function(xhr, status, error){
+                    };
+                    
+        var errorFunc = function(xhr, status, error){
                        if (status === 'parsererror')
                        {
                             legendObjs[name] = L.wmsLegend(url, layer._map);
@@ -63,12 +51,29 @@ MT.Wms = {
                            MT.Dom.showMessage(error.message, "Error creating legend");
                        }
 
-                   }
+                   };
+        
+        var legends = layer.getLegendGraphic();
+        var legendObjs = {};
+        for (var name in legends)
+        {
+            var url = legends[name];
+            $.ajax({
+                    type: "GET",
+                    url: url,
+                    dataType: "xml",
+                    success: successFunc,
+
+                   /*
+                    * Because we specified the dataType as xml, then if the URL is valid an image will be
+                    * returned, which will cause jquery to invoke the error function...
+                    */
+                   error: errorFunc
                 });
         }
         return legendObjs;
     }
-}
+};
 
 
 /**
@@ -76,11 +81,11 @@ MT.Wms = {
  */
 MT._registerMap = function(mapCtrl){
     MT._mCtrl = mapCtrl;
-}
+};
 
 MT.getMap = function(){
     return MT._mCtrl;
-}
+};
 
 /**
 * Controls creation of map, base layers and overlays
@@ -143,9 +148,9 @@ MT.MapController = function (id){
                                                   position: 'bottomright',
                                                   minLength: 2,
                                                   zoom: 10
-                                              })
+                                              });
     this._map.addControl(this.searchControl);
-}
+};
 
 /**
   * Disable all map interaction
@@ -158,7 +163,7 @@ MT.MapController.prototype.disable = function(){
     this._map.doubleClickZoom.disable();
     this._map.boxZoom.disable();
     this._map.keyboard.disable();
-}
+};
 
 /**
   * Enable all map interaction
@@ -171,7 +176,7 @@ MT.MapController.prototype.enable = function(){
     this._map.doubleClickZoom.enable();
     this._map.boxZoom.enable();
     this._map.keyboard.enable();
-}
+};
 
 /**
  * addOverlay
@@ -213,23 +218,23 @@ MT.MapController.prototype.addWmsOverlay = function (host, layerName, displayNam
     this.overLays[displayName] = layer;
     this._map.addLayer(layer);
     this.layerControl.addOverlay(layer, displayName);
-}
+};
 
 MT.MapController.prototype.addOverlay = function (layer, name){
     this._map.addLayer(layer);
     this.layerControl.addOverlay(layer, name);
-}
+};
 
 /**
  * Remove one of the overlays from the map via its' name
  */
 MT.MapController.prototype.removeOverlay = function(displayName){
-    this._map.removeLayer(this.overLays[displayName])
-}
+    this._map.removeLayer(this.overLays[displayName]);
+};
 
 MT.MapController.prototype.googleGeocoding = function(text, callResponse){
     this.geocoder.geocode({address: text}, callResponse);
-}
+};
 
 MT.MapController.prototype.formatJSON = function(rawjson){
     var json = {},
@@ -243,7 +248,7 @@ MT.MapController.prototype.formatJSON = function(rawjson){
         json[ key ]= loc;	//key,value format
     }
     return json;
-}
+};
 
 // Icon creation function for cluster layers
 function createIcon(data, category){
@@ -288,7 +293,7 @@ function initMap(){
         var pwd = $("#pwd").val();
 
         var jcalflyr = new MT.DataLayer(mapCtrl);
-        jcalflyr.jcalf(host, port, user, pwd)
+        jcalflyr.jcalf(host, port, user, pwd);
         // connect signals from bridge
     });
 

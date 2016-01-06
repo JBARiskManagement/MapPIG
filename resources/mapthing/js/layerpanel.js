@@ -44,6 +44,7 @@ L.Control.LayerPanel = L.Control.Layers.extend({
         else
         {
             for (var name in layer.legendObjs)
+            {
                 var control = layer.legendObjs[name];
                 console.log(control);
                 if (control.container.hidden === false)
@@ -59,6 +60,7 @@ L.Control.LayerPanel = L.Control.Layers.extend({
                     control.container.hidden = false;
                     control.container.style.visibility = 'visible';
                 }
+            }
         }
     },
     _onDeleteClick: function(layerId){
@@ -72,8 +74,7 @@ L.Control.LayerPanel = L.Control.Layers.extend({
 
         this._map.removeLayer(layer);
         this.removeLayer(layer);
-        layer.remove && layer.remove();
-        delete layer;
+        layer.remove();
     },
 
     _addItem: function(obj){
@@ -118,8 +119,8 @@ L.Control.LayerPanel = L.Control.Layers.extend({
             pullRight.appendChild(legendBtn);
             pullRight.appendChild(deleteBtn);
 
-            L.DomEvent.on(legendBtn, 'click', function(){this._onLegendClick(input.layerId)}, this);
-            L.DomEvent.on(deleteBtn, 'click', function(){this._onDeleteClick(input.layerId)}, this);
+            L.DomEvent.on(legendBtn, 'click', function(){this._onLegendClick(input.layerId);}, this);
+            L.DomEvent.on(deleteBtn, 'click', function(){this._onDeleteClick(input.layerId);}, this);
 
         } else {
 
