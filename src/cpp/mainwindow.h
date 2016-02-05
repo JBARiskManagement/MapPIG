@@ -42,7 +42,7 @@ private:
     QToolBar *toolBar;
     QAction *dataA;
     QAction *mapA;
-    MapThingUtil *dataRequest;
+    MapThingUtil *mtUtil;
     Bridge *bridge;
     QThread *workerThread;
     QStatusBar *sb;

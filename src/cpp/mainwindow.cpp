@@ -1,7 +1,7 @@
 #include "mainwindow.h"
 #include "constants.h"
 #include "plugininterface.h"
-
+#include "workerbase.h"
 
 // Qt Classes
 #include <QDesktopWidget>
@@ -11,7 +11,9 @@
 #include <QWebSettings>
 #include <QWebFrame>
 #include <QShortcut>
+#include <QKeySequence>
 #include <QPluginLoader>
+#include <QSplitter>
 //#include <QtPrintSupport/QPrinter>
 #include <QPixMap>
 #include <QImage>
@@ -39,19 +41,19 @@ MainWindow::MainWindow(QWidget *parent)
     webpage->settings()->setAttribute(QWebSettings::SpatialNavigationEnabled, true);
     webpage->settings()->setAttribute(QWebSettings::LocalContentCanAccessRemoteUrls, true);
     webpage->settings()->setAttribute(QWebSettings::LocalContentCanAccessFileUrls, true);
+    webpage->settings()->setAttribute(QWebSettings::WebGLEnabled, true);
     webview->setContentsMargins(0,0,0,0);
 
-    dataRequest = new MapThingUtil();
+    mtUtil = new MapThingUtil;
 
     // The bridge forms the link between C++ and javascript.
     // bridge methods can be called from both sides (use signals/slots) and pass data
     bridge = new Bridge(this);
 
 
-
     // Thread for the bridge
     workerThread = new QThread(this);
-    dataRequest->moveToThread(workerThread);
+    mtUtil->moveToThread(workerThread);
     workerThread->start();
 
     // Web inspector only really required for debugging so should not
@@ -61,33 +63,29 @@ MainWindow::MainWindow(QWidget *parent)
     inspector = new QWebInspector;
     //inspector->resize(950,700);
     inspector->setPage(webpage);
+    inspector->hide();
+
+    QSplitter *splitter = new QSplitter();
+    splitter->addWidget(webview);
+    splitter->addWidget(inspector);
+    splitter->setOrientation(Qt::Vertical);
 
     // Setup the size of the window
     setSize();
 
     loadStyleSheet();
-    setWindowIcon(QIcon(":/icon"));
+    setWindowIcon(QIcon(":/logo"));
 
-    setCentralWidget(webview);
+    setCentralWidget(splitter);
 
     connect(webpage->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(addJsObject()));
     connect(webpage, &QWebPage::loadFinished, this, &MainWindow::loadPlugins);
-    connect(bridge, &Bridge::refreshExposures, dataRequest, &MapThingUtil::refreshExposures);
-    //connect(bridge, &Bridge::refreshExposures, this, &MainWindow::showProgressBar);
-    connect(bridge, &Bridge::connectDatabase, dataRequest, &MapThingUtil::setJcalfDatabase);
-    //connect(bridge, &Bridge::fileLoad, dataRequest, &MapThingUtil::loadCsv);
     connect(bridge, &Bridge::printRequest, this, &MainWindow::frameToImage);
-
-    //connect(dataRequest, &DataRequests::progressUpdated, bridge, &Bridge::progressUpdated);
-    connect(dataRequest, &MapThingUtil::progressUpdated, this, &MainWindow::showProgress);
-    connect(dataRequest, &MapThingUtil::riskUpdated, bridge, &Bridge::exposureUpdated);
-    connect(dataRequest, &MapThingUtil::databaseConnected, bridge, &Bridge::databaseConnected);
-    connect(dataRequest, &MapThingUtil::error, bridge, &Bridge::error);
-    connect(dataRequest, &MapThingUtil::workStarted, this, &MainWindow::showProgressBar);
-    connect(dataRequest, &MapThingUtil::workFinished, bridge, &Bridge::workFinished);
-    connect(dataRequest, &MapThingUtil::workFinished, this, &MainWindow::resetStatusBar);
-
-    connect(dataRequest, &MapThingUtil::markerLoadingStats, bridge, &Bridge::markerLoadingStats);
+    connect(mtUtil, &MapThingUtil::progressUpdated, this, &MainWindow::showProgress);
+    connect(mtUtil, &MapThingUtil::error, bridge, &Bridge::error);
+    connect(mtUtil, &MapThingUtil::workStarted, this, &MainWindow::showProgressBar);
+    connect(mtUtil, &MapThingUtil::workFinished, bridge, &Bridge::workFinished);
+    connect(mtUtil, &MapThingUtil::workFinished, this, &MainWindow::resetStatusBar);
 
     // set up the HTML UI
     showMap();
@@ -201,6 +199,14 @@ void MainWindow::addPlugin(QObject *plugin)
         QObject *bridge = iPlugin->getBridgeObject();
         if (bridge)
         {
+            // Check for presence of progress indication signals and connect them to the progress bar
+            const QMetaObject *bmeta = bridge->metaObject();
+            if (bmeta->indexOfSignal("workStarted()") && bmeta->indexOfSignal("workFinised()") && bmeta->indexOfSignal("progressUpdated()"))
+            {
+                connect(bridge, SIGNAL(workStarted()), this, SLOT(showProgressBar()));
+                connect(bridge, SIGNAL(progressUpdated()), this, SLOT(showProgress()));
+                connect(bridge, SIGNAL(workFinished()), this, SLOT(resetStatusBar()));
+            }
             // Get the bridge object for the plugin and add it to the page
             webpage->mainFrame()->addToJavaScriptWindowObject(iPlugin->getBridgeObjectName(), bridge);
         }
@@ -208,7 +214,19 @@ void MainWindow::addPlugin(QObject *plugin)
         // Get the worker object and move it to the worker thread
         QObject *worker = iPlugin->getWorkerObject();
         if (worker)
+        {
+            // Check for presence of progress indication signals and connect them to the progress bar
+            const QMetaObject *meta = worker->metaObject();
+            if (meta->indexOfSignal("workStarted()") && meta->indexOfSignal("workFinised()") && meta->indexOfSignal("progressUpdated()"))
+            {
+                connect(worker, SIGNAL(workStarted()), this, SLOT(showProgressBar()));
+                connect(worker, SIGNAL(progressUpdated(int)), this, SLOT(showProgress(int)));
+                connect(worker, SIGNAL(workFinished()), this, SLOT(resetStatusBar()));
+            }
+
             worker->moveToThread(workerThread);
+        }
+
 
         // Get the javascript for the plugin UI and add it to the page
         QString pluginJs = iPlugin->initialiseUi();

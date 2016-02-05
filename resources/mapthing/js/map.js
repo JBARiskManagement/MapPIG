@@ -23,11 +23,17 @@ MT.Wms = {
 
         $.ajax({
                 type: "GET",
+            headers: {'Access-Control-Allow-Credentials': true},
+                xhrFields: {
+                    withCredentials: true
+                },
                 url: url + 'request=GetCapabilities&service=wms',
                 dataType: "xml",
                 success: function(xml) {
                     callback(xml);
-                }
+                },
+                error: function(){MT.Dom.hideLoading("#sb-overlays");
+                                 MT.Dom.showMessage("Could not connect");}
             });
     },
 
@@ -150,6 +156,14 @@ MT.MapController = function (id){
                                                   zoom: 10
                                               });
     this._map.addControl(this.searchControl);
+};
+
+MT.MapController.prototype.showSidebarTab = function(id){
+    this.sidebar.open(id);
+};
+
+MT.MapController.prototype.closeSidebarTab = function(id){
+    this.sidebar.close(id);
 };
 
 /**
@@ -324,27 +338,7 @@ function initMap(){
         mapCtrl.geocode($("#address").val());
     });
 
-
-    $("#summarize-view-btn").click(function (){
-
-        $("#lecModal").on('shown.bs.modal',
-                            function(event)
-                            {
-                               getResultsForRisksInView();
-                            }).on('hidden.bs.modal',
-                            function(event)
-                            {
-                            // reset canvas size
-                            var modal = $(this);
-                            var canvas = modal.find('.modal-body canvas');
-                            canvas.attr('width','568px').attr('height','300px');
-                            // destroy modal
-                            lecChart.clear();
-                            lecChart.destroy();
-                            $(this).data('bs.modal', null);
-                            });
-        showModal("lecModal");
-    });
+    $("#tour-btn").click(MT.runTour);
 
     function sizeLayerControl() {
       $(".leaflet-control-layers").css("max-height", $("#map").height() - 50);

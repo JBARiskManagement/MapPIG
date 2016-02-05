@@ -6,6 +6,72 @@
 // global namespace
 var MT = MT || {};
 
+MT.PluginGui = function()
+{
+    this._elements = [];
+};
+
+
+/**
+ * Add a panel to the sidebar
+ *
+ * @example
+ * sidebar.addPanel({
+       title: 'My Awesome Panel'
+ *     id: 'sb-awesome-panel',
+ *     tab: '<i class="fa fa-fort-awesome"></i>',
+ *     pane: someDomNode.innerHTML,
+ *     position: 'bottom'
+ * });
+ *
+ * @param {Object} [data] contains the data for the new Panel:
+ * @param {String} [data.title] the title for the new panel
+ * @param {String} [data.id] the ID for the new Panel, must be unique for the whole page
+ * @param {String} [data.position='top'] where the tab will appear:
+ *                                       on the top or the bottom of the sidebar. 'top' or 'bottom'
+ * @param {HTMLString} {DOMnode} [data.tab]  content of the tab item, as HTMLstring or DOM node
+ * @param {HTMLString} {DOMnode} [data.pane] content of the panel, as HTMLstring or DOM node
+ */
+MT.PluginGui.prototype.sidebarPanel = function(data)
+{
+    var panel = MT.Dom._makeSidebarPanel(data.title, data.id+"-panel");
+    this._elements.push(data.id+"-panel");
+
+    panel.append(data.pane);
+    data.pane = panel[0];
+
+    MT.Dom._addSidebarPanel(data);
+};
+
+/**
+ * Create a modal dialog
+ *
+ *
+ */
+MT.PluginGui.prototype.modal = function(data)
+{
+
+};
+
+
+/**
+ * Create a modless dialog
+ *
+ *
+ */
+MT.PluginGui.prototype.modeless = function(data)
+{
+
+};
+
+MT.PluginGui.prototype.close = function()
+{
+    for (var i = 0; i < this._elements.length; i++)
+    {
+        $('#'+this._elements[i]).remove();
+    }
+};
+
 MT.Dom = {
     showMessage: function(msg, title){
         bootbox.dialog({ message: msg,
@@ -13,6 +79,28 @@ MT.Dom = {
                          buttons: {main: {label: "Ok",
                                className: "btn-primary"}}
                        });
+    },
+
+    _makeSidebarPanel: function(title, id)
+    {
+        var panel = $("<div>", {
+                                class: "sidebar-pane",
+                                id: id
+                              });
+
+        var header = $("<h1>",
+                        {
+                           class: "sidebar-header",
+                           html: title+'<div class="sidebar-close"><i class="fa fa-caret-left"></i></div>'
+                        });
+
+        panel.append(header);
+        return panel;
+
+    },
+
+    _addSidebarPanel: function(data){
+        MT._mCtrl.sidebar.addPanel(data);
     },
 
 

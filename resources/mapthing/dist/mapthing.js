@@ -77,6 +77,72 @@ function default_style(feature) {
 // global namespace
 var MT = MT || {};
 
+MT.PluginGui = function()
+{
+    this._elements = [];
+};
+
+
+/**
+ * Add a panel to the sidebar
+ *
+ * @example
+ * sidebar.addPanel({
+       title: 'My Awesome Panel'
+ *     id: 'sb-awesome-panel',
+ *     tab: '<i class="fa fa-fort-awesome"></i>',
+ *     pane: someDomNode.innerHTML,
+ *     position: 'bottom'
+ * });
+ *
+ * @param {Object} [data] contains the data for the new Panel:
+ * @param {String} [data.title] the title for the new panel
+ * @param {String} [data.id] the ID for the new Panel, must be unique for the whole page
+ * @param {String} [data.position='top'] where the tab will appear:
+ *                                       on the top or the bottom of the sidebar. 'top' or 'bottom'
+ * @param {HTMLString} {DOMnode} [data.tab]  content of the tab item, as HTMLstring or DOM node
+ * @param {HTMLString} {DOMnode} [data.pane] content of the panel, as HTMLstring or DOM node
+ */
+MT.PluginGui.prototype.sidebarPanel = function(data)
+{
+    var panel = MT.Dom._makeSidebarPanel(data.title, data.id+"-panel");
+    this._elements.push(data.id+"-panel");
+
+    panel.append(data.pane);
+    data.pane = panel[0];
+
+    MT.Dom._addSidebarPanel(data);
+};
+
+/**
+ * Create a modal dialog
+ *
+ *
+ */
+MT.PluginGui.prototype.modal = function(data)
+{
+
+};
+
+
+/**
+ * Create a modless dialog
+ *
+ *
+ */
+MT.PluginGui.prototype.modeless = function(data)
+{
+
+};
+
+MT.PluginGui.prototype.close = function()
+{
+    for (var i = 0; i < this._elements.length; i++)
+    {
+        $('#'+this._elements[i]).remove();
+    }
+};
+
 MT.Dom = {
     showMessage: function(msg, title){
         bootbox.dialog({ message: msg,
@@ -84,6 +150,28 @@ MT.Dom = {
                          buttons: {main: {label: "Ok",
                                className: "btn-primary"}}
                        });
+    },
+
+    _makeSidebarPanel: function(title, id)
+    {
+        var panel = $("<div>", {
+                                class: "sidebar-pane",
+                                id: id
+                              });
+
+        var header = $("<h1>",
+                        {
+                           class: "sidebar-header",
+                           html: title+'<div class="sidebar-close"><i class="fa fa-caret-left"></i></div>'
+                        });
+
+        panel.append(header);
+        return panel;
+
+    },
+
+    _addSidebarPanel: function(data){
+        MT._mCtrl.sidebar.addPanel(data);
     },
 
 
@@ -265,10 +353,6 @@ MT.DataLayer.prototype.jcalf = function(host, port, user, pwd)
     this.pwd = pwd;
     this.layerName = "JCalf: " + host;
     this.lastUpdate = +new Date();
-
-    BRIDGE.databaseConnected.connect(this.maybeCreateLayer.bind(this));
-    BRIDGE.error.connect(MT.Dom.showMessage);
-    BRIDGE.connectDatabase(host,port,user,pwd);
 };
 
 MT.DataLayer.prototype.remove = function(){
@@ -280,8 +364,6 @@ MT.DataLayer.prototype.maybeCreateLayer = function(status)
     if (status === true)
     {
         console.log("Setting up layer");
-        BRIDGE.exposureUpdated.connect(this.addRiskMarker.bind(this));
-        BRIDGE.workFinished.connect(this.processView.bind(this));
         // Connect map move events to updating jcalf layers
         var self = this;
         //this.mapCt._map.on('moveend', function(){self.update()});
@@ -320,7 +402,6 @@ MT.DataLayer.prototype.update = function(){
         this.mapCt.disable();
         var bounds = this.mapCt._map.getBounds();
         this.clusterLayer.RemoveMarkers();
-        BRIDGE.refreshExposures(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
     }
 };
 
@@ -371,28 +452,25 @@ MT.DataLayer.prototype.showLoadingStats = function(loaded, skipped)
                    });
 };
 
-MT.CsvLayer = function(mapCt, path)
+MT.CsvLayer = function(layerName, mapCt)
 {
     this.mapCt = mapCt;
     this.layerName = "unknown";
-    this.layerName = path.split('\\').pop().split('/').pop();
+    this.layerName = layerName;
     this.createLayer(true);
-    BRIDGE.loadFile();
-
 };
 
 MT.CsvLayer.prototype = new MT.DataLayer();
 MT.CsvLayer.prototype.constructor = MT.CsvLayer;
 
+MT.CsvLayer.prototype.addToMap = function()
+{
+    this.mapCt.addOverlay(this.clusterLayer, this.layerName);
+};
+
 MT.CsvLayer.prototype.createLayer = function(status)
 {
-    // Connect signals
-    BRIDGE.exposureUpdated.connect(this.addRiskMarker.bind(this));
-    BRIDGE.workFinished.connect(this.processView.bind(this));
-    BRIDGE.markerLoadingStats.connect(this.showLoadingStats.bind(this));
-
     this.clusterLayer = new PruneClusterForLeaflet(); // The marker cluster layer
-    this.mapCt.addOverlay(this.clusterLayer, this.layerName);
     //this.addClusterSizeWidget();
 };
 ;
@@ -655,11 +733,17 @@ MT.Wms = {
 
         $.ajax({
                 type: "GET",
+            headers: {'Access-Control-Allow-Credentials': true},
+                xhrFields: {
+                    withCredentials: true
+                },
                 url: url + 'request=GetCapabilities&service=wms',
                 dataType: "xml",
                 success: function(xml) {
                     callback(xml);
-                }
+                },
+                error: function(){MT.Dom.hideLoading("#sb-overlays");
+                                 MT.Dom.showMessage("Could not connect");}
             });
     },
 
@@ -782,6 +866,14 @@ MT.MapController = function (id){
                                                   zoom: 10
                                               });
     this._map.addControl(this.searchControl);
+};
+
+MT.MapController.prototype.showSidebarTab = function(id){
+    this.sidebar.open(id);
+};
+
+MT.MapController.prototype.closeSidebarTab = function(id){
+    this.sidebar.close(id);
 };
 
 /**
@@ -956,27 +1048,7 @@ function initMap(){
         mapCtrl.geocode($("#address").val());
     });
 
-
-    $("#summarize-view-btn").click(function (){
-
-        $("#lecModal").on('shown.bs.modal',
-                            function(event)
-                            {
-                               getResultsForRisksInView();
-                            }).on('hidden.bs.modal',
-                            function(event)
-                            {
-                            // reset canvas size
-                            var modal = $(this);
-                            var canvas = modal.find('.modal-body canvas');
-                            canvas.attr('width','568px').attr('height','300px');
-                            // destroy modal
-                            lecChart.clear();
-                            lecChart.destroy();
-                            $(this).data('bs.modal', null);
-                            });
-        showModal("lecModal");
-    });
+    $("#tour-btn").click(MT.runTour);
 
     function sizeLayerControl() {
       $(".leaflet-control-layers").css("max-height", $("#map").height() - 50);
@@ -998,3 +1070,101 @@ function initMap(){
         });
     });
 }
+;// Instance the tour
+var MT = MT || {};
+
+MT.tour = new Tour({
+  backdrop: false,
+  steps: [
+    {
+    orphan: true,
+    title: "Welcome!",
+    content: "MapThing is a visual showcase and integration platform for JBA RML data and tools. " +
+             "This short tour is intended to get you familiar with the user interface.",
+    onShow: function(tour){MT.getMap().closeSidebarTab("sb-help");}
+    },
+    {
+    element: "#container",
+    placement: "top",
+    title: "The Map",
+    content: "It's all about the map. The key idea behind MapThing is simplicity. " +
+            "As such the main focus of the core program is on visualisation and generating images. It allows you to quickly navigate the map, add overlays from web services " +
+             "and print images. Plugins can extend the functionality " +
+             "of MapThing to create new overlays from different sources, charts and provide more complex analysis of JBA data. ",
+    },
+    {
+    element: ".sidebar",
+    title: "Sidebar",
+    content: "Clicking on a sidebar button will display a panel for the selected feature. Hovering over buttons will popup a short description."
+    },
+    {
+    element: "#sb-btn-layers",
+    title: "Display the layer control",
+    content: "MapThing offers a rudimentary layer control. "
+    },
+    {
+    element: "#sb-layers",
+    title: "Layers Control",
+    content: "Switch between a selection of basemap layers and show/hide or remove overlays which have been added to the map",
+    onShow: function(tour){MT.getMap().showSidebarTab("sb-layers");},
+    onHide: function(tour){MT.getMap().closeSidebarTab("sb-layers");}
+    },
+    {
+    element: "#sb-btn-overlays",
+    title: "WMS Overlays",
+    content: "MapThing is pre-configured to connect to a few WMS' suitable for JBA RML needs in order to quickly add overlays." +
+             " Lets expand the tab and see what is available"
+    },
+    {
+    element: "#wms-host-select",
+    title: "Select a host",
+    content: "Select a web service from the drop down list. Environment Agency & FEMA WMS' are available. JBA RML's own service for hazard map data will be available in the near future",
+    onShow: function(tour){MT.getMap().showSidebarTab("sb-overlays");},
+    },
+    {
+    element: "#wms-layer-select",
+    title: "Select a layer",
+    content: "Once a host has been selected, this dropdown will populate with the available layers. You can browse through or search for a desired layer and select it"
+    },
+    {
+    element: "#overlay-submit",
+    title: "Add the layer",
+    content: "Found a layer you want? Click this button to add it to the map. It will appear in the layer control. Some WMS layers have legends. If a legend is available, it will be displayed and can be hidden/shown via the layer control",
+    onHide: function(tour){MT.getMap().closeSidebarTab("sb-overlays");}
+    },
+    {
+    element: "#sb-btn-plugin",
+    title: "Plugins",
+    content: "MapThings' analysis functionality and integration with other JBA tools and methods comes from the extensible plugin framework" +
+             " Available plugins are displayed in this panel and can be enabled by clicking the corresponding button." +
+             "The plugin possibilities are huge, so don't hesitate to get in touch with any wild and crazy ideas."
+    },
+    {
+    element: "#sb-btn-print",
+    title: "Print",
+    content: "Print the map to a PNG image! The image is created at the current size and resolution of the window. The final image will not feature any GUI elements (such as the sidebar) and a JBA RML logo will be inserted into the top left corner."
+    },
+    {
+    placement: 'left',
+    element: ".leaflet-control-search",
+    title: "Search for places",
+    content: "A typeahead search which makes use of Googles' Geocoding API. Type in a placename or word to search for and it will search for matching places."
+    },
+    {
+    placement: 'left',
+    element: ".leaflet-control-zoom-in",
+    title: "Zoom",
+    content: "No mouse wheel? No worries. Use these buttons to zoom in and out." +
+             " You can also zoom with the +/- keys and navigate with the arrow keys."
+    }
+]});
+
+MT.runTour = function(){
+
+    // Initialize the tour
+    MT.tour.init();
+
+    // Start the tour
+    MT.tour.start();
+
+};

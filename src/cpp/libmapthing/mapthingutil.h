@@ -5,6 +5,7 @@
 #include <QString>
 #include <QtSql>
 #include <stdlib.h>
+#include <functional>
 
 #include "portfolio.h"
 
@@ -13,6 +14,8 @@
 #define valid_digit(c) ((c) >= '0' && (c) <= '9')
 double fatof (const char *p);
 
+//typedef void (*CsvCallback)(char **fields, int numFields, int index);
+typedef std::function<void(char **fields, int numFields, int index) > CsvCallback;
 /**
  * @brief The DataRequests class
  *          Handles requests for JCALF data
@@ -21,31 +24,34 @@ class MapThingUtil : public QObject
 {
     Q_OBJECT
 public:
-    explicit MapThingUtil(QObject *parent = 0);
+    MapThingUtil(QObject *parent = 0);
     ~MapThingUtil();
-    QSqlDatabase jcalfDb;
-    Portfolio ptf;
-    void loadCsv(QString fpath,  void(*callback)(char **fields, int numFields, int index));
+    static MapThingUtil *instance();
+    //QSqlDatabase jcalfDb;
+    //Portfolio ptf;
+    void loadCsv(QString fpath);
 
 signals:
-    void riskUpdated(double lat, double lng, double tiv);
+    //void riskUpdated(double lat, double lng, double tiv);
     void workFinished();
     void workStarted();
     void progressUpdated(int perc);
-    void databaseConnected(bool status);
+    //void databaseConnected(bool status);
     void error(QString err, QString title);
-    void markerLoadingStats(int nLoaded, int nSkipped);
+    //void markerLoadingStats(int nLoaded, int nSkipped);
+    void csvRow(char**, int, int);
 
 public slots:
 
-    void refreshExposures();
-    void getLastError();
-    void setJcalfDatabase(QString host, QString port, QString user, QString pwd);
-
-
+    //void refreshExposures();
+    //void getLastError();
+    //void setJcalfDatabase(QString host, QString port, QString user, QString pwd);
+private:
 
 
 };
+
+
 
 #endif // MapThingUtil_H
 /*

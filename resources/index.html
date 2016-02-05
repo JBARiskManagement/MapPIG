@@ -14,6 +14,7 @@
         <link href="vendors/PruneCluster/LeafletStyleSheet.css" rel='stylesheet' />
         <link href='vendors/L.Loading/Control.Loading.css' rel='stylesheet' />
         <link href='vendors/bootstrap/css/bootstrap.css' rel='stylesheet' />
+        <link href="vendors/bootstrap-tour/css/bootstrap-tour.min.css" rel="stylesheet">
         <link href='vendors/css/bootstrap-select.min.css' rel='stylesheet' />
         <link href='vendors/css/leaflet-sidebar.css' rel='stylesheet' />
         <link href="vendors/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
@@ -37,7 +38,7 @@
               </div>
               <div class="modal-body">
               </div>
-            </div>
+            </div>#c
           </div>
         </div>
 
@@ -45,13 +46,14 @@
       <div id="sidebar" class="sidebar collapsed">
         <!-- Navigation tabs -->
         <div class="sidebar-tabs">
-            <ul role="tablist">
-                <li><a href="#sb-layers" role="tab" data-placement="right" data-toggle="tooltip" title="Map layers"><i class="mt-icon mt-layers"></i></a></li>
-                <li><a href="#sb-overlays" role="tab" data-placement="right" data-toggle="tooltip" title="Add overlay from a WMS"><i class="fa fa-globe"></i></a></li>
-                <li><a href="#sb-file" role="tab" data-placement="right" data-toggle="tooltip" title="Load file"><i class="fa fa-folder-open"></i></a></li>
+            <ul role="tablist" class="sidebar-tabs-top">
+                <li ><a id="sb-btn-layers" href="#sb-layers" role="tab" data-placement="right" data-toggle="tooltip" title="Map layers"><i class="mt-icon mt-layers"></i></a></li>
+                <li id="sb-btn-overlays"><a href="#sb-overlays" role="tab" data-placement="right" data-toggle="tooltip" title="Add overlay from a WMS"><i class="fa fa-globe"></i></a></li>
+                <!--<li id="sb-btn-file"><a href="#sb-file" role="tab" data-placement="right" data-toggle="tooltip" title="Load file"><i class="fa fa-folder-open"></i></a></li>-->
                 <!--<li><a href="#sb-database" role="tab" data-placement="right" data-toggle="tooltip" title="Connect to a Jcalf database"><i class="fa fa-database""></i></a></li>-->
-                <li><a href="#sb-plugin" role="tab" data-placement="right" data-toggle="tooltip" title="Plugins"><i class="fa fa-plug"></i></a></li>
-                <li><a href="#sb-print" role="tab" data-placement="right" data-toggle="tooltip" title="Print"><i class="fa fa-print"></i></a></li>
+                <li id="sb-btn-plugin"><a href="#sb-plugin" role="tab" data-placement="right" data-toggle="tooltip" title="Plugins"><i class="fa fa-plug"></i></a></li>
+                <li id="sb-btn-print"><a href="#sb-print" role="tab" data-placement="right" data-toggle="tooltip" title="Print"><i class="fa fa-print"></i></a></li>
+                <li id="sb-btn-help"><a href="#sb-help" role="tab" data-placement="right" data-toggle="tooltip" title="Help & interactive tour"><i class="fa fa-question"></i></a></li>
 
             </ul>
             <ul role="tablist">
@@ -72,7 +74,8 @@
                             <div class="form-group">
                                 <label for="wms-host-select">WMS Host</label>
                                 <select class="selectpicker form-control" id="wms-host-select" title="Choose WMS service" data-placement="bottom" data-toggle="tooltip" title="Select a WMS service to browse layers">
-                                    <option value="">JBA Risk Management WMS</option>
+                                    <option data-hidden="true">Select a host...</option>
+                                    <option value="http://10.1.4.51:8001/geoserver/floodmaps/wms">JBA Risk Management WMS</option>
                                     <option value="http://www.geostore.com/OGC/OGCInterface?UID=UDATAGOV2011&PASSWORD=datagov2011&INTERFACE=ENVIRONMENT&LC=0">Environment Agency</option>
                                     <option value="http://hazards.fema.gov/gis/nfhl/services/public/NFHLWMS/MapServer/WMSServer">FEMA</option>
                                 </select>
@@ -88,6 +91,7 @@
                 </div>
             </div>
 
+<!--
             <div class="sidebar-pane" id="sb-file">
                 <h1 class="sidebar-header">Load CSV<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
                 <div class="row">
@@ -112,6 +116,7 @@
                   </div>
                 </div>
             </div>
+-->
 
             <div class="sidebar-pane" id="sb-database">
               <h1 class="sidebar-header">Jcalf Database<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
@@ -165,6 +170,16 @@
 
             </div>
 
+            <div class="sidebar-pane" id="sb-help">
+              <h1 class="sidebar-header" id="sb-help-header">Extensions<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+              <div class="row">
+                <div class="col-xs-12 col-md-12">
+                <button type="button" class="btn btn-default" id="tour-btn">Tour</button>
+                <button type="button" class="btn btn-default" id="docs-btn">Docs</button>
+                </div>
+              </div>
+            </div>
+
             <div class="sidebar-pane" id="sb-about">
               <h1 class="sidebar-header">About<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
               <p>MapThing</p>
@@ -186,6 +201,7 @@
     <!-- UI libs -->
     <script type="text/javascript" src='vendors/js/jquery-1.11.3.min.js'></script>
     <script type="text/javascript" src='vendors/bootstrap/js/bootstrap.js'></script>
+    <script type="text/javascript" src="vendors/bootstrap-tour/js/bootstrap-tour.min.js"></script>
     <script type="text/javascript" src='vendors/js/bootbox.min.js'></script>
     <script type="text/javascript" src='vendors/js/bootstrap-select.min.js'></script>
     <script type="text/javascript" src='vendors/jquery-loading-overlay/loadingoverlay.min.js'></script>
@@ -196,19 +212,16 @@
     <script type="text/javascript" src="vendors/PruneCluster/PruneCluster.min.js"></script>
     <script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
     <script type="text/javascript" src="vendors/L.Loading/Control.Loading.js"></script>
+    <script type="text/javascript" src='vendors/js/leaflet-search.src.js'></script>
 
     <!-- Chart libs -->
-    <script type="text/javascript" src='vendors/js/Chart.min.js'></script>
-    <script type="text/javascript" src='vendors/js/leaflet-search.src.js'></script>
+    <script type="text/javascript" src='vendors/plotly/plotly.min.js'></script>
 
     <!-- Sidebar -->
     <script type="text/javascript" src='vendors/js/leaflet-sidebar.js'></script>
 
-
-
     <!--Always ensure our own JS is loaded last so it has access to the above libs -->
     <script type="text/javascript" src='mapthing/dist/mapthing.min.js'></script>
-
 
     <script type="text/javascript">
         $(document).ready(initMap);

@@ -12,6 +12,7 @@ extern "C" {
 #include <QCoreApplication>
 #include <time.h>
 
+
 /**
  * @brief fatof
  *  A faster implementation of atof
@@ -103,13 +104,11 @@ MapThingUtil::~MapThingUtil()
 {
 }
 
-void MapThingUtil::loadCsv(QString fpath, void(*callback)(char **fields, int numFields, int index))
+void MapThingUtil::loadCsv(QString fpath)
 {
 
-    clock_t startTime = clock();
+    //clock_t startTime = clock();
     emit workStarted();
-
-    std::cout << "Load CSV\n";
 
     // Determine file size
     qint64 size;
@@ -129,7 +128,9 @@ void MapThingUtil::loadCsv(QString fpath, void(*callback)(char **fields, int num
     header = CsvParser_getHeader(parser);
     char **headerFields = CsvParser_getFields(header);
 
-    callback(headerFields, CsvParser_getNumFields(header), 0);
+    //func(headerFields, CsvParser_getNumFields(header), 0);
+    int numFields = CsvParser_getNumFields(header);
+    emit csvRow(headerFields, numFields, 0);
 
     int curPos, lastPos = 0, rowCount = 0;
     char **rowFields;
@@ -137,7 +138,9 @@ void MapThingUtil::loadCsv(QString fpath, void(*callback)(char **fields, int num
     {
         rowCount++;
         rowFields = CsvParser_getFields(row);
-        callback(rowFields, CsvParser_getNumFields(row), rowCount);
+        numFields = CsvParser_getNumFields(row);
+        //func(rowFields, CsvParser_getNumFields(row), rowCount);
+        emit csvRow(rowFields, numFields, rowCount);
         CsvParser_destroy_row(row);
         curPos = ftell(parser->fileHandler_);
         prog.update(curPos - lastPos);
@@ -145,72 +148,72 @@ void MapThingUtil::loadCsv(QString fpath, void(*callback)(char **fields, int num
     }
 
     CsvParser_destroy(parser);
-    std::cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << std::endl;
+    //std::cout << double( clock() - startTime ) / (double)CLOCKS_PER_SEC<< " seconds." << std::endl;
     emit workFinished();
 }
 
 
 
-void MapThingUtil::setJcalfDatabase(QString host, QString port, QString user, QString pwd)
-{
-    jcalfDb = QSqlDatabase::addDatabase("QPSQL");
-    jcalfDb.setHostName(host);
-    jcalfDb.setPort(port.toInt());
-    jcalfDb.setDatabaseName("JCALF");
-    jcalfDb.setUserName(user);
-    jcalfDb.setPassword(pwd);
+//void MapThingUtil::setJcalfDatabase(QString host, QString port, QString user, QString pwd)
+//{
+//    jcalfDb = QSqlDatabase::addDatabase("QPSQL");
+//    jcalfDb.setHostName(host);
+//    jcalfDb.setPort(port.toInt());
+//    jcalfDb.setDatabaseName("JCALF");
+//    jcalfDb.setUserName(user);
+//    jcalfDb.setPassword(pwd);
 
-    bool ok = jcalfDb.open();
-    emit databaseConnected(ok);
-}
+//    bool ok = jcalfDb.open();
+//    emit databaseConnected(ok);
+//}
 
-void MapThingUtil::getLastError()
-{
-    QSqlError err = jcalfDb.lastError();
-    emit error(err.text(), "Database error");
-}
+//void MapThingUtil::getLastError()
+//{
+//    QSqlError err = jcalfDb.lastError();
+//    emit error(err.text(), "Database error");
+//}
 
 
-void MapThingUtil::refreshExposures()
-{
-    emit workStarted();
-    QSqlQuery query(jcalfDb);
-    query.prepare("SELECT \"Latitude\", \"Longitude\", \"TIV\", \"Limit\", \"Deductible\", lob.\"Code\" "
-                   "FROM \"PieceRisk\" pr "
-                   "LEFT JOIN \"RiskCoverage\" rc ON pr.\"PieceRiskID\" = rc.\"PieceRiskID\" "
-                   "LEFT JOIN \"Risk\" r ON pr.\"RiskID\" = r.\"RiskID\" "
-                   "LEFT JOIN \"LineOfBusiness\" lob ON r.\"LineOfBusinessID\" = lob.\"LineOfBusinessID\" ");
-                   //"WHERE \"Latitude\" BETWEEN ? AND ? "
-                   //"AND \"Longitude\" BETWEEN ? AND ?");
+//void MapThingUtil::refreshExposures()
+//{
+//    emit workStarted();
+//    QSqlQuery query(jcalfDb);
+//    query.prepare("SELECT \"Latitude\", \"Longitude\", \"TIV\", \"Limit\", \"Deductible\", lob.\"Code\" "
+//                   "FROM \"PieceRisk\" pr "
+//                   "LEFT JOIN \"RiskCoverage\" rc ON pr.\"PieceRiskID\" = rc.\"PieceRiskID\" "
+//                   "LEFT JOIN \"Risk\" r ON pr.\"RiskID\" = r.\"RiskID\" "
+//                   "LEFT JOIN \"LineOfBusiness\" lob ON r.\"LineOfBusinessID\" = lob.\"LineOfBusinessID\" ");
+//                   //"WHERE \"Latitude\" BETWEEN ? AND ? "
+//                   //"AND \"Longitude\" BETWEEN ? AND ?");
 
-    //query.bindValue(0, minY);
-    //query.bindValue(1, maxY);
-    //query.bindValue(2, minX);
-    //query.bindValue(3, maxX);
+//    //query.bindValue(0, minY);
+//    //query.bindValue(1, maxY);
+//    //query.bindValue(2, minX);
+//    //query.bindValue(3, maxX);
 
-    query.exec();
+//    query.exec();
 
-    int size = query.size();
-    ProgressCounter prog(size, 1);
-    connect(&prog, &ProgressCounter::progressUpdated, this, &MapThingUtil::progressUpdated);
-    if (size > 0)
-    {
-        double lat, lng, tiv;
-        while (query.next()){
-            prog.update();
-            lat = query.value(0).toDouble();
-            lng = query.value(1).toDouble();
-            tiv = query.value(2).toDouble();
-            emit riskUpdated(lat, lng, tiv);
-        }
-    }
-    else
-    {
-        emit error(QString("No risks in database"), QString("Database error"));
-    }
-    //QString name(jcalfDb.connectionName());
-    jcalfDb.close();
-    //QSqlDatabase::removeDatabase(name);
-    emit workFinished();
-}
+//    int size = query.size();
+//    ProgressCounter prog(size, 1);
+//    connect(&prog, &ProgressCounter::progressUpdated, this, &MapThingUtil::progressUpdated);
+//    if (size > 0)
+//    {
+//        double lat, lng, tiv;
+//        while (query.next()){
+//            prog.update();
+//            lat = query.value(0).toDouble();
+//            lng = query.value(1).toDouble();
+//            tiv = query.value(2).toDouble();
+//            emit riskUpdated(lat, lng, tiv);
+//        }
+//    }
+//    else
+//    {
+//        emit error(QString("No risks in database"), QString("Database error"));
+//    }
+//    //QString name(jcalfDb.connectionName());
+//    jcalfDb.close();
+//    //QSqlDatabase::removeDatabase(name);
+//    emit workFinished();
+//}
 

@@ -28,7 +28,8 @@ RESOURCES += \
     resources.qrc
 
 INCLUDEPATH += libmapthing/
-LIBS += -L../build-libmapthing/debug -lmapthing
+Release:LIBS += -L../build-libmapthing/release -lmapthing
+Debug:LIBS += -L../build-libmapthing/debug -lmapthing
 
 DISTFILES += \
     ../resources/vendors/bootstrap/js/bootstrap.js \
@@ -87,6 +88,20 @@ DISTFILES += \
     ../resources/mapthing/img/search-icon.png \
     ../resources/mapthing/img/TransLogo.png \
     ../resources/index.html \
+    ../../resources/mapthing/dist/mapthing.js \
+    ../../resources/mapthing/js/bubblelayer.js \
+    ../../resources/mapthing/js/dom.js \
+    ../../resources/mapthing/js/jcalflayer.js \
+    ../../resources/mapthing/js/layerpanel.js \
+    ../../resources/mapthing/js/leaflet-legendcontrol.js \
+    ../../resources/mapthing/js/map.js \
+    ../../resources/mapthing/img/big_roller.gif \
+    ../../resources/mapthing/css/leaflet-legendcontrol.css \
+    ../../resources/mapthing/css/leaflet-search.src.css \
+    ../../resources/mapthing/css/main.css \
+    ../../resources/mapthing/dist/mapthing.min.css.map \
+    ../../resources/mapthing/dist/mapthing.min.js.map \
+    ../../resources/mapthing/js/tour.js
 
 
 Release:DESTDIR = release

@@ -20,10 +20,6 @@ MT.DataLayer.prototype.jcalf = function(host, port, user, pwd)
     this.pwd = pwd;
     this.layerName = "JCalf: " + host;
     this.lastUpdate = +new Date();
-
-    BRIDGE.databaseConnected.connect(this.maybeCreateLayer.bind(this));
-    BRIDGE.error.connect(MT.Dom.showMessage);
-    BRIDGE.connectDatabase(host,port,user,pwd);
 };
 
 MT.DataLayer.prototype.remove = function(){
@@ -35,8 +31,6 @@ MT.DataLayer.prototype.maybeCreateLayer = function(status)
     if (status === true)
     {
         console.log("Setting up layer");
-        BRIDGE.exposureUpdated.connect(this.addRiskMarker.bind(this));
-        BRIDGE.workFinished.connect(this.processView.bind(this));
         // Connect map move events to updating jcalf layers
         var self = this;
         //this.mapCt._map.on('moveend', function(){self.update()});
@@ -75,7 +69,6 @@ MT.DataLayer.prototype.update = function(){
         this.mapCt.disable();
         var bounds = this.mapCt._map.getBounds();
         this.clusterLayer.RemoveMarkers();
-        BRIDGE.refreshExposures(bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth());
     }
 };
 
@@ -126,27 +119,24 @@ MT.DataLayer.prototype.showLoadingStats = function(loaded, skipped)
                    });
 };
 
-MT.CsvLayer = function(mapCt, path)
+MT.CsvLayer = function(layerName, mapCt)
 {
     this.mapCt = mapCt;
     this.layerName = "unknown";
-    this.layerName = path.split('\\').pop().split('/').pop();
+    this.layerName = layerName;
     this.createLayer(true);
-    BRIDGE.loadFile();
-
 };
 
 MT.CsvLayer.prototype = new MT.DataLayer();
 MT.CsvLayer.prototype.constructor = MT.CsvLayer;
 
+MT.CsvLayer.prototype.addToMap = function()
+{
+    this.mapCt.addOverlay(this.clusterLayer, this.layerName);
+};
+
 MT.CsvLayer.prototype.createLayer = function(status)
 {
-    // Connect signals
-    BRIDGE.exposureUpdated.connect(this.addRiskMarker.bind(this));
-    BRIDGE.workFinished.connect(this.processView.bind(this));
-    BRIDGE.markerLoadingStats.connect(this.showLoadingStats.bind(this));
-
     this.clusterLayer = new PruneClusterForLeaflet(); // The marker cluster layer
-    this.mapCt.addOverlay(this.clusterLayer, this.layerName);
     //this.addClusterSizeWidget();
 };
