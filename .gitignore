@@ -12,3 +12,5 @@ docs/build
 Makefile
 Makefile.*
 node_modules
+test_data/
+resources/mapthing/dist
