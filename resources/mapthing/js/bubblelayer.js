@@ -1,5 +1,3 @@
-// global namespace
-var MT = MT || {};
 /**
   * Creates a bubble plot scaled and coloured by the value given to each bubble.
   * Usage:

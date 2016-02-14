@@ -12,6 +12,17 @@
 // global namespace
 var MT = MT || {};
 
+MT._load_config = function(path, callback){
+
+    $.ajax({
+                url: path,
+                cache: true,
+                success: function(data) {
+                    callback(data);
+                }
+            });
+};
+
 
 MT.Wms = {
     capabilities: function(url,callback){
@@ -102,7 +113,6 @@ MT.MapController = function (id){
 
     this.overLays = {}; // Holds any overlay layers added
     this.jcalfLayers = [];
-    //var tonerLite = new L.StamenTileLayer("toner-lite");
     var jbaBasemap = L.tileLayer("https://api.mapbox.com/v4/ianmillinship.8850fe41/{z}/{x}/{y}.png256?access_token=pk.eyJ1IjoiaWFubWlsbGluc2hpcCIsImEiOiJjaWg0eWx6OGwwMHVua3JrcjU1ZnA4bjFlIn0.mcnkt1qUDw7cH0cmhxcZ8w",
                                  {
                                     attribution: "&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
@@ -116,6 +126,11 @@ MT.MapController = function (id){
                                  {
                                     attribution: "&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
                                  });
+
+    var streetviewBasemap = L.tileLayer("http://os.openstreetmap.org/sv/{z}/{x}/{y}.png", {
+                                         attribution: "Contains Ordnance Survey Data © Crown copyright and database right 2010"
+                                        });
+
     this.geocoder = new google.maps.Geocoder();
 
     // initialise the map
@@ -135,9 +150,10 @@ MT.MapController = function (id){
 
     // Add a layer control with the base layers
     var baseLayers = {
-      "jba-rml": jbaBasemap,
-      "satellite": satBasemap,
-      "streets-satellite": streetSatBasemap,
+      "JBA RML": jbaBasemap,
+      "Satellite": satBasemap,
+      "Satellite (streets)": streetSatBasemap,
+      "OS Streetview": streetviewBasemap
     };
 
 
@@ -214,9 +230,6 @@ MT.MapController.prototype.addWmsOverlay = function (host, layerName, displayNam
         if ($("wms-host-select").text().indexOf("JBA") > -1)
             attr = "&copy 2015 JBA Risk Management Ltd";
 
-
-    console.log(host);
-    console.log(layerName);
     var layer = L.tileLayer.wms(host,
         {
         maxZoom: 30,
@@ -226,8 +239,6 @@ MT.MapController.prototype.addWmsOverlay = function (host, layerName, displayNam
         version: '1.1.0',
         attribution: attr
     });
-
-
 
     this.overLays[displayName] = layer;
     this._map.addLayer(layer);

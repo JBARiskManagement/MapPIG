@@ -78,6 +78,9 @@ MainWindow::MainWindow(QWidget *parent)
 
     setCentralWidget(splitter);
 
+    // Shortcut for fullscreen mode
+    QShortcut *fullscreenShrt = new QShortcut(QKeySequence("F11"), this);
+
     connect(webpage->mainFrame(), SIGNAL(javaScriptWindowObjectCleared()), this, SLOT(addJsObject()));
     connect(webpage, &QWebPage::loadFinished, this, &MainWindow::loadPlugins);
     connect(bridge, &Bridge::printRequest, this, &MainWindow::frameToImage);
@@ -86,6 +89,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(mtUtil, &MapThingUtil::workStarted, this, &MainWindow::showProgressBar);
     connect(mtUtil, &MapThingUtil::workFinished, bridge, &Bridge::workFinished);
     connect(mtUtil, &MapThingUtil::workFinished, this, &MainWindow::resetStatusBar);
+    connect(fullscreenShrt, &QShortcut::activated, this, &MainWindow::toggleFullScreen);
 
     // set up the HTML UI
     showMap();
@@ -94,6 +98,16 @@ MainWindow::MainWindow(QWidget *parent)
 MainWindow::~MainWindow()
 {
     workerThread->deleteLater();
+}
+
+void MainWindow::toggleFullScreen()
+{
+    if (this->isFullScreen()){
+        this->setWindowState(Qt::WindowNoState);
+    }
+    else {
+        this->setWindowState(Qt::WindowFullScreen);
+    }
 }
 
 void MainWindow::addJsObject()

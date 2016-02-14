@@ -1,6 +1,3 @@
-// global namespace
-var MT = MT || {};
-
 /*
  * DataLayer
  *      A cluster layer whose markers can be defined by exposures from a JCalf database

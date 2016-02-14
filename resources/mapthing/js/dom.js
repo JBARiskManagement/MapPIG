@@ -3,9 +3,6 @@
 *
 */
 
-// global namespace
-var MT = MT || {};
-
 MT.PluginGui = function()
 {
     this._elements = [];
@@ -27,17 +24,17 @@ MT.PluginGui = function()
  * @param {Object} [data] contains the data for the new Panel:
  * @param {String} [data.title] the title for the new panel
  * @param {String} [data.id] the ID for the new Panel, must be unique for the whole page
+ * @param {HTMLString} {DOMnode} [data.content] content of the panel, as HTMLstring or DOM node
  * @param {String} [data.position='top'] where the tab will appear:
  *                                       on the top or the bottom of the sidebar. 'top' or 'bottom'
  * @param {HTMLString} {DOMnode} [data.tab]  content of the tab item, as HTMLstring or DOM node
- * @param {HTMLString} {DOMnode} [data.pane] content of the panel, as HTMLstring or DOM node
  */
 MT.PluginGui.prototype.sidebarPanel = function(data)
 {
     var panel = MT.Dom._makeSidebarPanel(data.title, data.id+"-panel");
     this._elements.push(data.id+"-panel");
 
-    panel.append(data.pane);
+    panel.append(data.content);
     data.pane = panel[0];
 
     MT.Dom._addSidebarPanel(data);
@@ -46,10 +43,15 @@ MT.PluginGui.prototype.sidebarPanel = function(data)
 /**
  * Create a modal dialog
  *
- *
+ *  @param {bool} [data.full-width] If true, the modal will scale to the width of the container
+ *  @param {string} [data.id] Id of the modal
+ *  @param {string} [data.title] Title of the modal window
+ *  @param {HTMLString} {DOMNode} [data.body] Content of the modal body
+ *  @param {HTMLString} {DOMNode} [data.footer] Content of the modal footer
  */
 MT.PluginGui.prototype.modal = function(data)
 {
+
 
 };
 
@@ -258,5 +260,4 @@ MT.Dom = {
         });
 
     }
-
 };

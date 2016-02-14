@@ -11,6 +11,9 @@ QT       += sql
 
 greaterThan(QT_MAJOR_VERSION, 4): QT += widgets
 
+# Build javascript using grunt
+GRUNT.commands = grunt
+
 TARGET = MapThing
 TEMPLATE = app
 
@@ -91,7 +94,6 @@ DISTFILES += \
     ../../resources/mapthing/dist/mapthing.js \
     ../../resources/mapthing/js/bubblelayer.js \
     ../../resources/mapthing/js/dom.js \
-    ../../resources/mapthing/js/jcalflayer.js \
     ../../resources/mapthing/js/layerpanel.js \
     ../../resources/mapthing/js/leaflet-legendcontrol.js \
     ../../resources/mapthing/js/map.js \
@@ -101,7 +103,13 @@ DISTFILES += \
     ../../resources/mapthing/css/main.css \
     ../../resources/mapthing/dist/mapthing.min.css.map \
     ../../resources/mapthing/dist/mapthing.min.js.map \
-    ../../resources/mapthing/js/tour.js
+    ../../resources/mapthing/js/tour.js \
+    ../../resources/mapthing/templates/modal.tpl \
+    ../../resources/mapthing/templates/templates.js \
+    ../../resources/mapthing/conf/baselayers.json \
+    ../../resources/mapthing/templates/modal.handlebars \
+    ../../resources/mapthing/conf/wms.json \
+    ../../resources/mapthing/js/datalayer.js
 
 
 Release:DESTDIR = release

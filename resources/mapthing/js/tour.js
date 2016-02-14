@@ -1,6 +1,4 @@
-// Instance the tour
-var MT = MT || {};
-
+// Interactive tour/demo of MapThing
 MT.tour = new Tour({
   backdrop: false,
   steps: [

@@ -22,6 +22,7 @@ public:
     ~MainWindow();
 
 public slots:
+    void toggleFullScreen();
     void toggleInspector();
     void showProgress(int percent);
     void resetStatusBar();

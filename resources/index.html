@@ -199,6 +199,7 @@
     </div>
 
     <!-- UI libs -->
+    <script type="text/javascript" src='vendors/js/handlebars.runtime-v4.0.5.js'></script>
     <script type="text/javascript" src='vendors/js/jquery-1.11.3.min.js'></script>
     <script type="text/javascript" src='vendors/bootstrap/js/bootstrap.js'></script>
     <script type="text/javascript" src="vendors/bootstrap-tour/js/bootstrap-tour.min.js"></script>
@@ -206,23 +207,22 @@
     <script type="text/javascript" src='vendors/js/bootstrap-select.min.js'></script>
     <script type="text/javascript" src='vendors/jquery-loading-overlay/loadingoverlay.min.js'></script>
 
-    <!-- Mapping libs -->
+    <!-- Leaflet & Leaflet UI libs -->
     <script type="text/javascript" src='vendors/Leaflet/leaflet.js'></script>
     <script type="text/javascript" src='vendors/js/leaflet-wms-getlegendgraphic.js'></script>
     <script type="text/javascript" src="vendors/PruneCluster/PruneCluster.min.js"></script>
-    <script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
     <script type="text/javascript" src="vendors/L.Loading/Control.Loading.js"></script>
     <script type="text/javascript" src='vendors/js/leaflet-search.src.js'></script>
+    <script type="text/javascript" src='vendors/js/leaflet-sidebar.js'></script>
+    <script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
 
     <!-- Chart libs -->
     <script type="text/javascript" src='vendors/plotly/plotly.min.js'></script>
 
-    <!-- Sidebar -->
-    <script type="text/javascript" src='vendors/js/leaflet-sidebar.js'></script>
-
     <!--Always ensure our own JS is loaded last so it has access to the above libs -->
     <script type="text/javascript" src='mapthing/dist/mapthing.min.js'></script>
 
+    <!-- Initialise the UI -->
     <script type="text/javascript">
         $(document).ready(initMap);
     </script>
