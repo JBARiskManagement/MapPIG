@@ -1,12 +1,16 @@
-<div id={{id}} class={{class}} tabindex="-1">
-    <div class="modal-header">
-      <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-      <h3>{{title}}</h3>
-    </div>
-    <div class="modal-body">
-      {{content}}
-    </div>
-    <div class="modal-footer">
-      {{footer}}
+ï»¿<div id="{{id}}" class="{{class}}" role="dialog" tabindex="-1">
+    <div class="modal-dialog"  role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+              <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+              <h3>{{title}}</h3>
+            </div>
+            <div class="modal-body">
+              {{{body}}}
+            </div>
+            <div class="modal-footer">
+              {{{footer}}}
+            </div>
+        </div>
     </div>
 </div>

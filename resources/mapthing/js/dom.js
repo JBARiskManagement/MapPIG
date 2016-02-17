@@ -41,9 +41,12 @@ MT.PluginGui.prototype.sidebarPanel = function(data)
 };
 
 /**
- * Create a modal dialog
+ * Create a modal dialog. The modal can be shown by calling `modal` on the return element,
+ * e.g.:
+ *    var mymodal  = pluginGui.modal(data);
+ *    mymodal.modal();
  *
- *  @param {bool} [data.full-width] If true, the modal will scale to the width of the container
+ *  @param {bool} [data.fullwidth] If true, the modal will scale to the width of the container
  *  @param {string} [data.id] Id of the modal
  *  @param {string} [data.title] Title of the modal window
  *  @param {HTMLString} {DOMNode} [data.body] Content of the modal body
@@ -51,8 +54,25 @@ MT.PluginGui.prototype.sidebarPanel = function(data)
  */
 MT.PluginGui.prototype.modal = function(data)
 {
+    if (data.fullwidth)
+    {
+        data.class="modal container fade";
+    }
+    else
+    {
+        data.class="modal fade";
+    }
 
+    var html = MT.templates.modal(data);
 
+    // Record the modal id in the elements to remove on plugin exit
+    this._elements.push(data.id);
+
+    // Append the modal to the main page
+    $("#container").append(html);
+
+    // Return the dom node
+    return $("#"+data.id);
 };
 
 

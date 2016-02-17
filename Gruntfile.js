@@ -45,7 +45,7 @@ module.exports = function(grunt) {
             },
     jshint: {
               // define the files to lint
-              files: ['gruntfile.js', 'resources/mapthing/js/*.js'],
+              files: ['gruntfile.js', 'resources/mapthing/js/*.js', '!resources/mapthing/js/templates.js'],
               // configure JSHint (documented at http://www.jshint.com/docs/)
               options: {
                   // more options here if you want to override JSHint defaults
@@ -56,12 +56,20 @@ module.exports = function(grunt) {
                 }
               }
             },
-    handlebars: { files: {
-                        'resources/mapthing/js/templates.js': ['resources/mapthing/templates/*.handlebars']
-                    },
-                   options: {
-                       namespace: "MT.Templates"
-                   }                       
+    handlebars: { compile: {
+                    files: {
+                                'resources/mapthing/js/templates.js': ['resources/mapthing/templates/*.handlebars']
+                            },
+                    options: {
+                                namespace: "MT.templates",
+                                processName: function(filePath) {
+                                    console.log(filePath);
+                                    var pieces = filePath.split('/');
+                                    return pieces[pieces.length - 1].split('.')[0];
+                                  }   
+                            },
+                        
+                    }                   
                 }
     
   });
