@@ -14,10 +14,13 @@
         <link href="vendors/PruneCluster/LeafletStyleSheet.css" rel='stylesheet' />
         <link href='vendors/L.Loading/Control.Loading.css' rel='stylesheet' />
         <link href='vendors/bootstrap/css/bootstrap.css' rel='stylesheet' />
+        <link href='vendors/bootstrap-modal/css/bootstrap-modal-bs3patch.css' rel='stylesheet' />
+        <link href='vendors/bootstrap-modal/css/bootstrap-modal.css' rel='stylesheet' />
         <link href="vendors/bootstrap-tour/css/bootstrap-tour.min.css" rel="stylesheet">
         <link href='vendors/css/bootstrap-select.min.css' rel='stylesheet' />
         <link href='vendors/css/leaflet-sidebar.css' rel='stylesheet' />
         <link href="vendors/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
+        <link href="vendors/jquery-ui-1.11.4/jquery-ui.min.css" rel="stylesheet">
         <link href='mapthing/css/leaflet-legendcontrol.css' rel='stylesheet' />
         <link href='mapthing/css/leaflet-search.src.css' rel='stylesheet' />
         <link href='mapthing/dist/mapthing.min.css' rel='stylesheet' />
@@ -26,21 +29,6 @@
     
     <!--Main Window-->
      <div id="container">
-
-        <!-- Modal popups -->
-
-        <div class="modal fade" id="modalWindow" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" >
-          <div class="modal-dialog"  role="document">
-            <div class="modal-content">
-              <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title" id="modalTitle"></h4>
-              </div>
-              <div class="modal-body">
-              </div>
-            </div>#c
-          </div>
-        </div>
 
       <!-- The sidebar -->
       <div id="sidebar" class="sidebar collapsed">
@@ -201,11 +189,14 @@
     <!-- UI libs -->
     <script type="text/javascript" src='vendors/js/handlebars.runtime-v4.0.5.js'></script>
     <script type="text/javascript" src='vendors/js/jquery-1.11.3.min.js'></script>
+    <script type="text/javascript" src='vendors/jquery-ui-1.11.4/jquery-ui.min.js'></script>
     <script type="text/javascript" src='vendors/bootstrap/js/bootstrap.js'></script>
     <script type="text/javascript" src="vendors/bootstrap-tour/js/bootstrap-tour.min.js"></script>
     <script type="text/javascript" src='vendors/js/bootbox.min.js'></script>
     <script type="text/javascript" src='vendors/js/bootstrap-select.min.js'></script>
     <script type="text/javascript" src='vendors/jquery-loading-overlay/loadingoverlay.min.js'></script>
+    <script type="text/javascript" src='vendors/bootstrap-modal/js/bootstrap-modalmanager.js'></script>
+    <script type="text/javascript" src='vendors/bootstrap-modal/js/bootstrap-modal.js'></script>
 
     <!-- Leaflet & Leaflet UI libs -->
     <script type="text/javascript" src='vendors/Leaflet/leaflet.js'></script>

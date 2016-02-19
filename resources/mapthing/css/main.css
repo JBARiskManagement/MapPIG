@@ -21,7 +21,7 @@ input[type="radio"], input[type="checkbox"] {
 #map {
   width: auto;
   height: 100%;
-  box-shadow: 0 0 10px rgba(0,0,0,0.5);
+  /*box-shadow: 0 0 10px rgba(0,0,0,0.5);*/
   cursor: 'grab';
 }
 
@@ -88,6 +88,7 @@ label {font-weight: normal}
     pointer-events:none;
 }
 
+/*
 .progress {
     z-index: 1001;
     position: relative;
@@ -101,60 +102,16 @@ label {font-weight: normal}
     background-color: #e98300;
     color: #595959;
 }
-
+*/
 .loadingoverlay {
     z-index: 1002;
 }
 
-
-/* For controlling cluster size. This div will get added dynamically when jcalf layers are added */
-div#size {
-    position: absolute;
-    left: 1em;
-    top: 5em;
-    background: white;
-    color: #595959;
-    padding: 0.4em;
-    z-index: 1000;
-    border-radius: 4px;
-}
-
-/* Appearance of cluster size slider */
-input[type=range]{
-    -webkit-appearance: none;
-}
-
-input[type=range]::-webkit-slider-runnable-track {
-    width: 300px;
-    height: 5px;
-    background: #ddd;
-    border: none;
-    border-radius: 3px;
-}
-
-input[type=range]::-webkit-slider-thumb {
-    -webkit-appearance: none;
-    border: none;
-    height: 16px;
-    width: 16px;
-    border-radius: 50%;
-    background: goldenrod;
-    margin-top: -4px;
-}
-
-input[type=range]:focus {
-    outline: none;
-}
-
-input[type=range]:focus::-webkit-slider-runnable-track {
-    background: #ccc;
-}
-
-
-
+/*
 .progress-bar-full {
   width: 100%;
 }
+*/
 
 .leaflet-control-layers {
   overflow: auto;
@@ -188,11 +145,24 @@ input[type=range]:focus::-webkit-slider-runnable-track {
     background-image: url("../img/blank.png");
 }
 
+
+/* MODALS */
 /* Ensure that modal dialogs are on top */
 .bootbox.modal > .modal-dialog {
   z-index: 2000 !important;
 }
 
+.ui-draggable-handle {
+    cursor: move;
+}
+
+/* CSS to improve draggable modal speed */
+.modal.fade.ui-draggable-dragging {
+    -moz-transition: none;
+    -o-transition: none;
+    -webkit-transition: none;
+    transition: none;
+}
 
 @media (max-width: 992px) {
   .navbar .navbar-brand {

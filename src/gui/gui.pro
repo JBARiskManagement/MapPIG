@@ -126,4 +126,14 @@ DISTFILES += \
     ../../resources/vendors/css/bootstrap-select.css.map \
     ../../resources/vendors/js/bootstrap-select.js.map \
     ../../resources/vendors/PruneCluster/PruneCluster.js.map \
-    ../../resources/index.html
+    ../../resources/index.html \
+    ../../resources/vendors/bootstrap-modal/js/bootstrap-modal.js \
+    ../../resources/vendors/bootstrap-modal/js/bootstrap-modalmanager.js \
+    ../../resources/vendors/jquery-ui-1.11.4/jquery-ui.min.js \
+    ../../resources/vendors/bootstrap-modal/css/bootstrap-modal-bs3patch.css \
+    ../../resources/vendors/bootstrap-modal/css/bootstrap-modal.css \
+    ../../resources/vendors/jquery-ui-1.11.4/jquery-ui.min.css \
+    ../../resources/vendors/jquery-ui-1.11.4/jquery-ui.structure.css \
+    ../../resources/vendors/jquery-ui-1.11.4/jquery-ui.structure.min.css \
+    ../../resources/vendors/jquery-ui-1.11.4/jquery-ui.theme.css \
+    ../../resources/vendors/jquery-ui-1.11.4/jquery-ui.theme.min.css

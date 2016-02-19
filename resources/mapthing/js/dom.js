@@ -47,6 +47,7 @@ MT.PluginGui.prototype.sidebarPanel = function(data)
  *    mymodal.modal();
  *
  *  @param {bool} [data.fullwidth] If true, the modal will scale to the width of the container
+ *  @param {bool} [data.draggable] If true, the modal will be draggable
  *  @param {string} [data.id] Id of the modal
  *  @param {string} [data.title] Title of the modal window
  *  @param {HTMLString} {DOMNode} [data.body] Content of the modal body
@@ -63,16 +64,26 @@ MT.PluginGui.prototype.modal = function(data)
         data.class="modal fade";
     }
 
+    if (data.draggable)
+    {
+        data.class += " modal-draggable";
+    }
+
     var html = MT.templates.modal(data);
 
     // Record the modal id in the elements to remove on plugin exit
     this._elements.push(data.id);
 
     // Append the modal to the main page
-    $("#container").append(html);
+    $("body").append(html);
 
     // Return the dom node
-    return $("#"+data.id);
+    var modal = $("#"+data.id);
+    if (data.draggable)
+    {
+        modal.draggable({handle: ".modal-header"});
+    }
+    return modal;
 };
 
 
@@ -156,43 +167,43 @@ MT.Dom = {
         $(selector).LoadingOverlay("hide");
     },
 
-    makePluginSidebarUi: function(name){
-        var header = $('#sb-plugin-header').html();
-        MT.header = header;
-        $('#sb-plugin-header').html(name + '<div class="sidebar-close"><i class="fa fa-caret-left"></i></div>');
+//    makePluginSidebarUi: function(name){
+//        var header = $('#sb-plugin-header').html();
+//        MT.header = header;
+//        $('#sb-plugin-header').html(name + '<div class="sidebar-close"><i class="fa fa-caret-left"></i></div>');
 
-        var uiArea = $('#sb-plugin-area');
-        var originalState = uiArea.contents();
-        originalState.detach();
+//        var uiArea = $('#sb-plugin-area');
+//        var originalState = uiArea.contents();
+//        originalState.detach();
 
-        var exitBtn = $('<button/>',
-                        {
-                            text: 'Exit',
-                            id: 'plugin-exit-btn',
-                            class: 'btn btn-default',
-                            click: function(){
-                                uiArea.empty();
-                                uiArea.append(originalState);
-                                $('#sb-plugin-header').html(header);
-                            }
-                        });
-        var hr = $('<hr>');
+//        var exitBtn = $('<button/>',
+//                        {
+//                            text: 'Exit',
+//                            id: 'plugin-exit-btn',
+//                            class: 'btn btn-default',
+//                            click: function(){
+//                                uiArea.empty();
+//                                uiArea.append(originalState);
+//                                $('#sb-plugin-header').html(header);
+//                            }
+//                        });
+//        var hr = $('<hr>');
 
-        uiArea.append(exitBtn);
-        uiArea.append(hr);
+//        uiArea.append(exitBtn);
+//        uiArea.append(hr);
 
-        return uiArea;
-    },
+//        return uiArea;
+//    },
 
-    makeModalWindow: function(name, contents){
-        var modal = $("#modalWindow");
-        modal.find('.modal-title').text(name);
+//    makeModalWindow: function(name, contents){
+//        var modal = $("#modalWindow");
+//        modal.find('.modal-title').text(name);
 
-        modal.find('.modal-body').html(contents);
+//        modal.find('.modal-body').html(contents);
 
-        modal.modal();
-        return modal;
-    },
+//        modal.modal();
+//        return modal;
+//    },
 
 
     /**
