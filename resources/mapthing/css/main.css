@@ -42,6 +42,17 @@ input[type="radio"], input[type="checkbox"] {
     background-color: rgba(233,131,0,0.5);
 }
 
+
+/* Plugin launcher sidebr */
+#plugin-launchers {
+  padding: 10px;
+}
+
+#plugin-launchers > button{
+    margin-bottom: 10px;
+    border-radius:5px !important;
+}
+
 /* Ensure dropdown menus never exceed the sidebar width */
 .dropdown-menu {
     width: 100%;

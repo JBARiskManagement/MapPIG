@@ -14,8 +14,11 @@ Bridge::~Bridge()
 
 void Bridge::showOpenFileDialog(){
     lastFile = QFileDialog::getOpenFileName(0, tr("Open File"), lastDir.absolutePath());
-    lastDir = QFileInfo(lastFile).absoluteDir();
-    msgSpan.setPlainText(lastFile);
+    if (!lastFile.isNull())
+    {
+        lastDir = QFileInfo(lastFile).absoluteDir();
+        msgSpan.setPlainText(lastFile);
+    }
 }
 
 void Bridge::showSaveFileDialog(){

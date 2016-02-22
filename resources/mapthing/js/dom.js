@@ -167,51 +167,12 @@ MT.Dom = {
         $(selector).LoadingOverlay("hide");
     },
 
-//    makePluginSidebarUi: function(name){
-//        var header = $('#sb-plugin-header').html();
-//        MT.header = header;
-//        $('#sb-plugin-header').html(name + '<div class="sidebar-close"><i class="fa fa-caret-left"></i></div>');
-
-//        var uiArea = $('#sb-plugin-area');
-//        var originalState = uiArea.contents();
-//        originalState.detach();
-
-//        var exitBtn = $('<button/>',
-//                        {
-//                            text: 'Exit',
-//                            id: 'plugin-exit-btn',
-//                            class: 'btn btn-default',
-//                            click: function(){
-//                                uiArea.empty();
-//                                uiArea.append(originalState);
-//                                $('#sb-plugin-header').html(header);
-//                            }
-//                        });
-//        var hr = $('<hr>');
-
-//        uiArea.append(exitBtn);
-//        uiArea.append(hr);
-
-//        return uiArea;
-//    },
-
-//    makeModalWindow: function(name, contents){
-//        var modal = $("#modalWindow");
-//        modal.find('.modal-title').text(name);
-
-//        modal.find('.modal-body').html(contents);
-
-//        modal.modal();
-//        return modal;
-//    },
-
-
     /**
     * Adds a button to the 'plugin' sidebar with the name of this plugin
     */
     addPluginLauncher: function(pluginName, setupFunc, description){
         // Create an id for the launcher button
-        var id = pluginName + 'Launch';
+        var id = pluginName + 'launch';
 
         // Get the JS function which sets up the UI. The function may be namespaced, so
         // we can split the function string on the dot separator and pull out each object in turn
@@ -234,7 +195,7 @@ MT.Dom = {
                            title: description
                        });
         // Get the area in which to create the plugin launcher button
-        $("#sb-plugin-area").append(button);
+        $("#plugin-launchers").append(button);
     },
 
     addFileOpenForm: function(id)
@@ -279,10 +240,12 @@ MT.Dom = {
 
     },
 
+    /*
+     * Show a file browser dialog using the QT Api.
+     * This sidesteps the issue of webkit obscuring filepaths using its' native API
+     */
     addFileOpenHandler: function(buttonId, inputId){
-        console.log("file open handler " + buttonId);
         $('#'+buttonId).click(function(){
-            console.log(buttonId + " was clicked");
             // Connect the button event to the Qt bridge object in order to display a file browser widget/
             // We dont do this in javascript as webkit purposefully hides the file path
             BRIDGE.connectToPathField(document.getElementById(inputId));

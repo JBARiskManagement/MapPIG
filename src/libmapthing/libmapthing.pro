@@ -3,7 +3,14 @@
 # Project created by QtCreator 2015-12-21T14:32:52
 #
 #-------------------------------------------------
+CONFIG(debug, debug|release) {
+DESTDIR = ../../../bin
 
+}
+CONFIG(release, debug|release) {
+DESTDIR = ../../../bin
+
+}
 
 QT       += core gui
 QT       += sql

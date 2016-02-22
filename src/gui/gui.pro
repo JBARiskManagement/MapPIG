@@ -37,8 +37,8 @@ RESOURCES += \
     resources.qrc
 
 INCLUDEPATH += ../libmapthing/
-Release:LIBS += -L../libmapthing/release -lmapthing
-Debug:LIBS += -L../libmapthing/debug -lmapthing
+Release:LIBS += -L../../../bin -lmapthing
+Debug:LIBS += -L../../../bin -lmapthing
 
 DISTFILES += \
     ../../resources/mapthing/js/bubblelayer.js \
