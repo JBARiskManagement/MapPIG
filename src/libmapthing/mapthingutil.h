@@ -14,8 +14,10 @@
 #define valid_digit(c) ((c) >= '0' && (c) <= '9')
 double fatof (const char *p);
 
+const QString CODEPOINT("codepoint.sqlite");
+
 //typedef void (*CsvCallback)(char **fields, int numFields, int index);
-typedef std::function<void(char **fields, int numFields, int index) > CsvCallback;
+//typedef std::function<void(char **fields, int numFields, int index) > CsvCallback;
 /**
  * @brief The DataRequests class
  *          Handles requests for JCALF data
@@ -27,9 +29,11 @@ public:
     MapThingUtil(QObject *parent = 0);
     ~MapThingUtil();
     static MapThingUtil *instance();
+    void postcodeToPoint(QString code, double *lat, double *lng);
     //QSqlDatabase jcalfDb;
     //Portfolio ptf;
     void loadCsv(QString fpath);
+
 
 signals:
     //void riskUpdated(double lat, double lng, double tiv);

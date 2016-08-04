@@ -221,17 +221,25 @@ L.Control.Sidebar = L.Control.extend({
             // pane is given as HTML string
             pane = L.DomUtil.create('DIV', 'sidebar-pane', this._paneContainer);
             pane.innerHTML = data.pane;
+            pane.id = data.id;
         } else {
             // pane is given as DOM object
             pane = data.pane;
             this._paneContainer.appendChild(pane);
+            if (typeof pane.id == "undefined")
+            {
+                pane.id = data.id;
+            }
         }
-        pane.id = data.id;
+
 
         // Create tab node
         tab     = L.DomUtil.create('li', '');
+        tab.setAttribute("id", data.id);
+
         tabHref = L.DomUtil.create('a', '', tab);
-        tabHref.href = '#' + data.id;
+        $(tabHref).tooltip({placement: 'right', title: data.title});
+        tabHref.href = '#' + pane.id;
         tabHref.role = 'tab';
         tabHref.innerHTML = data.tab;
         tab._sidebar = this;

@@ -75,6 +75,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     loadStyleSheet();
     setWindowIcon(QIcon(":/logo"));
+    setWindowTitle("Pig.");
 
     setCentralWidget(splitter);
 
@@ -218,7 +219,7 @@ void MainWindow::addPlugin(QObject *plugin)
             if (bmeta->indexOfSignal("workStarted()") && bmeta->indexOfSignal("workFinised()") && bmeta->indexOfSignal("progressUpdated()"))
             {
                 connect(bridge, SIGNAL(workStarted()), this, SLOT(showProgressBar()));
-                connect(bridge, SIGNAL(progressUpdated()), this, SLOT(showProgress()));
+                connect(bridge, SIGNAL(progressUpdated(int)), this, SLOT(showProgress()));
                 connect(bridge, SIGNAL(workFinished()), this, SLOT(resetStatusBar()));
             }
             // Get the bridge object for the plugin and add it to the page

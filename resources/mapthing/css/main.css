@@ -28,7 +28,7 @@ input[type="radio"], input[type="checkbox"] {
 
 /* Sidebar style */
 .sidebar{
-  z-index: 1000;
+  z-index: 999;
 }
 
 .sidebar-header {

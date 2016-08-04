@@ -136,4 +136,5 @@ DISTFILES += \
     ../../resources/vendors/jquery-ui-1.11.4/jquery-ui.structure.css \
     ../../resources/vendors/jquery-ui-1.11.4/jquery-ui.structure.min.css \
     ../../resources/vendors/jquery-ui-1.11.4/jquery-ui.theme.css \
-    ../../resources/vendors/jquery-ui-1.11.4/jquery-ui.theme.min.css
+    ../../resources/vendors/jquery-ui-1.11.4/jquery-ui.theme.min.css \
+    ../../resources/mapthing/templates/switch.handlebars

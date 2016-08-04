@@ -6,6 +6,7 @@
 *
 * http://localhost:8080/geoserver/geotiff_maps/gwc/service/wmts
 * geotiff_maps:River10Q200D_cm_lzw
+*
 */
 
 
@@ -117,6 +118,11 @@ MT.MapController = function (id){
                                  {
                                     attribution: "&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
                                  });
+    var jbaBasemapv2 = L.tileLayer("https://api.mapbox.com/styles/v1/ianmillinship/cio5pt9kg00arbzm1eeun1bxn/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWFubWlsbGluc2hpcCIsImEiOiJjaWg0eWx6OGwwMHVua3JrcjU1ZnA4bjFlIn0.mcnkt1qUDw7cH0cmhxcZ8w",
+                                 {
+                                    attribution: "&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
+                                 });
+
 
     var satBasemap = L.tileLayer("https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiaWFubWlsbGluc2hpcCIsImEiOiJjaWg0eWx6OGwwMHVua3JrcjU1ZnA4bjFlIn0.mcnkt1qUDw7cH0cmhxcZ8w",
                                  {
@@ -150,7 +156,8 @@ MT.MapController = function (id){
 
     // Add a layer control with the base layers
     var baseLayers = {
-      "JBA RML": jbaBasemap,
+      "JBA Risk Management Branded Basemap v1.0": jbaBasemap,
+      "JBA Risk Management Branded Basemap v2.0": jbaBasemapv2,
       "Satellite": satBasemap,
       "Satellite (streets)": streetSatBasemap,
       "OS Streetview": streetviewBasemap

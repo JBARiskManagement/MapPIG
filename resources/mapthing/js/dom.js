@@ -33,10 +33,10 @@ MT.PluginGui.prototype.sidebarPanel = function(data)
 {
     var panel = MT.Dom._makeSidebarPanel(data.title, data.id+"-panel");
     this._elements.push(data.id+"-panel");
+    this._elements.push(data.id);
 
     panel.append(data.content);
     data.pane = panel[0];
-
     MT.Dom._addSidebarPanel(data);
 };
 
@@ -55,6 +55,9 @@ MT.PluginGui.prototype.sidebarPanel = function(data)
  */
 MT.PluginGui.prototype.modal = function(data)
 {
+    // Check the modal doesnt already exist on the DOM and remove if so
+    $("#"+data.id).remove();
+
     if (data.fullwidth)
     {
         data.class="modal container fade";
@@ -86,6 +89,30 @@ MT.PluginGui.prototype.modal = function(data)
     return modal;
 };
 
+/**
+ * Create a modal dialog. The modal can be shown by calling `modal` on the return element,
+ * e.g.:
+ *    var mymodal  = pluginGui.modal(data);
+ *    mymodal.modal();
+ *
+ *  @param {bool} [data.fullwidth] If true, the modal will scale to the width of the container
+ *  @param {bool} [data.draggable] If true, the modal will be draggable
+ *  @param {string} [data.id] Id of the modal
+ *  @param {string} [data.title] Title of the modal window
+ *  @param {HTMLString} {DOMNode} [data.footer] Content of the modal footer
+ *  @param {object} [data.chartData] Chart data
+ * @param {object} [data.chartLayout] Chart layout
+ */
+MT.PluginGui.prototype.modalChart = function(data)
+{
+    var chartId = data.id+"-chart";
+    data.body = "<div id='"+chartId+"'></div>";
+    var mod = this.modal(data);
+
+    Plotly.newPlot(chartId, data.chartData, data.chartLayout, {showLink: false, displaylogo: false});
+    return mod;
+
+};
 
 /**
  * Create a modless dialog
@@ -136,7 +163,6 @@ MT.Dom = {
         MT._mCtrl.sidebar.addPanel(data);
     },
 
-
     hideSidebar: function(){
         $('#sidebar').hide();
     },
@@ -183,19 +209,17 @@ MT.Dom = {
             obj = obj[parts[i]];
         }
         // Create the button
-        var button = $('<button/>', {
-                           text: pluginName,
-                           class: 'btn btn-default',
-                           id: id,
-                           click: function(){ obj();}
-                       });
+        var button = MT.templates.switch({id: id, name:id, label: pluginName});
+        $("#plugin-launchers").append(button);
 
-        button.tooltip({
+        $("#"+id).bootstrapSwitch();
+        $("#"+id).on('switchChange.bootstrapSwitch', function(event, state){obj(state);});
+        $(".bootstrap-switch-id-"+id).tooltip({
                            placement: 'right',
                            title: description
                        });
-        // Get the area in which to create the plugin launcher button
-        $("#plugin-launchers").append(button);
+        console.log($(".bootstrap-switch-id-"+id));
+
     },
 
     addFileOpenForm: function(id)
@@ -217,7 +241,6 @@ MT.Dom = {
                         id: btnId,
                         text: 'Browse...',
                         click: function(){
-                            console.log(btnId + ' was clicked');
                             BRIDGE.connectToPathField(document.getElementById(spanId));
                             BRIDGE.showOpenFileDialog();
 

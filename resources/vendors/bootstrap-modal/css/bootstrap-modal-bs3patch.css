@@ -43,3 +43,10 @@ body.modal-open,
   left: 0;
   z-index: 1040;
 }
+
+.modal.bootbox {
+    border: none;
+    background: none;
+    box-shadow: none;
+    z-index: 1050;
+}
