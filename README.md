@@ -26,23 +26,6 @@ This should scan the `package.json` and install dependencies. The main dependenc
 After installing, try running `grunt` from the command line. It will run a style checker on the mapthing javascript files, compress and minify them creating a 
 `dist` folder in `resources/mapthing`
 
-
-### Building with Qt Creator. 
-
-This is the easy way. Open Qt Creator and select `Load Project`. The project file can be found at `src/cpp/MapThing.pro`.
-You also need to load the libmapthing project (`src/cpp/libmapthing/libmapthing.pro`)
-Under the `Projects` tab, navigate to the build settings for the desired toolchain and check whether a `Custom Process Step: grunt` exists in both the `Debug` and `Release`
-configurations. 
-If not, create a custom process step. The command is `grunt` and the working directory is `../%{buildDir}`. The step should be first. Remember to add this to all configurations
-
-When setup, you should be able to press `Ctrl + Shift + B` to build everything and `F5` to run in debug. 
-
-
-### Building from the command line
-
-A build script is yet to be developerd, although the `Projects` section of Qt Creator gives clues
-as to how MapThing may be built from the command line
-
 ### Running in a browser.
 
 MapThing has very limited functionality in a browser (as there is no local system access and no C++ backend). 
