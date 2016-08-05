@@ -20,9 +20,17 @@ find_package(Qt5Sql REQUIRED)
 include_directories("${PROJECT_SOURCE_DIR}/src/libmapthing")
 include_directories("${PROJECT_SOURCE_DIR}/src/gui")
 
-file (GLOB LIBSOURCES "src/libmapthing/*.cpp")
+# Run grunt to package the javascript before anything else
+add_custom_target(
+    jsTasks
+    COMMAND grunt --gruntfile "${PROJECT_SOURCE_DIR}/Gruntfile.js"    
+)
+
+
+file (GLOB LIBSOURCES "src/libmapthing/*.cpp" "src/libmapthing/*.c")
 add_library(libmapthing ${LIBSOURCES})
 qt5_use_modules(libmapthing Widgets Sql)
+add_dependencies(libmapthing jsTasks)
 
 file (GLOB GUISOURCES "src/gui/*.cpp")
 add_executable(mapthing ${GUISOURCES})
