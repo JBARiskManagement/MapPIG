@@ -2,3 +2,15 @@
 .pro.*
 .smproj
 src/build-*
+build-*
+plugins
+docs/build
+.project
+.pydevproject
+*.pro.user
+*.smproj
+Makefile
+Makefile.*
+node_modules
+test_data/
+resources/mapthing/dist

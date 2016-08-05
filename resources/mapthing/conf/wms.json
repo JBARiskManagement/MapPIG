@@ -1,0 +1,5 @@
+{
+    "JBA Risk Management WMS": "http://10.1.4.51:8001/geoserver/floodmaps/wms",
+    "Environment Agency": "http://www.geostore.com/OGC/OGCInterface?UID=UDATAGOV2011&PASSWORD=datagov2011&INTERFACE=ENVIRONMENT&LC=0",
+    "FEMA": "http://hazards.fema.gov/gis/nfhl/services/public/NFHLWMS/MapServer/WMSServer"
+}
