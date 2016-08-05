@@ -4,6 +4,10 @@ Desktop web map viewer with a flexible extensions framework. MapThing utilizes w
 
 It is written in C++ and javascript and makes use of Qt and Leaflet.
 
+## Goals
+1. Provide a simple and beautiful way in which to connect to WMS/WFS/WMTS/TMS services and visualise data
+2. Provide an API for creating all kinds of visualisations and interactivity through plugins
+3. Bring together web interactivity and desktop processing 
 
 ## Building MapThing.
 
