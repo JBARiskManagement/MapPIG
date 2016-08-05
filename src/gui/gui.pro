@@ -77,7 +77,6 @@ DISTFILES += \
     ../../resources/vendors/plotly/plotly.min.js \
     ../../resources/vendors/PruneCluster/PruneCluster.js \
     ../../resources/vendors/PruneCluster/PruneCluster.min.js \
-    ../../resources/mapthing/conf/baselayers.json \
     ../../resources/mapthing/conf/wms.json \
     ../../resources/vendors/bootstrap/fonts/glyphicons-halflings-regular.eot \
     ../../resources/vendors/bootstrap/fonts/glyphicons-halflings-regular.ttf \
@@ -137,4 +136,5 @@ DISTFILES += \
     ../../resources/vendors/jquery-ui-1.11.4/jquery-ui.structure.min.css \
     ../../resources/vendors/jquery-ui-1.11.4/jquery-ui.theme.css \
     ../../resources/vendors/jquery-ui-1.11.4/jquery-ui.theme.min.css \
-    ../../resources/mapthing/templates/switch.handlebars
+    ../../resources/mapthing/templates/switch.handlebars \
+    ../../resources/mapthing/conf/baselayers.json

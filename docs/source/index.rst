@@ -2,7 +2,7 @@
 
 MapThing
 ========
-MapThing is a simple visualisation tool for JBA map data. It is highly extensible and allows the creation of hybrid
+MapThing is a simple visualisation tool for map data. It is highly extensible and allows the creation of hybrid
 desktop/web mapping applications
 
 Contents
@@ -16,7 +16,7 @@ Contents
 
 Support
 -------
-For feedback and more information, please contact James Ramm: james.ramm@jbarisk.com
+For feedback and more information, please contact James Ramm: jamessramm@gmail.com
 
 Indices and tables
 ------------------

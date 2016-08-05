@@ -111,39 +111,36 @@ MT.getMap = function(){
 MT.MapController = function (id){
 
     if (typeof(id)==='undefined') id = 'map';
+    this.id = id;
 
     this.overLays = {}; // Holds any overlay layers added
     this.jcalfLayers = [];
-    var jbaBasemap = L.tileLayer("https://api.mapbox.com/v4/ianmillinship.8850fe41/{z}/{x}/{y}.png256?access_token=pk.eyJ1IjoiaWFubWlsbGluc2hpcCIsImEiOiJjaWg0eWx6OGwwMHVua3JrcjU1ZnA4bjFlIn0.mcnkt1qUDw7cH0cmhxcZ8w",
-                                 {
-                                    attribution: "&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
-                                 });
-    var jbaBasemapv2 = L.tileLayer("https://api.mapbox.com/styles/v1/ianmillinship/cio5pt9kg00arbzm1eeun1bxn/tiles/{z}/{x}/{y}?access_token=pk.eyJ1IjoiaWFubWlsbGluc2hpcCIsImEiOiJjaWg0eWx6OGwwMHVua3JrcjU1ZnA4bjFlIn0.mcnkt1qUDw7cH0cmhxcZ8w",
-                                 {
-                                    attribution: "&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
-                                 });
-
-
-    var satBasemap = L.tileLayer("https://api.mapbox.com/v4/mapbox.satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiaWFubWlsbGluc2hpcCIsImEiOiJjaWg0eWx6OGwwMHVua3JrcjU1ZnA4bjFlIn0.mcnkt1qUDw7cH0cmhxcZ8w",
-                                 {
-                                    attribution: "&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
-                                 });
-    var streetSatBasemap = L.tileLayer("https://api.mapbox.com/v4/mapbox.streets-satellite/{z}/{x}/{y}.png?access_token=pk.eyJ1IjoiaWFubWlsbGluc2hpcCIsImEiOiJjaWg0eWx6OGwwMHVua3JrcjU1ZnA4bjFlIn0.mcnkt1qUDw7cH0cmhxcZ8w",
-                                 {
-                                    attribution: "&copy; <a href='https://www.mapbox.com/about/maps/'>Mapbox</a> &copy; <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a>"
-                                 });
-
-    var streetviewBasemap = L.tileLayer("http://os.openstreetmap.org/sv/{z}/{x}/{y}.png", {
-                                         attribution: "Contains Ordnance Survey Data © Crown copyright and database right 2010"
-                                        });
-
     this.geocoder = new google.maps.Geocoder();
 
+    // Load the baselayers into an obj
+    MT._load_config("../resources/mapthing/conf/baselayers.json", this.initFromConfig.bind(this));
+
+};
+
+/**
+ * Initialises the map and base layers from the configuration file
+ */
+MT.MapController.prototype.initFromConfig = function(data){
+    this.baseLayers = {};
+    var jsonObj = JSON.parse(data);
+    for (var p in jsonObj){
+        if (jsonObj.hasOwnProperty(p)){
+            if (jsonObj[p].type === "tileLayer"){
+                this.baseLayers[p] = L.tileLayer(jsonObj[p].url, { attribution: jsonObj[p].attribution});
+            }
+        }
+    }
+
     // initialise the map
-    this._map = L.map(id, {
+    this._map = L.map(this.id, {
                       zoom: 13,
                       center: [53.952612,-2.090103],
-                      layers: [jbaBasemap],
+                      layers: [this.baseLayers[Object.keys(this.baseLayers)[0]]],
                       zoomControl: false,
                       attributionControl: true,
                       loadingControl: true
@@ -154,19 +151,12 @@ MT.MapController = function (id){
       position: "bottomright"
     }).addTo(this._map);
 
-    // Add a layer control with the base layers
-    var baseLayers = {
-      "JBA Risk Management Branded Basemap v1.0": jbaBasemap,
-      "JBA Risk Management Branded Basemap v2.0": jbaBasemapv2,
-      "Satellite": satBasemap,
-      "Satellite (streets)": streetSatBasemap,
-      "OS Streetview": streetviewBasemap
-    };
+    // Load basemaps
 
+    this.layerControl = L.control.layerpanel(this.baseLayers, this.overLays, 'sb-layers').addTo(this._map);
 
+    // Create the sidebar
     this.sidebar = L.control.sidebar('sidebar').addTo(this._map);
-    this.layerControl = L.control.layerpanel(baseLayers, this.overLays, 'sb-layers').addTo(this._map);
-
     this.searchControl = new L.Control.Search({
                                                   sourceData: this.googleGeocoding.bind(this),
                                                   formatData: this.formatJSON.bind(this),
@@ -179,6 +169,23 @@ MT.MapController = function (id){
                                                   zoom: 10
                                               });
     this._map.addControl(this.searchControl);
+    MT._load_config("../resources/mapthing/conf/wms.json", this.configWmsHosts.bind(this));
+
+};
+
+MT.MapController.prototype.configWmsHosts = function(data){
+
+    var jsonObj = JSON.parse(data);
+    for (var p in jsonObj){
+        console.log(p);
+        if (jsonObj.hasOwnProperty(p)){
+            $('#wms-host-select')
+                .append($('<option>', {value: jsonObj[p]})
+                .text(p));
+        }
+    }
+    $('#wms-host-select').selectpicker('refresh');
+
 };
 
 MT.MapController.prototype.showSidebarTab = function(id){
@@ -234,8 +241,7 @@ MT.MapController.prototype.addWmsOverlay = function (host, layerName, displayNam
         format = "image/png";
 
     if(typeof attr == 'undefined')
-        if ($("wms-host-select").text().indexOf("JBA") > -1)
-            attr = "&copy 2015 JBA Risk Management Ltd";
+        attr = '';
 
     var layer = L.tileLayer.wms(host,
         {
@@ -324,8 +330,8 @@ function initMap(){
         var user = $("#user").val();
         var pwd = $("#pwd").val();
 
-        var jcalflyr = new MT.DataLayer(mapCtrl);
-        jcalflyr.jcalf(host, port, user, pwd);
+        var datalyr = new MT.DataLayer(mapCtrl);
+        datalyr.jcalf(host, port, user, pwd);
         // connect signals from bridge
     });
 

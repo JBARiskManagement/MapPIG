@@ -75,7 +75,7 @@ MainWindow::MainWindow(QWidget *parent)
 
     loadStyleSheet();
     setWindowIcon(QIcon(":/logo"));
-    setWindowTitle("Pig.");
+    setWindowTitle("MapThing");
 
     setCentralWidget(splitter);
 
