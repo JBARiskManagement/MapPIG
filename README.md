@@ -26,12 +26,15 @@ This should scan the `package.json` and install dependencies. The main dependenc
 After installing, try running `grunt` from the command line. It will run a style checker on the mapthing javascript files, compress and minify them creating a 
 `dist` folder in `resources/mapthing`
 
+### Building With CMake
+Something like:
+
+  cmake -DCMAKE_PREFIX_PATH=/path/to/qt CMakeLists.txt
+
 ### Running in a browser.
 
 MapThing has very limited functionality in a browser (as there is no local system access and no C++ backend). 
 You can open `resources/index.html` in Google Chrome and see the UI. Printing, plugins and loading files are currently not supported in-browser. 
 
 
-### Building With CMake
 
-cmake -DCMAKE_PREFIX_PATH=/path/to/qt CMakeLists.txt
