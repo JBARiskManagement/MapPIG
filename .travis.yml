@@ -5,7 +5,7 @@ dist: trusty
 env:
   global:
     # COVERITY_SCAN_TOKEN
-    - secure: "0Mw1LOu-gmFtMjE-6Zu4Cg"
+    - secure: "bTvPKAEEms+9mUQxffpqdd8s5D5Nvtnxt4jgFepN1yQ4dKp0P9uWd0vKBwPQ/Ve9W9Xb0xs5PkJIAX40vhF6dGPJIvH+Koa84RTfE6pK1INnXmmpdemg/EXrZNKq5nuPN5vGpwIynWA57xFDXwe1b3t+h9F5Vvjzc+xhi3ikB8DmzEY3AfYCqeScGR6WJAzWcpMTWUwvYsmfEHT7DuJV3fQ8ft63uCKh+6CljDi0MTlRII8g5ENmdEDU/kKduc0B2Hi1AIECsKLyWnFj4RTSFMznCMB2zpJal9tf6NLn3qR3bmgvJz2QP/6l+92oTGNM68xKfuVZSLFchyMF8RcSUw1bjn5OI67SskHvyUIdtJe4+IswFe4M6srutPRbo+1tpzh7G5k5vgUTZcvsxtQRf5H4YeqAXQEEBpExZL8saWY09wA+0qctzLgws4dVWaaTDd6s/Baoa1BhxUXx4xdDrVJDUVqzeEY/dSDIamehIuj4JrRN+sx6SnNnjsh5LcwC6CTcSLHgmbbozWr19dbix/rGilWmtOoikcp2sxeE/YI6DF6MHzkfUW849PCHLiXLwr38SfJHaY67+/Qb/IERnLq9ArWAZXWSr9DWXAgpRz5nVRdo3lTnd7P9uZNvZMCHziyMzKEtPP6TFxHtBMvlB4sCFuDlQd6zQruh7yADwL4="
 
 compiler:
   - clang
