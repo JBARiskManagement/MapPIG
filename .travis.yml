@@ -1,0 +1,52 @@
+# Config file for building GeoAlg and running the test suite
+
+language: cpp
+dist: trusty
+
+env:
+  global:
+    # COVERITY_SCAN_TOKEN
+   - secure: "WTqxZidjO2kxRq7xri806B4mD078kw9KAtlbay316amal0UWJKfit64b63tbV08jTdWmAklIC0SMySG9CtJB51Oy8W/GcRdQ1SpaF+rLcMmd2z9cdGmvetGfdj62F+Bea9SM84KFE88KDPIYwetSBYYa+348VumSRgCgMsNFrdVgQNyql2nHMpxxwiQA6adZTUcqozcVdmQbmcWvm3Gj/N5rQcBIyGsVWaC7vBwF0UqoTBTdwRg8bbjbI/KoOPudcmyDKqReMiFtmIoAHK8kUWHDaVby10KNexd4qqdCZ1ZCzyOcQdvPYx3GALfDIX1jJuY31Rf8DIgNn41inV4qf4AyLD+pkoXTy8djraQ0EcS4gM/khFpD5hMC0zO9ezStrv53dLXp86CfTdixYXHDX5sLakz07dvnJGBtvsPA0MTYpYapnWl++ZMZueB3BP0JtrlIAdhLphlHDS5BiGwwIH1MPtbSeWNrmQ54GVhBoWUnzZr2f/7snEtsB4FjQIh9gcH7Ufq2CVe7VIQFdWsy9aITdFY9/viyfCcihoHoeNofBma7sP1arUduBStZbO3Bpf1sAJK3CBabm/cxjqMbmVLCDKCePcIhBz4rY/VIueYEgJd+5vhZ04F4CtMASyvg13SfZzxls7jU7LPbgHEjpaexkPR4ML6eyCKL0eE6kx0="
+
+compiler:
+  - clang
+  - gcc
+  
+before_install:
+  - sudo apt-get --assume-yes update
+  - sudo apt-get --assume-yes install qt5base-dev qt5-qmake qt5base-dev-tools nodejs npm
+
+ install:
+  - npm install
+addons:
+  coverity_scan:
+
+    # GitHub project metadata
+    # ** specific to your project **
+    project:
+      name: JamesRamm/MapThing
+      version: 1.0
+      description: MapThing
+
+    # Where email notification of build analysis results will be sent
+    notification_email: jamessramm@gmail.com
+
+    # Commands to prepare for build_command
+    # ** likely specific to your build **
+    build_command_prepend: cmake CMakeLists.txt
+
+    # The command that will be added as an argument to "cov-build" to compile your project for analysis,
+    # ** likely specific to your build **
+    build_command: make -j4
+
+    # Pattern to match selecting branches that will run analysis. We recommend leaving this set to 'coverity_scan'.
+    # Take care in resource usage, and consider the build frequency allowances per
+    #   https://scan.coverity.com/faq#frequency
+    branch_pattern: master
+
+script:
+    - mkdir _builds
+    - cd _builds
+    - cmake ..
+    - make -j4
+
