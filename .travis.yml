@@ -12,8 +12,9 @@ compiler:
   - gcc
   
 before_install:
-  - sudo apt-get --assume-yes update
-  - sudo apt-get --assume-yes install qtbase5-dev qt5-qmake qtbase5-dev-tools nodejs npm
+  - sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu trusty universe"
+  - sudo add-apt-repository "deb http://archive.ubuntu.com/ubuntu trusty main"
+  - sudo apt-get -qq qt5-default qt5-qmake qtbase5-dev-tools libqt5svg5-dev qttools5-dev qtscript5-dev libqt5webkitwidgets5-dev libqt5webkit5-dev -y
   - npm install
 
 addons:
