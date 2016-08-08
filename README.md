@@ -1,4 +1,4 @@
-# Map Thing
+# Map Thing [![Build Status](https://travis-ci.org/JamesRamm/MapThing.svg?branch=master)](https://travis-ci.org/JamesRamm/MapThing)
 
 Desktop web map viewer with a flexible extensions framework. MapThing utilizes web technology to gear itself toward integration of geovisualisation and statistical analysis. 
 
