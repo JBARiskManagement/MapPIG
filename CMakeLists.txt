@@ -33,7 +33,7 @@ qt5_use_modules(libmapthing Widgets Sql)
 add_dependencies(libmapthing jsTasks)
 
 file (GLOB GUISOURCES "src/gui/*.cpp")
-add_executable(mapthing ${GUISOURCES})
+add_executable(mapthing WIN32 ${GUISOURCES})
 target_link_libraries(mapthing libmapthing)
 qt5_use_modules(mapthing Widgets WebKitWidgets Svg Sql)
 
