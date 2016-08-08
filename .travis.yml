@@ -1,4 +1,4 @@
-# Config file for building GeoAlg and running the test suite
+# Config file for building MapThing
 
 language: cpp
 dist: trusty
