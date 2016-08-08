@@ -1,5 +1,4 @@
-# Config file for building MapThing
-
+# Config file for building MaptThing
 language: cpp
 dist: trusty
 
@@ -18,6 +17,7 @@ before_install:
 
  install:
   - npm install
+  
 addons:
   coverity_scan:
 
