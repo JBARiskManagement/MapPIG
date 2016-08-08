@@ -13,7 +13,7 @@ compiler:
   
 before_install:
   - sudo apt-get --assume-yes update
-  - sudo apt-get --assume-yes install qt5base-dev qt5-qmake qt5base-dev-tools nodejs npm
+  - sudo apt-get --assume-yes install qtbase5-dev qt5-qmake qtbase5-dev-tools nodejs npm
   - npm install
 
 addons:
