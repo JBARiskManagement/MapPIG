@@ -1,11 +1,11 @@
-# Config file for building MaptThing
+# Config file for building MapThing
 language: cpp
 dist: trusty
 
 env:
   global:
     # COVERITY_SCAN_TOKEN
-   - secure: "0Mw1LOu-gmFtMjE-6Zu4Cg"
+    - secure: "0Mw1LOu-gmFtMjE-6Zu4Cg"
 
 compiler:
   - clang
@@ -14,13 +14,10 @@ compiler:
 before_install:
   - sudo apt-get --assume-yes update
   - sudo apt-get --assume-yes install qt5base-dev qt5-qmake qt5base-dev-tools nodejs npm
-
- install:
   - npm install
-  
+
 addons:
   coverity_scan:
-
     # GitHub project metadata
     # ** specific to your project **
     project:
