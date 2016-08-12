@@ -1,5 +1,5 @@
 
 build_script:
-    - set PATH=C:\Qt\5.4;%PATH%
+    - set PATH=C:\Qt\5.6;C:\Qt\5.6\msvc2015_64;%PATH%
     - cmake .
     - cmake --build . --config Debug
