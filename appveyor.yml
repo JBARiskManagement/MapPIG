@@ -1,0 +1,4 @@
+
+build_script:
+    - cmake .
+    - cmake --build . --config Debug
