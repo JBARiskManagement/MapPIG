@@ -45,8 +45,6 @@ addons:
     branch_pattern: master
 
 script:
-    - mkdir _builds
-    - cd _builds
-    - cmake ../
+    - cmake .
     - make -j4
 
