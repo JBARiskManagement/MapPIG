@@ -15,6 +15,10 @@ find_package(Qt5WebKitWidgets REQUIRED)
 find_package(Qt5Svg REQUIRED)
 find_package(Qt5Sql REQUIRED)
 
+foreach (dir ${Qt5Widgets_INCLUDE_DIRS})
+  message(${dir})
+endforeach()
+
 include_directories("${PROJECT_SOURCE_DIR}/src/libmapthing")
 include_directories("${PROJECT_SOURCE_DIR}/src/gui")
 

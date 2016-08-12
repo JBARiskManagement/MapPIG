@@ -15,7 +15,7 @@
 #include <QPluginLoader>
 #include <QSplitter>
 //#include <QtPrintSupport/QPrinter>
-#include <QPixMap>
+#include <qpixmap.h>
 #include <QImage>
 #include <QtSvg/QSvgRenderer>
 
