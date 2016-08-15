@@ -6,7 +6,7 @@
         <meta name="viewport" content="width=device-width, initial-scale=1">
         <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
         <meta name="description" content="">
-        <meta name="author" content="james.ramm@jbarisk.com">
+        <meta name="author" content="jamessramm@gmail.com">
         <title>MapThing</title>
 
 
@@ -24,9 +24,9 @@
         <link href='vendors/leaflet-draw/leaflet.draw.css' rel='stylesheet' />
         <link href="vendors/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="vendors/jquery-ui-1.11.4/jquery-ui.min.css" rel="stylesheet">
-        <link href='mapthing/css/leaflet-legendcontrol.css' rel='stylesheet' />
-        <link href='mapthing/css/leaflet-search.src.css' rel='stylesheet' />
-        <link href='mapthing/dist/mapthing.min.css' rel='stylesheet' />
+        <link href='css/leaflet-legendcontrol.css' rel='stylesheet' />
+        <link href='css/leaflet-search.src.css' rel='stylesheet' />
+        <link href='dist/mapthing.min.css' rel='stylesheet' />
     </head>
     <body>
     
@@ -190,7 +190,11 @@
 
     <!-- UI libs -->
     <script type="text/javascript" src='vendors/js/handlebars.runtime-v4.0.5.js'></script>
-    <script type="text/javascript" src='vendors/js/jquery-1.11.3.min.js'></script>
+    <script type="text/javascript">
+        window.$ = window.jQuery = require('./vendors/js/jquery-1.11.3.min.js')
+    </script>
+    
+    
     <script type="text/javascript" src='vendors/jquery-ui-1.11.4/jquery-ui.min.js'></script>
     <script type="text/javascript" src='vendors/bootstrap/js/bootstrap.js'></script>
     <script type="text/javascript" src="vendors/bootstrap-table/bootstrap-table.js"></script>
@@ -218,7 +222,7 @@
     <script type="text/javascript" src='vendors/plotly/plotly.min.js'></script>
 
     <!--Always ensure our own JS is loaded last so it has access to the above libs -->
-    <script type="text/javascript" src='mapthing/dist/mapthing.min.js'></script>
+    <script type="text/javascript" src='dist/mapthing.min.js'></script>
 
     <!-- Initialise the UI -->
     <script type="text/javascript">

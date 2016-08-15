@@ -9,7 +9,6 @@
 *
 */
 
-
 // global namespace
 var MT = MT || {};
 
@@ -118,7 +117,7 @@ MT.MapController = function (id){
     this.geocoder = new google.maps.Geocoder();
 
     // Load the baselayers into an obj
-    MT._load_config("../resources/mapthing/conf/baselayers.json", this.initFromConfig.bind(this));
+    MT._load_config(__dirname + "/conf/conf.json", this.initFromConfig.bind(this));
 
 };
 
@@ -128,10 +127,12 @@ MT.MapController = function (id){
 MT.MapController.prototype.initFromConfig = function(data){
     this.baseLayers = {};
     var jsonObj = JSON.parse(data);
-    for (var p in jsonObj){
-        if (jsonObj.hasOwnProperty(p)){
-            if (jsonObj[p].type === "tileLayer"){
-                this.baseLayers[p] = L.tileLayer(jsonObj[p].url, { attribution: jsonObj[p].attribution});
+    if (jsonObj.hasOwnProperty("base_layers")){
+        for (var p in jsonObj.base_layers){
+            if (jsonObj.base_layers.hasOwnProperty(p)){
+                if (jsonObj.base_layers[p].type === "tileLayer"){
+                    this.baseLayers[p] = L.tileLayer(jsonObj.base_layers[p].url, { attribution: jsonObj.base_layers[p].attribution});
+                }
             }
         }
     }
@@ -169,18 +170,18 @@ MT.MapController.prototype.initFromConfig = function(data){
                                                   zoom: 10
                                               });
     this._map.addControl(this.searchControl);
-    MT._load_config("../resources/mapthing/conf/wms.json", this.configWmsHosts.bind(this));
-
+    if (jsonObj.hasOwnProperty("wms")){
+        this.configWmsHosts(jsonObj.wms);
+    }
 };
 
-MT.MapController.prototype.configWmsHosts = function(data){
+MT.MapController.prototype.configWmsHosts = function(jsonData){
 
-    var jsonObj = JSON.parse(data);
-    for (var p in jsonObj){
+    for (var p in jsonData){
         console.log(p);
-        if (jsonObj.hasOwnProperty(p)){
+        if (jsonData.hasOwnProperty(p)){
             $('#wms-host-select')
-                .append($('<option>', {value: jsonObj[p]})
+                .append($('<option>', {value: jsonData[p]})
                 .text(p));
         }
     }
@@ -292,7 +293,7 @@ MT.MapController.prototype.formatJSON = function(rawjson){
 function createIcon(data, category){
 
     return L.icon({
-        iconUrl: 'mapthing/img/ffa500-marker-32.png',
+        iconUrl: './img/ffa500-marker-32.png',
         iconSize:[32,32],
         iconAnchor: [1,16],
         popupAnchor: [16,0]
@@ -308,7 +309,7 @@ function initMap(){
 
     $.LoadingOverlaySetup({
                         color: "rgba(255,255,255,0.8)",
-                        image: "mapthing/img/big_roller.gif",
+                        image: "img/big_roller.gif",
                         maxSize: "40px"
                           });
 
