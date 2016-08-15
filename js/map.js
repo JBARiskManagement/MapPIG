@@ -1,4 +1,4 @@
-/**
+/**+
 * MapController
 *
 *
@@ -8,6 +8,24 @@
 * geotiff_maps:River10Q200D_cm_lzw
 *
 */
+
+
+// Get the app variable to figure out paths to resources etc
+const app = require('electron').remote.app;
+const appPath = app.getAppPath();
+
+const $ = jQuery = require('jQuery');
+const L = require('leaflet');
+const lload = require('leaflet-loading');
+const lsearch = require('leaflet-search');
+const ldraw = require('leaflet-draw');
+const prunecluster = require(appPath + '/vendors/PruneCluster/PruneCluster.min.js');
+const lwms = require(appPath + '/vendors/js/leaflet-wms-getlegendgraphic.js');
+const lsidebar = require(appPath + '/vendors/js/leaflet-sidebar.js');
+const jqueryloading = require(appPath + '/vendors/jquery-loading-overlay/loadingoverlay.min.js');
+const bootstrap = require("bootstrap");
+const bsSelect = require("bootstrap-select");
+
 
 // global namespace
 var MT = MT || {};
@@ -117,7 +135,7 @@ MT.MapController = function (id){
     this.geocoder = new google.maps.Geocoder();
 
     // Load the baselayers into an obj
-    MT._load_config(__dirname + "/conf/conf.json", this.initFromConfig.bind(this));
+    MT._load_config(appPath + "/conf/conf.json", this.initFromConfig.bind(this));
 
 };
 
@@ -178,7 +196,6 @@ MT.MapController.prototype.initFromConfig = function(data){
 MT.MapController.prototype.configWmsHosts = function(jsonData){
 
     for (var p in jsonData){
-        console.log(p);
         if (jsonData.hasOwnProperty(p)){
             $('#wms-host-select')
                 .append($('<option>', {value: jsonData[p]})
@@ -293,7 +310,7 @@ MT.MapController.prototype.formatJSON = function(rawjson){
 function createIcon(data, category){
 
     return L.icon({
-        iconUrl: './img/ffa500-marker-32.png',
+        iconUrl: appPath + '/img/ffa500-marker-32.png',
         iconSize:[32,32],
         iconAnchor: [1,16],
         popupAnchor: [16,0]
@@ -309,7 +326,7 @@ function initMap(){
 
     $.LoadingOverlaySetup({
                         color: "rgba(255,255,255,0.8)",
-                        image: "img/big_roller.gif",
+                        image: appPath + "/img/big_roller.gif",
                         maxSize: "40px"
                           });
 

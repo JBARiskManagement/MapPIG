@@ -2,6 +2,22 @@
   "name": "mapthing",
   "version": "0.1.0",
   "main": "main.js",
+  "dependencies": {
+    "jquery": ">=1.11.3",
+    "jquery-ui": ">=1.11.4",
+    "bootstrap": ">=3.3.7",
+    "bootstrap-table": "*",
+    "bootstrap-tour": "*",
+    "bootbox": "*",
+    "bootstrap-select": "*",
+    "bootstrap-modal": "*",
+    "bootstrap-switch": "*",
+    "leaflet": "*",
+    "leaflet-loading": "*",
+    "leaflet-search": "*",
+    "leaflet-draw": "*",
+    "plotly.js": ">=1.16.2"  
+  },
   "devDependencies": {
     "grunt": "~0.4.5",
     "handlebars": "~4.0.5",

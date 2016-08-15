@@ -1,4 +1,6 @@
 // Interactive tour/demo of MapThing
+const Tour = require("bootstrap-tour");
+
 MT.tour = new Tour({
   backdrop: false,
   steps: [

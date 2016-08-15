@@ -26,7 +26,7 @@ L.Control.LayerPanel = L.Control.Layers.extend({
     },
 
     addTo: function(map){
-        this.remove();
+        //this.remove();
         this._map = map;
         this._container = this.onAdd(map);
         return this;
