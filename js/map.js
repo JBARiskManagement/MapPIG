@@ -16,15 +16,18 @@ const appPath = app.getAppPath();
 
 const $ = jQuery = require('jQuery');
 const L = require('leaflet');
-const lload = require('leaflet-loading');
-const lsearch = require('leaflet-search');
-const ldraw = require('leaflet-draw');
+require('leaflet-loading');
+require('leaflet-search');
+require('leaflet-draw');
+require(appPath + '/vendors/js/leaflet-sidebar.js');
+require(appPath + '/vendors/js/leaflet-wms-getlegendgraphic.js');
 const prunecluster = require(appPath + '/vendors/PruneCluster/PruneCluster.min.js');
-const lwms = require(appPath + '/vendors/js/leaflet-wms-getlegendgraphic.js');
-const lsidebar = require(appPath + '/vendors/js/leaflet-sidebar.js');
+
+
 const jqueryloading = require(appPath + '/vendors/jquery-loading-overlay/loadingoverlay.min.js');
-const bootstrap = require("bootstrap");
+require("bootstrap");
 const bsSelect = require("bootstrap-select");
+//const screenshot = require('electron-screenshot-app')
 
 
 // global namespace

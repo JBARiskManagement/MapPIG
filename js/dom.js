@@ -3,6 +3,11 @@
 *
 */
 
+const {dialog} = require('electron').remote;
+const bootbox = require('bootbox');
+require("bootstrap-switch");
+require('bootstrap-modal');
+
 MT.PluginGui = function()
 {
     this._elements = [];
@@ -241,15 +246,13 @@ MT.Dom = {
                         id: btnId,
                         text: 'Browse...',
                         click: function(){
-                            BRIDGE.connectToPathField(document.getElementById(spanId));
-                            BRIDGE.showOpenFileDialog();
+                            // TODO! needs a callback to actual use it
+                            dialog.showOpenDialog({properties: ['openFile']});
 
                         }});
 
         var pthSpan = $('<span/>', {class: 'form-control',
                                     id: spanId});
-
-        //MT.Dom.addFileOpenHandler(btnId, spanId);
 
         brwsSpan.append(brwsBtn);
         input.append(brwsSpan);
@@ -264,15 +267,12 @@ MT.Dom = {
     },
 
     /*
-     * Show a file browser dialog using the QT Api.
-     * This sidesteps the issue of webkit obscuring filepaths using its' native API
-     */
-    addFileOpenHandler: function(buttonId, inputId){
+    * Open a file browser dialog when the given buttinId is clicked
+    */
+    addFileOpenHandler: function(buttonId, callback){
         $('#'+buttonId).click(function(){
-            // Connect the button event to the Qt bridge object in order to display a file browser widget/
-            // We dont do this in javascript as webkit purposefully hides the file path
-            BRIDGE.connectToPathField(document.getElementById(inputId));
-            BRIDGE.showOpenFileDialog();
+            // TODO - complete!
+            dialog.showOpenDialog({properties: ['openFile']}, callback);
 
         });
 

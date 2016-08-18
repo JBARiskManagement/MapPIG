@@ -16,7 +16,8 @@
     "leaflet-loading": "*",
     "leaflet-search": "*",
     "leaflet-draw": "*",
-    "plotly.js": ">=1.16.2"  
+    "plotly.js": ">=1.16.2",
+    "electron-screenshot-app": "*"
   },
   "devDependencies": {
     "grunt": "~0.4.5",

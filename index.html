@@ -14,9 +14,9 @@
         <link href="vendors/PruneCluster/LeafletStyleSheet.css" rel='stylesheet' />
         <link href='vendors/L.Loading/Control.Loading.css' rel='stylesheet' />
         <link href='vendors/bootstrap/css/bootstrap.css' rel='stylesheet' />
+        <link href="vendors/bootstrap-tour/css/bootstrap-tour.min.css" rel="stylesheet" />
         <link href="vendors/bootstrap-table/bootstrap-table.css" rel="stylesheet">
         <link href='vendors/bootstrap-modal/css/bootstrap-modal-bs3patch.css' rel='stylesheet' />
-        <link href='vendors/bootstrap-modal/css/bootstrap-modal.css' rel='stylesheet' />
         <link href='vendors/bootstrap-modal/css/bootstrap-modal.css' rel='stylesheet' />
         <link href="vendors/bootstrap-switch/css/bootstrap-switch.min.css" rel="stylesheet">
         <link href='vendors/css/bootstrap-select.min.css' rel='stylesheet' />
@@ -201,11 +201,11 @@
     <!-- Chart libs -->
 
     <!--Always ensure our own JS is loaded last so it has access to the above libs -->
-    <script type="text/javascript" src='dist/mapthing.min.js'></script>
+    <script type="text/javascript" src='js/init.js'></script>
 
     <!-- Initialise the UI -->
     <script type="text/javascript">
-        $(document).ready(initMap);
+        $(document).ready(initialise);
     </script>
     </body>
 </html>
