@@ -8,6 +8,8 @@ require(appPath + '/js/layerpanel.js');
 require(appPath + '/vendors/js/leaflet-sidebar.js');
 require('leaflet-search');
 
+require('bootstrap-select');
+
 /**
  * Load a file and invoke a callback function
  */
@@ -86,6 +88,7 @@ MapControl.prototype.init = function(data){
 
     // Create the sidebar
     this.sidebar = L.control.sidebar('sidebar').addTo(this._map);
+    L.Icon.Default.imagePath = appPath + "/node_modules/leaflet/dist/images";
     this.searchControl = new L.Control.Search({
                                                   sourceData: this.googleGeocoding.bind(this),
                                                   formatData: this.formatJSON.bind(this),
@@ -101,6 +104,19 @@ MapControl.prototype.init = function(data){
     if (jsonObj.hasOwnProperty("wms")){
         this.configWmsHosts(jsonObj.wms);
     }
+};
+
+MapControl.prototype.configWmsHosts = function(jsonData){
+
+    for (var p in jsonData){
+        if (jsonData.hasOwnProperty(p)){
+            $('#wms-host-select')
+                .append($('<option>', {value: jsonData[p]})
+                .text(p));
+        }
+    }
+    $('#wms-host-select').selectpicker('refresh');
+
 };
 
 /**
@@ -181,19 +197,21 @@ MapControl.prototype.addWmsOverlay = function (host, layerName, displayName, for
     if(typeof attr == 'undefined')
         attr = '';
 
-    var layer = L.tileLayer.wms(host,
-        {
-        maxZoom: 30,
-        layers: layerName,
-        format: format,
-        transparent: true,
-        version: '1.1.0',
-        attribution: attr
-    });
+    if (host && layerName){
+        var layer = L.tileLayer.wms(host,
+            {
+            maxZoom: 30,
+            layers: layerName,
+            format: format,
+            transparent: true,
+            version: '1.1.0',
+            attribution: attr
+        });
 
-    this.overLays[displayName] = layer;
-    this._map.addLayer(layer);
-    this.layerControl.addOverlay(layer, displayName);
+        this.overLays[displayName] = layer;
+        this._map.addLayer(layer);
+        this.layerControl.addOverlay(layer, displayName);
+    }
 };
 
 /**
