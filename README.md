@@ -5,6 +5,8 @@
        src="https://scan.coverity.com/projects/9787/badge.svg"/>
 </a>
 
+MapThing development is continuing in the 'electron' branch which will be merged when ready.
+
 Desktop web map viewer with a flexible extensions framework. MapThing utilizes web technology to gear itself toward integration of geovisualisation and statistical analysis. 
 
 It is written in C++ and javascript and makes use of Qt and Leaflet.
