@@ -59,7 +59,7 @@ module.exports = function(grunt) {
             },
     handlebars: { compile: {
                     files: {
-                                'js/templates.js': ['templates/*.handlebars']
+                                'js/templates.js': ['assets/templates/*.handlebars']
                             },
                     options: {
                                 namespace: "templates",

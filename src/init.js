@@ -1,18 +1,18 @@
 const app = require('electron').remote.app;
 const ipc = require('electron').ipcRenderer;
 const appPath = app.getAppPath();
-const {MapControl, registerMapCtrl, getMapCtrl} = require('./js/map_control.js');
-const runTour = require("./js/tour.js").runTour;
+const {MapControl, registerMapCtrl, getMapCtrl} = require('./src/map_control.js');
+const runTour = require('./src/tour.js').runTour;
 const $ = jQuery = require('jQuery');
 require('./vendors/jquery-loading-overlay/loadingoverlay.min.js');
-require("bootstrap");
+require('bootstrap');
 
 function initialise(){
 
     // Default appearance of the loading overlay
     $.LoadingOverlaySetup({
                         color: "rgba(255,255,255,0.8)",
-                        image: appPath + "/img/big_roller.gif",
+                        image: "./assets/img/big_roller.gif",
                         maxSize: "40px"
                           });
     

@@ -10,18 +10,18 @@ module.exports.runTour = function(mapCtrl){
             {
             orphan: true,
             title: "Welcome!",
-            content: "MapThing is a visual showcase and integration platform for JBA RML data and tools. " +
+            content: "MapThing is a desktop base, extensible web GIS with an emphasis on interactive visualisation. " +
                     "This short tour is intended to get you familiar with the user interface.",
             onShow: function(tour){mapCtrl.closeSidebarTab("sb-help");}
             },
             {
             element: "#container",
             placement: "top",
-            title: "The Map",
-            content: "It's all about the map. The key idea behind MapThing is simplicity. " +
-                    "As such the main focus of the core program is on visualisation and generating images. It allows you to quickly navigate the map, add overlays from web services " +
+            title: "The map window",
+            content: 
+                    "The main focus of the program is on visualisation. It allows you to quickly navigate the map, add overlays from web services " +
                     "and print images. Plugins can extend the functionality " +
-                    "of MapThing to create new overlays from different sources, charts and provide more complex analysis of JBA data. ",
+                    "of MapThing to create new overlays from different sources, charts and provide more complex, interactive analysis of all kinds of data. ",
             },
             {
             element: ".sidebar",
@@ -36,20 +36,20 @@ module.exports.runTour = function(mapCtrl){
             {
             element: "#sb-layers",
             title: "Layers Control",
-            content: "Switch between a selection of basemap layers and show/hide or remove overlays which have been added to the map",
+            content: "Switch between a selection of basemap layers and show/hide or remove overlays which have been added to the map. Basemap layer providers can be configured in the conf.json file",
             onShow: function(tour){mapCtrl.showSidebarTab("sb-layers");},
             onHide: function(tour){mapCtrl.closeSidebarTab("sb-layers");}
             },
             {
             element: "#sb-btn-overlays",
             title: "WMS Overlays",
-            content: "MapThing is pre-configured to connect to a few WMS' suitable for JBA RML needs in order to quickly add overlays." +
-                    " Lets expand the tab and see what is available"
+            content: "MapThing can be configured to store WMS hosts" +
+                    " Lets expand the tab and see what is available by default"
             },
             {
             element: "#wms-host-select",
             title: "Select a host",
-            content: "Select a web service from the drop down list. Environment Agency & FEMA WMS' are available. JBA RML's own service for hazard map data will be available in the near future",
+            content: "Select a web service from the drop down list. Environment Agency & FEMA WMS' are available by default - this can be edited in the conf.json file.",
             onShow: function(tour){mapCtrl.showSidebarTab("sb-overlays");},
             },
             {
@@ -66,14 +66,13 @@ module.exports.runTour = function(mapCtrl){
             {
             element: "#sb-btn-plugin",
             title: "Plugins",
-            content: "MapThings' analysis functionality and integration with other JBA tools and methods comes from the extensible plugin framework" +
-                    " Available plugins are displayed in this panel and can be enabled by clicking the corresponding button." +
-                    "The plugin possibilities are huge, so don't hesitate to get in touch with any wild and crazy ideas."
+            content: "MapThings' analysis functionality and integration with other tools and methods comes from the extensible plugin framework" +
+                    " Available plugins are displayed in this panel and can be enabled by clicking the corresponding button."
             },
             {
             element: "#sb-btn-print",
             title: "Print",
-            content: "Print the map to a PNG image! The image is created at the current size and resolution of the window. The final image will not feature any GUI elements (such as the sidebar) and a JBA RML logo will be inserted into the top left corner."
+            content: "Print the map to a PDF image! The image is created at the current size and resolution of the window. The final image will not feature any GUI elements (such as the sidebar)."
             },
             {
             placement: 'left',

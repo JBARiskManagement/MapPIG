@@ -127,8 +127,6 @@ cause events in the core MapThing C++ code. Note that due to the existence of th
    - The zoom control
    - The search control
    
-   A JBA Risk logo is also added to the top left corner of the map
-
 .. js:function:: BRIDGE.workStarted()
 
 .. js:function:: BRIDGE.progressUpdated()

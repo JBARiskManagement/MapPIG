@@ -24,9 +24,9 @@
         <link href='vendors/leaflet-draw/leaflet.draw.css' rel='stylesheet' />
         <link href="vendors/font-awesome-4.5.0/css/font-awesome.min.css" rel="stylesheet">
         <link href="vendors/jquery-ui-1.11.4/jquery-ui.min.css" rel="stylesheet">
-        <link href='css/leaflet-legendcontrol.css' rel='stylesheet' />
-        <link href='css/leaflet-search.src.css' rel='stylesheet' />
-        <link href='dist/mapthing.min.css' rel='stylesheet' />
+        <link href='assets/css/leaflet-legendcontrol.css' rel='stylesheet' />
+        <link href='assets/css/leaflet-search.src.css' rel='stylesheet' />
+        <link href='assets/css/main.css' rel='stylesheet' />
     </head>
     <body>
     
@@ -108,14 +108,14 @@
               <div class="row">
                 <div class="col-xs-12 col-md-12">
                 <button type="button" class="btn btn-default" id="tour-btn">Tour</button>
-                <button type="button" class="btn btn-default" id="docs-btn">Docs</button>
+                <!--<button type="button" class="btn btn-default" id="docs-btn">Docs</button>-->
                 </div>
               </div>
             </div>
 
             <div class="sidebar-pane" id="sb-about">
               <h1 class="sidebar-header">About<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
-              <p>PIG Possibly isn't GIS</p>
+              <p>Questions? Contact James Ramm <a href="mailto:jamessramm@gmail.com">email</a> </p>
               <p>Originally developed at JBA Risk Management Ltd 2016</p>
             </div>
 
@@ -133,18 +133,14 @@
 
     <!-- UI libs -->
     <script type="text/javascript" src='vendors/js/handlebars.runtime-v4.0.5.js'></script>
-    <!--<script type="text/javascript" src='vendors/jquery-loading-overlay/loadingoverlay.min.js'></script>-->
 
     <!-- Leaflet & Leaflet UI libs -->
-    <!--<script type="text/javascript" src='vendors/js/leaflet-wms-getlegendgraphic.js'></script>
-    <script type="text/javascript" src="vendors/PruneCluster/PruneCluster.min.js"></script>
-    <script type="text/javascript" src='vendors/js/leaflet-sidebar.js'></script>-->
     <script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
 
     <!-- Chart libs -->
 
     <!--Always ensure our own JS is loaded last so it has access to the above libs -->
-    <script type="text/javascript" src='js/init.js'></script>
+    <script type="text/javascript" src='src/init.js'></script>
 
     <!-- Initialise the UI -->
     <script type="text/javascript">
