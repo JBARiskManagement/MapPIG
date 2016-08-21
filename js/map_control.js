@@ -4,8 +4,8 @@ const appPath = app.getAppPath();
 
 const $ = jQuery = require('jQuery');
 const L = require('leaflet');
-require(appPath + '/js/layerpanel.js');
-require(appPath + '/vendors/js/leaflet-sidebar.js');
+require('./layerpanel.js');
+require('../vendors/js/leaflet-sidebar.js');
 require('leaflet-search');
 
 require('bootstrap-select');
@@ -47,7 +47,7 @@ function MapControl(id){
     this.geocoder = new google.maps.Geocoder();
 
     // Load the baselayers into an obj
-    _load_config(appPath + "/conf/conf.json", this.init.bind(this));
+    _load_config("./conf/conf.json", this.init.bind(this));
 
 };
 

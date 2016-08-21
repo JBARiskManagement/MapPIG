@@ -62,7 +62,7 @@ module.exports = function(grunt) {
                                 'js/templates.js': ['templates/*.handlebars']
                             },
                     options: {
-                                namespace: "MT.templates",
+                                namespace: "templates",
                                 processName: function(filePath) {
                                     console.log(filePath);
                                     var pieces = filePath.split('/');
@@ -83,6 +83,6 @@ module.exports = function(grunt) {
   grunt.loadNpmTasks('grunt-contrib-cssmin');
 
   // Default task(s).
-  grunt.registerTask('default', ['handlebars', 'jshint', 'concat', 'uglify', 'cssmin:combine']);
+  grunt.registerTask('default', ['handlebars', 'jshint', 'cssmin:combine']);
 
 };

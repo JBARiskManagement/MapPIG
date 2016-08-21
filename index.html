@@ -40,8 +40,6 @@
             <ul role="tablist" class="sidebar-tabs-top">
                 <li ><a id="sb-btn-layers" href="#sb-layers" role="tab" data-placement="right" data-toggle="tooltip" title="Map layers"><i class="mt-icon mt-layers"></i></a></li>
                 <li id="sb-btn-overlays"><a href="#sb-overlays" role="tab" data-placement="right" data-toggle="tooltip" title="Add overlay from a WMS"><i class="fa fa-globe"></i></a></li>
-                <!--<li id="sb-btn-file"><a href="#sb-file" role="tab" data-placement="right" data-toggle="tooltip" title="Load file"><i class="fa fa-folder-open"></i></a></li>-->
-                <!--<li><a href="#sb-database" role="tab" data-placement="right" data-toggle="tooltip" title="Connect to a Jcalf database"><i class="fa fa-database""></i></a></li>-->
                 <li id="sb-btn-plugin"><a href="#sb-plugin" role="tab" data-placement="right" data-toggle="tooltip" title="Plugins"><i class="fa fa-plug"></i></a></li>
                 <li id="sb-btn-print"><a href="#sb-print" role="tab" data-placement="right" data-toggle="tooltip" title="Print"><i class="fa fa-print"></i></a></li>
                 <li id="sb-btn-help"><a href="#sb-help" role="tab" data-placement="right" data-toggle="tooltip" title="Help & interactive tour"><i class="fa fa-question"></i></a></li>
@@ -79,61 +77,6 @@
                 </div>
             </div>
 
-<!--
-            <div class="sidebar-pane" id="sb-file">
-                <h1 class="sidebar-header">Load CSV<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
-                <div class="row">
-                  <div class="col-xs-12 col-md-12">
-                    <form role="form" class="csv-form">
-                        <div class="form-group">
-                          <label for="open-file">Load file</label>
-                          <div class="input-group">
-                              <span class="input-group-btn"><button type="button" class="btn btn-default" id="open-file">Browse...</button></span>
-                              <span class="form-control" id="file-path"></span>
-                          </div>
-                        </div>
-                        <div class="form-group">
-                          <label for="file-format">Format</label>
-                          <select class="form-control" id="file-format">
-                              <option>JCalf Portfolio</option>
-                              <option>Lat Long only</option>
-                          </select>
-                        </div>
-                        <button type="button" class="btn btn-default" id="csv-submit">Submit</button>
-                      </form>
-                  </div>
-                </div>
-            </div>
--->
-
-            <div class="sidebar-pane" id="sb-database">
-              <h1 class="sidebar-header">Jcalf Database<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
-              <div class="row">
-                <div class="col-xs-12 col-md-12">
-                  <form role="form" class="db-form">
-                      <div class="form-group">
-                        <label for="host">Host</label>
-                        <input type="input" class="form-control" id="host">
-                      </div>
-                      <div class="form-group">
-                        <label for="port">Port</label>
-                        <input type="input" class="form-control" id="port">
-                      </div>
-                      <div class="form-group">
-                        <label for="user">User</label>
-                        <input type="input" class="form-control" id="user">
-                      </div>
-                      <div class="form-group">
-                        <label for="pwd">Password</label>
-                        <input type="password" class="form-control" id="pwd">
-                      </div>
-
-                      <button type="button" class="btn btn-default" id="db-submit">Submit</button>
-                    </form>
-                </div>
-              </div>
-            </div>
-
             <div class="sidebar-pane" id="sb-plugin">
               <h1 class="sidebar-header" id="sb-plugin-header">Extensions<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
               <div id="sb-plugin-area" class="row">
@@ -147,10 +90,10 @@
                 <div class="col-xs-12 col-md-12">
                   <form role="form" class="csv-form">
                       <div class="form-group">
-                        <label for="choose-file">Output file</label>
+                        <label for="save-file">Output file</label>
                         <div class="input-group">
-                            <span class="input-group-btn"><button type="button" class="btn btn-default" id="choose-file">Browse...</button></span>
-                            <span class="form-control" id="choose-file-path"></span>
+                            <span class="input-group-btn"><button type="button" class="btn btn-default" id="save-file">Browse...</button></span>
+                            <span class="form-control" id="save-file-path"></span>
                         </div>
                       </div>
                       <button type="button" class="btn btn-default" id="print-submit">Submit</button>

@@ -1,10 +1,12 @@
 const app = require('electron').remote.app;
+const ipc = require('electron').ipcRenderer;
 const appPath = app.getAppPath();
-const {MapControl, registerMapCtrl, getMapCtrl} = require(appPath + '/js/map_control.js');
-const runTour = require(appPath + "/js/tour.js").runTour;
+const {MapControl, registerMapCtrl, getMapCtrl} = require('./js/map_control.js');
+const runTour = require("./js/tour.js").runTour;
 const $ = jQuery = require('jQuery');
-require(appPath + '/vendors/jquery-loading-overlay/loadingoverlay.min.js');
+require('./vendors/jquery-loading-overlay/loadingoverlay.min.js');
 require("bootstrap");
+
 function initialise(){
 
     // Default appearance of the loading overlay
@@ -34,5 +36,26 @@ function initialise(){
     function sizeLayerControl() {
       $(".leaflet-control-layers").css("max-height", $("#map").height() - 50);
     };
+
+    // Initialise file browser buttons
+    const selectDirBtn = document.getElementById('save-file')
+
+    $('#save-file').on('click', function (event) {
+        ipc.send('save-file-dialog')
+    });
+
+    ipc.on('selected-directory', function (event, path) {
+        document.getElementById('save-file-path').innerHTML = `${path}`
+    });
+
+    // Initialise printing
+    document.getElementById('print-submit').addEventListener('click', function(event){
+        $("#sidebar").hide();
+        ipc.send('print-to-pdf', $('#save-file-path').text());
+    });
+
+    ipc.on('wrote-pdf', function (event, path) {
+        $("#sidebar").show();
+    });
 
 }

@@ -1,5 +1,11 @@
 const electron = require('electron');
 const {app, BrowserWindow} = electron;
+const fs = require('fs')
+const os = require('os')
+const path = require('path')
+const ipc = electron.ipcMain;
+const dialog = electron.dialog;
+const shell = electron.shell;
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -65,3 +71,29 @@ app.on('activate', () => {
     createWindow()
   }
 });
+
+
+
+ipc.on('save-file-dialog', function (event) {
+  dialog.showSaveDialog({
+    properties: ['saveFile']
+  }, function (files) {
+    if (files) event.sender.send('selected-directory', files)
+  })
+});
+
+ipc.on('print-to-pdf', function (event, pdfPath) {
+  const win = BrowserWindow.fromWebContents(event.sender)
+  
+  // Use default printing options
+  win.webContents.printToPDF({}, function (error, data) {
+    if (error) throw error
+    fs.writeFile(pdfPath, data, function (error) {
+      if (error) {
+        throw error
+      }
+      shell.openExternal('file://' + pdfPath)
+      event.sender.send('wrote-pdf', pdfPath)
+    })
+  })
+})
