@@ -9,6 +9,22 @@ Extending MapThing is possible through its' plugin system.
 A plugin will manipulate the MapThing UI to add its' own GUI elements. MapThing makes
 this possible by exposing a simple javascript API for manipulating elements of the GUI such as the sidebar and map object.
 
+Plugin Specification
+====================
+A plugin should be written as a NPM package, with the main module of the plugin listed under the ``main`` entry
+of ``package.json``. 
+
+The plugin will be imported using the ``nodejs`` module mechanism - i.e. ``require``. The plugin should export the following
+attributes:
+
+- ``name``: (string) The human-readable name of the plugin
+- ``description``: (string) A short description of the plugin, which will appear in a popover in the UI.
+- ``setup``: (function): A function which will be called when the plugin is activated. ``setup`` is responsible for building the
+  UI of the plugin by adding elements to the MapThing UI.
+
+Plugin packages (i.e folders) would be placed in a ``plugins`` folder in the top level directory (alongside ``package.json``). 
+
+
 Modules and Libraries
 ======================
 

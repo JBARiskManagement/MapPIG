@@ -6,6 +6,7 @@ const runTour = require('./src/tour.js').runTour;
 const $ = jQuery = require('jQuery');
 require('./vendors/jquery-loading-overlay/loadingoverlay.min.js');
 require('bootstrap');
+const {MTPlugins} = require('./src/loader.js');
 
 function initialise(){
 
@@ -57,5 +58,9 @@ function initialise(){
     ipc.on('wrote-pdf', function (event, path) {
         $("#sidebar").show();
     });
+
+    // Initialise plugins
+    var loader = new MTPlugins();
+    loader.findPlugins();
 
 }

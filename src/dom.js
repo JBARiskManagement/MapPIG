@@ -8,7 +8,8 @@ const bootbox = require('bootbox');
 require("bootstrap-switch");
 require('bootstrap-modal');
 
-MT.PluginGui = function()
+
+MTPluginGui = function()
 {
     this._elements = [];
 };
@@ -34,15 +35,15 @@ MT.PluginGui = function()
  *                                       on the top or the bottom of the sidebar. 'top' or 'bottom'
  * @param {HTMLString} {DOMnode} [data.tab]  content of the tab item, as HTMLstring or DOM node
  */
-MT.PluginGui.prototype.sidebarPanel = function(data)
+MTPluginGui.prototype.sidebarPanel = function(data)
 {
-    var panel = MT.Dom._makeSidebarPanel(data.title, data.id+"-panel");
+    var panel = MTDom._makeSidebarPanel(data.title, data.id+"-panel");
     this._elements.push(data.id+"-panel");
     this._elements.push(data.id);
 
     panel.append(data.content);
     data.pane = panel[0];
-    MT.Dom._addSidebarPanel(data);
+    MTDom._addSidebarPanel(data);
 };
 
 /**
@@ -58,7 +59,7 @@ MT.PluginGui.prototype.sidebarPanel = function(data)
  *  @param {HTMLString} {DOMNode} [data.body] Content of the modal body
  *  @param {HTMLString} {DOMNode} [data.footer] Content of the modal footer
  */
-MT.PluginGui.prototype.modal = function(data)
+MTPluginGui.prototype.modal = function(data)
 {
     // Check the modal doesnt already exist on the DOM and remove if so
     $("#"+data.id).remove();
@@ -77,7 +78,7 @@ MT.PluginGui.prototype.modal = function(data)
         data.class += " modal-draggable";
     }
 
-    var html = MT.templates.modal(data);
+    var html = MTtemplates.modal(data);
 
     // Record the modal id in the elements to remove on plugin exit
     this._elements.push(data.id);
@@ -108,7 +109,7 @@ MT.PluginGui.prototype.modal = function(data)
  *  @param {object} [data.chartData] Chart data
  * @param {object} [data.chartLayout] Chart layout
  */
-MT.PluginGui.prototype.modalChart = function(data)
+MTPluginGui.prototype.modalChart = function(data)
 {
     var chartId = data.id+"-chart";
     data.body = "<div id='"+chartId+"'></div>";
@@ -124,12 +125,12 @@ MT.PluginGui.prototype.modalChart = function(data)
  *
  *
  */
-MT.PluginGui.prototype.modeless = function(data)
+MTPluginGui.prototype.modeless = function(data)
 {
 
 };
 
-MT.PluginGui.prototype.close = function()
+MTPluginGui.prototype.close = function()
 {
     for (var i = 0; i < this._elements.length; i++)
     {
@@ -137,7 +138,7 @@ MT.PluginGui.prototype.close = function()
     }
 };
 
-MT.Dom = {
+MTDom = {
     showMessage: function(msg, title){
         bootbox.dialog({ message: msg,
                          title: title,
@@ -165,7 +166,7 @@ MT.Dom = {
     },
 
     _addSidebarPanel: function(data){
-        MT._mCtrl.sidebar.addPanel(data);
+        MT_mCtrl.sidebar.addPanel(data);
     },
 
     hideSidebar: function(){
@@ -178,14 +179,14 @@ MT.Dom = {
 
     prepareMapForPrint: function(){
         this.hideSidebar();
-        var mc = MT.getMap();
+        var mc = MTgetMap();
         mc.zoomControl.remove();
         mc.searchControl.remove();
     },
 
     resetMapAfterPrint: function(){
         this.showSidebar();
-        var mc = MT.getMap();
+        var mc = MTgetMap();
         mc.zoomControl.addTo(mc._map);
         mc.searchControl.addTo(mc._map);
     },
@@ -214,7 +215,7 @@ MT.Dom = {
             obj = obj[parts[i]];
         }
         // Create the button
-        var button = MT.templates.switch({id: id, name:id, label: pluginName});
+        var button = MTtemplates.switch({id: id, name:id, label: pluginName});
         $("#plugin-launchers").append(button);
 
         $("#"+id).bootstrapSwitch();
@@ -278,3 +279,6 @@ MT.Dom = {
 
     }
 };
+
+module.exports.MTDom = MTDom;
+module.exports.MTPluginGui = MTPluginGui;
