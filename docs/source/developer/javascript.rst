@@ -8,7 +8,7 @@ MapThing javascript functions exist under the ``MT`` namespace. Functions useful
 Dom Utilities
 -------------
 
-.. js:function:: MT.getMap([id])
+.. js:function:: getMapControl([name])
    
    Retrieves the ``MapController`` object for a specific map container element, allowing the caller to manipulate the underlying Leaflet map.
    
@@ -68,117 +68,36 @@ Dom Utilities
 Map Utilities
 -------------
 
-.. js:function:: MT.Wms.Capabilities(host, callback)
 
-      Get the WMS capabilities for a given WMS host server. The WMS standard function `GetCapabilities` is called
-      using an AJAX request and the result is passed to the given `callback` function.
+.. js:class:: MapControl([id])
       
-      :params host: A WMS server address
-      :params callback: A javascript function which should accept a single input. This input will be the XML response of `GetCapabilities`
-
-      
-
-.. js:class:: MT.MapController([id])
-      
-      Creates a new ``MapController`` object which adds a map to the element with the given `id`.
+      Creates a new ``MapControl`` object which adds a map to the element with the given `id`.
       It is *not* reccomended to create this object directly as it will essentially create a clone of the MapThing window within 
       the given element.  
       Instead, use ``MT.getMap`` to get a handle on the main ``MapController`` instance and call methods on that.
 
 
-.. js:function:: MT.MapController.disable()
+.. js:function:: MapControl.disable()
 
    Disable all map interaction
    
-.. js:function:: MT.MapController.enable()
+.. js:function:: MapControl.enable()
 
    Enable map interaction
    
-.. js:function:: MT.MapController.addWmsOverlay(host, layerName, displayName, format, attr)
+.. js:function:: MapControl.addWmsOverlay(host, layerName, displayName, format, attr)
    
    Add a WMS layer to the map. 
       
-.. js:function:: MT.MapController.addOverlay(layer, name)
+.. js:function:: MapControl.addOverlay(layer, name)
 
    Add a Leaflet layer to the map
    
    :param ILayer layer: An object which implements the Leaflet `ILayer` interface
    :param string name: The name of the layer
    
-.. js:function:: MT.MapController.removeOverlay(displayName)
+.. js:function:: MapControl.removeOverlay(displayName)
 
    Remove an overlay layer from the map
    
    :param string displayName: The name of the layer, as given to ``addOverlay``
-
-Javascript - C++ signals
-------------------------
-
-A global object called ``BRIDGE`` is available. Javascript code may invoke functions in the ``BRIDGE`` object causing a Qt `Signal` to be
-emitted and intercepted by the C++ MapThing backend. ``BRIDGE`` operates in the same manner as plugin `bridge` objects and signals emitted by ``BRIDGE``
-cause events in the core MapThing C++ code. Note that due to the existence of the ``BRIDGE`` object, no plugin bridges may be named ``BRIDGE``
-
-.. js:function:: BRIDGE.printRequest(path)
-
-   Causes a PNG image of the map (at current display resolution) to be saved to `path`. 
-   The following GUI elements are removed from the map prior to printing (and added back after):
-   
-   - The entire sidebar
-   - The zoom control
-   - The search control
-   
-.. js:function:: BRIDGE.workStarted()
-
-.. js:function:: BRIDGE.progressUpdated()
-
-.. js:function:: BRIDGE.workFinished()
-
-.. js:function:: BRIDGE.showOpenFileDialog()
-
-.. js:function:: BRIDGE.showSaveFileDialog()
-
-.. js:function:: BRIDGE.connectToPathField(element)
-
-DataLayer
----------
-
-.. js:class:: MT.DataLayer(mapCt)
-
-   Creates a layer of clustered markers and adds it as an overlay to the map defined by ``mapCt``
-   
-   :param MapController mapCt: An instance of ``MT.MapController`` in which the cluster layer should be added
-   
-.. js:function:: MT.DataLayer.addRiskMarker(lat, lon, [tiv])
-
-   Add a marker to the layer
-   
-   :param double lat: The latitude of the marker
-   :param double lon: The longitude of the marker
-
-.. js:function:: MT.DataLayer.processView()
-
-   Refresh the display of the marker layer. Must be called when new markers are added to the layer.
-
-
-CsvLayer
---------
-
-.. js:class:: MT.CsvLayer(mapCt, path)
-
-   Implements ``MT.DataLayer`` for CSV files containing lat/lon coords. 
-   The CSV file must contain a `Lat` column and a `Lon` column. Reading of the CSV file is handled by the C++ backend,
-   so this class is only useful in the MapThing desktop application. 
-   
-   :param MapController mapCt: The ``MapController`` instance in which to create the layer
-   :param string path: The path to the input CSV file
-   
-   
-BubbleLayer
------------
-
-.. js:class:: MT.BubbleLayer(mapCt)
-
-   Creates a bubble chart overlay on the map. 
-   
-   
- 

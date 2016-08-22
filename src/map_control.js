@@ -33,7 +33,7 @@ function registerMapCtrl(mapCtrl, name){
     _MCTRL_LIST[name] = mapCtrl;
 };
 
-function getMapCtrl(name){
+function getMapCtrl(name = "default"){
     return _MCTRL_LIST[name];
 };
 
