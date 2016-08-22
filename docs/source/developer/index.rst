@@ -22,6 +22,24 @@ For consistency and minimising duplication, we make the following reccomendation
 - For charting, MapThing will make use of `plotly` and we reccomend using this for consistency.
 - For GUI styling, MapThing makes heavy use of bootstrap. All bootstrap CSS classes are available for you to use in your own GUI
 
+C++
+=====
+Plugins may wish to carry out calculations in C++. This is entirely possible with nodejs and is 
+up to the plugin to use its' own method of communicating with a C++ backend. 
+
+We reccomend using [nbind](https://github.com/charto/nbind) for accessing C++11 code.
+
+OGC OSW
+========
+MapThing aims to eventually provide in-built clients for OGC web services:
+
+- WMS
+- WMTS
+- WFS(T)
+- WPS
+
+A developer API for interacting with these will also be made available.
+
 Contents
 --------
 
