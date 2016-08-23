@@ -44,7 +44,9 @@ function MapControl(id){
     /** INST. PROPERTIES */
     this.baseLayers = {};
     this.overLays = {}; // Holds any overlay layers added
-    this.geocoder = new google.maps.Geocoder();
+    if(google != undefined){
+        this.geocoder = new google.maps.Geocoder();
+    }
 
     // Load the baselayers into an obj
     _load_config("./conf/conf.json", this.init.bind(this));
@@ -89,18 +91,20 @@ MapControl.prototype.init = function(data){
     // Create the sidebar
     this.sidebar = L.control.sidebar('sidebar').addTo(this._map);
     L.Icon.Default.imagePath = appPath + "/node_modules/leaflet/dist/images";
-    this.searchControl = new L.Control.Search({
-                                                  sourceData: this.googleGeocoding.bind(this),
-                                                  formatData: this.formatJSON.bind(this),
-                                                  markerLocation: false,
-                                                  circleLocation: false,
-                                                  autoType: false,
-                                                  autoCollapse: true,
-                                                  position: 'bottomright',
-                                                  minLength: 2,
-                                                  zoom: 10
-                                              });
-    this._map.addControl(this.searchControl);
+    if (this.geocoder != undefined){
+        this.searchControl = new L.Control.Search({
+                                                    sourceData: this.googleGeocoding.bind(this),
+                                                    formatData: this.formatJSON.bind(this),
+                                                    markerLocation: false,
+                                                    circleLocation: false,
+                                                    autoType: false,
+                                                    autoCollapse: true,
+                                                    position: 'bottomright',
+                                                    minLength: 2,
+                                                    zoom: 10
+                                                });
+        this._map.addControl(this.searchControl);
+    }
     if (jsonObj.hasOwnProperty("wms")){
         this.configWmsHosts(jsonObj.wms);
     }

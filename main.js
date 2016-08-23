@@ -26,7 +26,7 @@ function createWindow () {
   // Create the browser window.
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
 
-  win = new BrowserWindow({width: width * 0.75, height: height * 0.8,
+  win = new BrowserWindow({width: width * 0.85, height: height * 0.75,
                            toolbar: false,
                            "auto-hide-menu-bar": true});
   win.setMenuBarVisibility(false);

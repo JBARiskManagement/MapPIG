@@ -161,6 +161,7 @@ label {font-weight: normal}
 /* Ensure that modal dialogs are on top */
 .bootbox.modal > .modal-dialog {
   z-index: 2000 !important;
+  width: 100%;
 }
 
 .ui-draggable-handle {

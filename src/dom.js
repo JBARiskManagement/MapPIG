@@ -4,6 +4,7 @@
 */
 
 const {dialog} = require('electron').remote;
+require('bootstrap');
 const bootbox = require('bootbox');
 require("bootstrap-switch");
 require('bootstrap-modal');
@@ -206,26 +207,16 @@ MTDom = {
         // Create an id for the launcher button
         var id = pluginName + 'launch';
 
-        // Get the JS function which sets up the UI. The function may be namespaced, so
-        // we can split the function string on the dot separator and pull out each object in turn
-        // starting with the 'window'  object
-        var parts = setupFunc.split(".");
-        for (var i = 0, len = parts.length, obj = window; i < len; ++i)
-        {
-            obj = obj[parts[i]];
-        }
         // Create the button
-        var button = MTtemplates.switch({id: id, name:id, label: pluginName});
+        var button = $('<input/>').attr({ type: 'checkbox', id: id, name: id, "data-label-text":pluginName})
         $("#plugin-launchers").append(button);
 
         $("#"+id).bootstrapSwitch();
-        $("#"+id).on('switchChange.bootstrapSwitch', function(event, state){obj(state);});
+        $("#"+id).on('switchChange.bootstrapSwitch', function(event, state){setupFunc(state);});
         $(".bootstrap-switch-id-"+id).tooltip({
                            placement: 'right',
                            title: description
                        });
-        console.log($(".bootstrap-switch-id-"+id));
-
     },
 
     addFileOpenForm: function(id)
