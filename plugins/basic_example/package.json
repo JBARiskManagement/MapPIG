@@ -1,0 +1,10 @@
+{
+  "name": "example_plugin",
+  "version": "0.1.0",
+  "description": "Basic, do-nothing example",
+  "main": "plugin.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/JamesRamm/MapThing"
+}  
+}
