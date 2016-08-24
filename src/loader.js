@@ -1,11 +1,12 @@
 const path = require('path');
 const fs = require('fs');
 const {MTPluginGui, MTDom} = require(path.join(__dirname, "dom.js"));
+const conf = require('../conf/conf.json')
 
 function MTPlugins(){
 
     this.all_plugins = {};
-    this.pluginPath = path.join(path.dirname(__dirname), 'plugins');
+    this.pluginPath = conf.plugins;
 };
 
 MTPlugins.prototype.findPlugins = function(){ 
