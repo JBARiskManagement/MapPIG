@@ -79,7 +79,7 @@ MTPluginGui.prototype.modal = function(data)
         data.class += " modal-draggable";
     }
 
-    var html = MTtemplates.modal(data);
+    var html = MTtemplates.modal(data);    
 
     // Record the modal id in the elements to remove on plugin exit
     this._elements.push(data.id);

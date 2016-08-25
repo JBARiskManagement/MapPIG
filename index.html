@@ -13,14 +13,14 @@
         <link href='node_modules/leaflet/dist/leaflet.css' rel='stylesheet' />
         <link href='node_modules/leaflet-loading/src/Control.Loading.css' rel='stylesheet' />
         <link href='node_modules/bootstrap/dist/css/bootstrap.css' rel='stylesheet' />
-        <link href='node_modules/bootstrap-tour/css/bootstrap-tour.min.css' rel='stylesheet' />
+        <link href='vendors/bootstrap-tour/css/bootstrap-tour.min.css' rel='stylesheet' />
         <link href='node_modules/bootstrap-table/dist/bootstrap-table.css' rel='stylesheet'>
         <link href='vendors/bootstrap-modal/css/bootstrap-modal-bs3patch.css' rel='stylesheet' />
         <link href='vendors/bootstrap-modal/css/bootstrap-modal.css' rel='stylesheet' />
         <link href='node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css' rel="stylesheet">
-        <link href='node_modules/dist/css/bootstrap-selec/t.min.css' rel='stylesheet' />
+        <link href='node_modules/bootstrap-select/dist/css/bootstrap-select.min.css' rel='stylesheet' />
         <link href='vendors/css/leaflet-sidebar.css' rel='stylesheet' />
-        <link href='node_modules/leaflet-draw/distleaflet.draw.css' rel='stylesheet' />
+        <!--<link href='node_modules/leaflet-draw/dist/leaflet.draw.css' rel='stylesheet' />-->
         <link href='vendors/font-awesome-4.5.0/css/font-awesome.min.css' rel='stylesheet'>
         <link href='vendors/jquery-ui-1.11.4/jquery-ui.min.css' rel='stylesheet'>
         <link href='assets/css/leaflet-legendcontrol.css' rel='stylesheet' />
@@ -131,14 +131,12 @@
     </div>
 
     <!-- UI libs -->
-    <script type="text/javascript" src='node_modules/js/handlebars.runtime-v4.0.5.js'></script>
+    <!--<script type="text/javascript" src='node_modules/js/handlebars.runtime-v4.0.5.js'></script>-->
 
-    <!-- Leaflet & Leaflet UI libs -->
+    <!-- Google API for geocoding -->
     <script src="https://maps.googleapis.com/maps/api/js?v=3&sensor=false"></script>
 
-    <!-- Chart libs -->
-
-    <!--Always ensure our own JS is loaded last so it has access to the above libs -->
+    <!--MapThing entry point -->
     <script type="text/javascript" src='src/init.js'></script>
 
     <!-- Initialise the UI -->
