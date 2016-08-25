@@ -37,6 +37,12 @@ function getMapCtrl(name = "default"){
     return _MCTRL_LIST[name];
 };
 
+/**
+ * \brief MapControl
+ * 
+ * Brings together the various elements of the MapThing GUI - essentially
+ * representing the main html 'window'
+ */
 function MapControl(id){
     if (typeof(id)==='undefined') id = 'map';
         this.id = id;
@@ -84,13 +90,14 @@ MapControl.prototype.init = function(data){
       position: "bottomright"
     }).addTo(this._map);
 
-    // Load basemaps
-
+    // Create the layer control, which will be added to the sidebar
     this.layerControl = L.control.layerpanel(this.baseLayers, this.overLays, 'sb-layers').addTo(this._map);
 
     // Create the sidebar
     this.sidebar = L.control.sidebar('sidebar').addTo(this._map);
     L.Icon.Default.imagePath = appPath + "/node_modules/leaflet/dist/images";
+
+    // If we got the google geocoder (we have connection), create a search control
     if (this.geocoder != undefined){
         this.searchControl = new L.Control.Search({
                                                     sourceData: this.googleGeocoding.bind(this),
