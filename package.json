@@ -5,7 +5,6 @@
   "dependencies": {
     "bootbox": "*",
     "bootstrap": ">=3.3.7",
-    "bootstrap-modal": "*",
     "bootstrap-select": "*",
     "bootstrap-switch": "*",
     "bootstrap-table": "*",
@@ -22,9 +21,6 @@
   "devDependencies": {
     "grunt": "~0.4.5",
     "handlebars": "~4.0.5",
-    "grunt-contrib-jshint": "~1.0.0",
-    "grunt-contrib-uglify": "~0.5.0",
-    "grunt-contrib-concat": "~0.5.1",
     "grunt-contrib-cssmin": "~0.14.0",
     "grunt-contrib-handlebars": "~0.11.0"
   },
