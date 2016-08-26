@@ -140,12 +140,11 @@ MapControl.prototype.configWmsHosts = function(jsonData){
  */
 MapControl.prototype.updateWmsOptions =  function(e){
     MTDom.showLoading("#sb-overlays");
-    var ws = new wms.WebService();
-    // TODO fix...
-    var url = $(this).find("option:selected").val();
-    console.log(this);
+    var url = $('#wms-host-select').find("option:selected").val();
+    var ws = new wms.WebService(url);
+    console.log(url);
     $('#wms-layer-select').find('option').remove();
-    ws.getCapabilities(url, function(xml){
+    ws.getCapabilities({success: function(xml){
         var layers = $(xml).find('Layer');
         layers.each(function(index, value){
             var option = '<option value="' + $(this).children("Name").text() + '">' + $(this).children("Title").text() + '</option>';
@@ -153,7 +152,7 @@ MapControl.prototype.updateWmsOptions =  function(e){
         });
         $("#wms-layer-select").selectpicker('refresh');
         MTDom.hideLoading("#sb-overlays");
-    });
+    }, error: function(){console.log("error");}});
 };
 
 /**

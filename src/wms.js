@@ -11,11 +11,10 @@ function WebService(url){
 };
 
 WebService.prototype.getCapabilities = function(options){
-
-     if(url.indexOf('?') === -1)
-            url += '?';
+     if(this.url.indexOf('?') === -1)
+            this.url += '?';
         else
-            url += '&';
+            this.url += '&';
 
         $.ajax({
                 type: "GET",
@@ -23,7 +22,7 @@ WebService.prototype.getCapabilities = function(options){
                 xhrFields: {
                     withCredentials: true
                 },
-                url: url + 'request=GetCapabilities&service=wms',
+                url: this.url + 'request=GetCapabilities&service=wms',
                 dataType: "xml",
                 success: function(xml) {
                     options.success(xml);
