@@ -38,6 +38,8 @@ function initialise(){
       $(".leaflet-control-layers").css("max-height", $("#map").height() - 50);
     };
 
+    $('#wms-host-select').on('change', mapCtrl.updateWmsOptions);
+
     // Initialise file browser buttons
     const selectDirBtn = document.getElementById('save-file')
 

@@ -6,9 +6,12 @@ const $ = jQuery = require('jQuery');
 const L = require('leaflet');
 require('./layerpanel.js');
 require('../vendors/js/leaflet-sidebar.js');
+require('../vendors/js/leaflet-wms-getlegendgraphic.js');
 require('leaflet-search');
-
+const wms = require('./wms.js');
 require('bootstrap-select');
+
+const {MTDom} = require('./dom.js');
 
 /**
  * Load a file and invoke a callback function
@@ -91,7 +94,8 @@ MapControl.prototype.init = function(data){
     }).addTo(this._map);
 
     // Create the layer control, which will be added to the sidebar
-    this.layerControl = L.control.layerpanel(this.baseLayers, this.overLays, 'sb-layers').addTo(this._map);
+    var ws = new wms.WebService();
+    this.layerControl = L.control.layerpanel(this.baseLayers, this.overLays, 'sb-layers', {"legendFn": ws.createLegend}).addTo(this._map);
 
     // Create the sidebar
     this.sidebar = L.control.sidebar('sidebar').addTo(this._map);
@@ -128,6 +132,28 @@ MapControl.prototype.configWmsHosts = function(jsonData){
     }
     $('#wms-host-select').selectpicker('refresh');
 
+};
+
+/**
+ * Get the capabilities for the selected WMS host 
+ * and add each layer to the select picker dropdown
+ */
+MapControl.prototype.updateWmsOptions =  function(e){
+    MTDom.showLoading("#sb-overlays");
+    var ws = new wms.WebService();
+    // TODO fix...
+    var url = $(this).find("option:selected").val();
+    console.log(this);
+    $('#wms-layer-select').find('option').remove();
+    ws.getCapabilities(url, function(xml){
+        var layers = $(xml).find('Layer');
+        layers.each(function(index, value){
+            var option = '<option value="' + $(this).children("Name").text() + '">' + $(this).children("Title").text() + '</option>';
+            $("#wms-layer-select").append(option);
+        });
+        $("#wms-layer-select").selectpicker('refresh');
+        MTDom.hideLoading("#sb-overlays");
+    });
 };
 
 /**

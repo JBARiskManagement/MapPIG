@@ -3,6 +3,8 @@
  * 
  */
 const $ = jQuery = require('jQuery');
+const L = require('leaflet');
+require('./legend_control.js');
 
 function WebService(url){
     this.url = url;
@@ -73,3 +75,5 @@ WebService.prototype.createLegend = function(layer){
         }
         return legendObjs;
     };
+
+module.exports.WebService = WebService;
