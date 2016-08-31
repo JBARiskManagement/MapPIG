@@ -10,7 +10,7 @@ require("bootstrap-switch");
 require('bootstrap-modal');
 
 
-MTPluginGui = function()
+MTContainer = function()
 {
     this._elements = [];
 };
@@ -36,7 +36,7 @@ MTPluginGui = function()
  *                                       on the top or the bottom of the sidebar. 'top' or 'bottom'
  * @param {HTMLString} {DOMnode} [data.tab]  content of the tab item, as HTMLstring or DOM node
  */
-MTPluginGui.prototype.sidebarPanel = function(data)
+MTContainer.prototype.sidebarPanel = function(data)
 {
     var panel = MTDom._makeSidebarPanel(data.title, data.id+"-panel");
     this._elements.push(data.id+"-panel");
@@ -60,7 +60,7 @@ MTPluginGui.prototype.sidebarPanel = function(data)
  *  @param {HTMLString} {DOMNode} [data.body] Content of the modal body
  *  @param {HTMLString} {DOMNode} [data.footer] Content of the modal footer
  */
-MTPluginGui.prototype.modal = function(data)
+MTContainer.prototype.modal = function(data)
 {
     // Check the modal doesnt already exist on the DOM and remove if so
     $("#"+data.id).remove();
@@ -110,7 +110,7 @@ MTPluginGui.prototype.modal = function(data)
  *  @param {object} [data.chartData] Chart data
  * @param {object} [data.chartLayout] Chart layout
  */
-MTPluginGui.prototype.modalChart = function(data)
+MTContainer.prototype.modalChart = function(data)
 {
     var chartId = data.id+"-chart";
     data.body = "<div id='"+chartId+"'></div>";
@@ -126,12 +126,12 @@ MTPluginGui.prototype.modalChart = function(data)
  *
  *
  */
-MTPluginGui.prototype.modeless = function(data)
+MTContainer.prototype.modeless = function(data)
 {
 
 };
 
-MTPluginGui.prototype.close = function()
+MTContainer.prototype.close = function()
 {
     for (var i = 0; i < this._elements.length; i++)
     {
@@ -219,7 +219,7 @@ MTDom = {
                        });
     },
 
-    addFileOpenForm: function(id)
+    addFileOpenForm: function(id, callback)
     {
         var btnId = id+'-open-file-btn';
         var spanId = id+'-file-path-span';
@@ -238,9 +238,7 @@ MTDom = {
                         id: btnId,
                         text: 'Browse...',
                         click: function(){
-                            // TODO! needs a callback to actual use it
-                            dialog.showOpenDialog({properties: ['openFile']});
-
+                            dialog.showOpenDialog({properties: ['openFile']}, callback);
                         }});
 
         var pthSpan = $('<span/>', {class: 'form-control',
@@ -272,4 +270,4 @@ MTDom = {
 };
 
 module.exports.MTDom = MTDom;
-module.exports.MTPluginGui = MTPluginGui;
+MTContainer;

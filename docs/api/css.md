@@ -1,15 +1,10 @@
+# Mapthing CSS
 
-
-Mapthing CSS
-============
 
 Mapthing has a number of CSS classes for styling and adding functionality to your plugins' GUI.
 Many of these classes are provided by 3rd party libraries.
 
-
-
-Select Picker
--------------
+## Select Picker
 
 Style and add functionality to drop down select boxes by adding `selectpicker` as the CSS class
 in the `select` element. 

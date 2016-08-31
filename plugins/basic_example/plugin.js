@@ -1,6 +1,4 @@
-const path = require('path');
-const mtRoot = path.dirname(path.dirname(__dirname));
-const {MTPluginGui, MTDom} = require(path.join(mtRoot, "src", "dom.js"));
+const {MTPluginGui, MTDom} = mtRequire("dom.js");
 
 module.exports.setup = function(state){
 
