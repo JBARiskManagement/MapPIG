@@ -3,7 +3,6 @@
 .smproj
 src/build-*
 build-*
-plugins
 docs/build
 .project
 .pydevproject

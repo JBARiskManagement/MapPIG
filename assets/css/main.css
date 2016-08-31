@@ -1,0 +1,203 @@
+html, body, #container {
+  height: 100%;
+  width: 100%;
+  overflow: hidden;
+  font-size: 14px;
+}
+
+
+/* HEADERS & FONTS */
+
+h1, h2, h3{
+    font-weight: bold;
+    color: #e98300;
+}
+
+
+input[type="radio"], input[type="checkbox"] {
+  margin: 0;
+}
+
+#map {
+  width: auto;
+  height: 100%;
+  /*box-shadow: 0 0 10px rgba(0,0,0,0.5);*/
+  cursor: 'grab';
+}
+
+
+/* Sidebar style */
+.sidebar{
+  z-index: 999;
+}
+
+.sidebar-header {
+    margin: -10px -20px 10px;
+    background-color: rgba(233,131,0,0.5);
+    font-size: 13.5pt;
+
+}
+
+.sidebar-tabs > li.active, .sidebar-tabs > ul > li.active {
+    background-color: rgba(233,131,0,0.5);
+}
+
+
+/* Plugin launcher sidebr */
+#plugin-launchers {
+  padding: 10px;
+}
+
+#plugin-launchers > button{
+    margin-bottom: 10px;
+    border-radius:5px !important;
+}
+
+/* Ensure dropdown menus never exceed the sidebar width */
+.dropdown-menu {
+    width: 100%;
+}
+
+.fa {
+    color: #595959;
+    font-size: 14px;
+}
+
+
+/* Layer control style */
+.layer-toolbar {
+    display: inline-block;
+}
+
+
+label {font-weight: normal}
+
+.btn-layer-control {
+    border: 1px solid rgba(0,0,0,0.15);
+    padding: 3px 6px;
+    margin: 2px;
+}
+.btn-layer-control:hover{
+    background:rgba(0,0,0,0.10);
+}
+
+.row-layer-control {
+    margin-left: 20px;
+    margin-right: 20px;
+}
+/* Overlay divs */
+
+.overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 100%;
+    z-index: 1000;
+    background: black;
+    opacity: 0.1;
+    pointer-events:none;
+}
+
+/*
+.progress {
+    z-index: 1001;
+    position: relative;
+    top: 50%;
+    left: 25%;
+    width: 50%;
+    opacity: 1;
+}
+
+.progress-bar {
+    background-color: #e98300;
+    color: #595959;
+}
+*/
+.loadingoverlay {
+    z-index: 1002;
+}
+
+/*
+.progress-bar-full {
+  width: 100%;
+}
+*/
+
+.leaflet-control-layers {
+  overflow: auto;
+}
+.leaflet-control-layers label {
+  font-weight: normal;
+  margin-bottom: 0px;
+}
+.leaflet-control-layers-list input[type="radio"], input[type="checkbox"] {
+  margin: 2px;
+}
+.table {
+  margin-bottom: 0px;
+}
+
+/* ICONS */
+.mt-icon {
+    background-repeat: no-repeat;
+    background-position: center;
+    cursor: pointer;
+    display: inline-block;
+    width: 100%;
+    height: 100%;
+}
+
+.mt-layers {
+    background-image: url("../img/layers.png");
+}
+
+.mt-jbarml {
+    background-image: url("../img/blank.png");
+}
+
+
+/* MODALS */
+/* Ensure that modal dialogs are on top */
+.bootbox.modal > .modal-dialog {
+  z-index: 2000 !important;
+  width: 100%;
+}
+
+.ui-draggable-handle {
+    cursor: move;
+}
+
+/* CSS to improve draggable modal speed */
+.modal.fade.ui-draggable-dragging {
+    -moz-transition: none;
+    -o-transition: none;
+    -webkit-transition: none;
+    transition: none;
+}
+
+@media (max-width: 992px) {
+  .navbar .navbar-brand {
+    font-size: 18px;
+  }
+}
+@media (max-width: 767px){
+  .url-break {
+    word-break: break-all;
+    word-break: break-word;
+    -webkit-hyphens: auto;
+      hyphens: auto;
+  }
+  .dropdown-menu a i{
+    color: #FFFFFF;
+  }
+}
+/* Print Handling */
+@media print {
+  .navbar {
+    display: none !important;
+  }
+  .leaflet-control-container {
+    display: none !important;
+  }
+}

@@ -1,0 +1,28 @@
+{
+    "base_layers": {
+                    "Carto Light": {"type": "tileLayer",
+                                    "url": "http://a.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png",
+                                    "attribution": "Map tiles by Carto, under CC BY 3.0. Data by OpenStreetMap, under ODbL"},
+                    "OpenStreetMap": {"type": "tileLayer",
+                                    "url": "http://a.tile.openstreetmap.org/{z}/{x}/{y}.png",
+                                    "attribution": "© <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"},
+                    "OpenCycleMap": {"type": "tileLayer",
+                                    "url": "http://b.tile.opencyclemap.org/cycle/{z}/{x}/{y}.png",
+                                    "attribution": "© <a href='http://www.openstreetmap.org/copyright'>OpenStreetMap</a> contributors"},
+                    "TonerLite": {"type": "tileLayer",
+                                "url": "http://tile.stamen.com/toner-lite/{z}/{x}/{y}.png",
+                                "attribution": "Map tiles by <a href='http://stamen.com'>Stamen Design</a>, under <a href='http://creativecommons.org/licenses/by/3.0'>CC BY 3.0</a>. Data by <a href='http://openstreetmap.org'>OpenStreetMap</a>, under <a href='http://creativecommons.org/licenses/by-sa/3.0'>CC BY SA</a>."},
+                    "Toner":{"type": "tileLayer",
+                                 "url": "http://tile.stamen.com/toner/{z}/{x}/{y}.png",
+                                 "attribution": "Map tiles by <a href='http://stamen.com'>Stamen Design</a>, under <a href='http://creativecommons.org/licenses/by/3.0'>CC BY 3.0</a>. Data by <a href='http://openstreetmap.org'>OpenStreetMap</a>, under <a href='http://www.openstreetmap.org/copyright'>ODbL</a>."},
+                    "OS Streetview": {"type": "tileLayer",
+                                      "url": "http://os.openstreetmap.org/sv/{z}/{x}/{y}.png",
+                                       "attribution": "Contains Ordnance Survey Data © Crown copyright and database right 2010"}                   
+                    },
+                    
+    "wms": {
+                "Environment Agency": "http://www.geostore.com/OGC/OGCInterface?UID=UDATAGOV2011&PASSWORD=datagov2011&INTERFACE=ENVIRONMENT&LC=0",
+                "FEMA": "http://hazards.fema.gov/gis/nfhl/services/public/NFHLWMS/MapServer/WMSServer"
+            },
+    "plugins": "C:/source/MapThing/plugins"
+}

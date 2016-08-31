@@ -1,4 +1,0 @@
-{
-    "Environment Agency": "http://www.geostore.com/OGC/OGCInterface?UID=UDATAGOV2011&PASSWORD=datagov2011&INTERFACE=ENVIRONMENT&LC=0",
-    "FEMA": "http://hazards.fema.gov/gis/nfhl/services/public/NFHLWMS/MapServer/WMSServer"
-}
