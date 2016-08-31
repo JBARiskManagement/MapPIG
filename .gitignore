@@ -1,15 +1,7 @@
 .exe 
-.pro.*
-.smproj
 src/build-*
 build-*
-docs/build
 .project
 .pydevproject
-*.pro.user
-*.smproj
-Makefile
-Makefile.*
 node_modules
-test_data/
-resources/mapthing/dist
+src/templates.js

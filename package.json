@@ -2,7 +2,17 @@
   "name": "mapthing",
   "version": "0.1.0",
   "main": "main.js",
+  "license": "MIT",
+  "scripts": {
+    "templates": "handlebars assets/templates -f src/templates.js -e handlebars -c handlebars/runtime -b",
+    "lint": "jshint ./src --exclude-path .gitignore"
+  },
+  "jshintConfig": {
+    "esversion": 6
+  },
   "dependencies": {
+    "handlebars": ">=4.0.5",
+    "electron-prebuilt": "*",
     "bootbox": "*",
     "bootstrap": ">=3.3.7",
     "bootstrap-select": "*",
@@ -19,14 +29,11 @@
     "leaflet-search": "*",
     "plotly.js": ">=1.16.2"
   },
-  "devDependencies": {
-    "grunt": "~0.4.5",
-    "handlebars": "~4.0.5",
-    "grunt-contrib-cssmin": "~0.14.0",
-    "grunt-contrib-handlebars": "~0.11.0"
-  },
   "repository": {
     "type": "git",
     "url": "git://github.com/JamesRamm/MapThing"
-  }
+  },
+  "author": { "name" : "James Ramm",
+             "email" : "jamessramm@gmail.com"
+    }
 }

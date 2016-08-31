@@ -8,6 +8,8 @@ require('bootstrap');
 const bootbox = require('bootbox');
 require("bootstrap-switch");
 require('bootstrap-modal');
+var Handlebars = require("handlebars/runtime");
+require('./templates.js');
 
 
 MTContainer = function()
@@ -79,7 +81,7 @@ MTContainer.prototype.modal = function(data)
         data.class += " modal-draggable";
     }
 
-    var html = MTtemplates.modal(data);    
+    var html = Handlebars.templates.modal(data);    
 
     // Record the modal id in the elements to remove on plugin exit
     this._elements.push(data.id);
@@ -97,9 +99,9 @@ MTContainer.prototype.modal = function(data)
 };
 
 /**
- * Create a modal dialog. The modal can be shown by calling `modal` on the return element,
+ * Create a modal chart dialog. The modal can be shown by calling `modal` on the return element,
  * e.g.:
- *    var mymodal  = pluginGui.modal(data);
+ *    var mymodal  = container.modalChart(data);
  *    mymodal.modal();
  *
  *  @param {bool} [data.fullwidth] If true, the modal will scale to the width of the container
@@ -270,4 +272,4 @@ MTDom = {
 };
 
 module.exports.MTDom = MTDom;
-MTContainer;
+module.exports.MTContainer = MTContainer;

@@ -29,7 +29,7 @@ module.exports = function(grunt) {
             },
     handlebars: { compile: {
                     files: {
-                                'js/templates.js': ['assets/templates/*.handlebars']
+                                'src/templates.js': ['assets/templates/*.handlebars']
                             },
                     options: {
                                 namespace: "templates",
