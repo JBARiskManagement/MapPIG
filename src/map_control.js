@@ -8,6 +8,7 @@ require('./layerpanel.js');
 require('../vendors/js/leaflet-sidebar.js');
 require('../vendors/js/leaflet-wms-getlegendgraphic.js');
 require('leaflet-search');
+require('leaflet-loading');
 const wms = require('./wms.js');
 require('bootstrap-select');
 

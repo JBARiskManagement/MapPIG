@@ -22,7 +22,7 @@
     "electron-screenshot-app": "*",
     "font-awesome": ">=4.6.3",
     "jquery": ">=1.11.3",
-    "jquery-ui": ">=1.11.4",
+    "jquery-ui-dist": ">=1.11.4",
     "leaflet": "*",
     "leaflet-draw": "*",
     "leaflet-loading": "*",
