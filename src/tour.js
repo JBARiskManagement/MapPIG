@@ -1,8 +1,7 @@
 // Interactive tour/demo of MapThing
 const $ = jQuery = require("jQuery");
 require("bootstrap");
-const Tour = require("bootstrap-tour");
-
+require("../vendors/bootstrap-tour/js/bootstrap-tour.min.js");
 module.exports.runTour = function(mapCtrl){
     var mapTour = new Tour({
         backdrop: false,
@@ -91,7 +90,6 @@ module.exports.runTour = function(mapCtrl){
 
     // Initialize the tour
     mapTour.init();
-
     // Start the tour
     mapTour.start();
 

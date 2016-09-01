@@ -6,11 +6,11 @@ global.mtRequire = function(name){
   return require(appPath + '/src/' + name);
 }
 const {MapControl, registerMapCtrl, getMapCtrl} = require('./src/map_control.js');
-const runTour = require('./src/tour.js').runTour;
 const $ = jQuery = require('jQuery');
 require('./vendors/jquery-loading-overlay/loadingoverlay.min.js');
 require('bootstrap');
 const {MTPlugins} = require('./src/loader.js');
+const runTour = require('./src/tour.js').runTour;
 
 function initialise(){
 
@@ -35,7 +35,8 @@ function initialise(){
         mapCtrl.geocode($("#address").val());
     });
 
-    $("#tour-btn").click({"control": mapCtrl}, function(event){runTour(event.data.control)});
+    $("#tour-btn").click({"control": mapCtrl}, function(event){
+        runTour(event.data.control)});
 
 
     function sizeLayerControl() {
