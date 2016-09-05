@@ -4,4 +4,5 @@ build-*
 .project
 .pydevproject
 node_modules
+.BROWSE.*
 src/templates.js
