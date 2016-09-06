@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2016 James Ramm
+ */
 // Interactive tour/demo of MapThing
 const $ = jQuery = require("jQuery");
 require("bootstrap");

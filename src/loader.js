@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2016 James Ramm
+ */
 const path = require('path');
 const fs = require('fs');
 const {MTPluginGui, MTDom} = require(path.join(__dirname, "dom.js"));

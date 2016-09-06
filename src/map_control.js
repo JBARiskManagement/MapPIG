@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2016 James Ramm
+ */
 // Get the app variable to figure out paths to resources etc
 const app = require('electron').remote.app;
 const appPath = app.getAppPath();

@@ -1,3 +1,6 @@
+/*
+* Copyright (c) 2016 James Ramm
+*/
 
 const app = require('electron').remote.app;
 const ipc = require('electron').ipcRenderer;

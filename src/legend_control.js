@@ -1,5 +1,8 @@
 /*
  * L.Control.WMSLegend is used to add a WMS Legend to the map
+ * 
+ * Copyright (c) 2016 James Ramm
+ * 
  */
 
 L.Control.WMSLegend = L.Control.extend({

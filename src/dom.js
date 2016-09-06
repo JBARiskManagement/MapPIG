@@ -1,6 +1,7 @@
 /**
 * MapThing DOM utilities
 *
+* Copyright (c) 2016 James Ramm
 */
 
 const {dialog} = require('electron').remote;

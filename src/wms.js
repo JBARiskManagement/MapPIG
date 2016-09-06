@@ -1,6 +1,7 @@
 /**
  * Helper functions for WMS
  * 
+ * Copyright (c) 2016 James Ramm
  */
 const $ = jQuery = require('jQuery');
 const L = require('leaflet');
