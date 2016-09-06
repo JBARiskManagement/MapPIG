@@ -24,9 +24,11 @@ function initialise(){
     // Initialise tooltips
     $('[data-toggle="tooltip"]').tooltip({ container: 'body' });
 
+    // Create the MapControl and register it as the default map
     var mapCtrl = new MapControl();
     registerMapCtrl(mapCtrl, "default");
 
+    // Button call backs
     $("#overlay-submit").click(function() {
         mapCtrl.addWmsOverlay();
     });
@@ -38,16 +40,9 @@ function initialise(){
     $("#tour-btn").click({"control": mapCtrl}, function(event){
         runTour(event.data.control)});
 
-
-    function sizeLayerControl() {
-      $(".leaflet-control-layers").css("max-height", $("#map").height() - 50);
-    };
-
     $('#wms-host-select').on('change', mapCtrl.updateWmsOptions);
 
     // Initialise file browser buttons
-    const selectDirBtn = document.getElementById('save-file')
-
     $('#save-file').on('click', function (event) {
         ipc.send('save-file-dialog')
     });
