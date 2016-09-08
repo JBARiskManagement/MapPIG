@@ -8,8 +8,11 @@ require('bootstrap');
 const bootbox = require('bootbox');
 require("bootstrap-switch");
 require('bootstrap-modal');
-var Handlebars = require("handlebars/runtime");
+const Handlebars = require("handlebars/runtime");
 require('./templates.js');
+
+// Strange looking require path due to: https://github.com/plotly/plotly.js/issues/891
+const Plotly = require('plotly.js/dist/plotly.js');
 
 
 MTContainer = function()
