@@ -162,7 +162,7 @@ MTDom = {
         var header = $("<h1>",
                         {
                            class: "sidenav-header",
-                           html: title+'<div class="sidenav-close"><i class="fa fa-caret-left"></i></div>'
+                           html: title+' <div class="sidenav-close"><i class="fa fa-caret-left"></i></div>'
                         });
 
         panel.append(header);
