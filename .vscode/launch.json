@@ -2,6 +2,18 @@
     "version": "0.2.0",
     "configurations": [
         {
+            "name": "Debug",
+            "type": "chrome",
+            "request": "launch",
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd",
+            "runtimeArgs": [
+                "${workspaceRoot}",
+                "--enable-logging",
+                "--remote-debugging-port=9222"
+            ],
+            "sourceMaps": false
+        },
+        {
             "name": "Launch",
             "type": "node",
             "request": "launch",
@@ -10,8 +22,11 @@
             "args": [],
             "cwd": "${workspaceRoot}",
             "preLaunchTask": null,
-            "runtimeExecutable": "C:/Users/James/AppData/Roaming/npm/node_modules/electron-prebuilt/dist/electron.exe",
-            "runtimeArgs": [],
+            "runtimeExecutable": "${workspaceRoot}/node_modules/.bin/electron.cmd",
+            "runtimeArgs": [
+                ".",
+                "--enable-logging"
+                ],
             "env": {},
             "externalConsole": false,
             "sourceMaps": false,
@@ -24,17 +39,6 @@
             "port": 5858,
             "address": "localhost",
             "restart": false,
-            "sourceMaps": false,
-            "outDir": null,
-            "localRoot": "${workspaceRoot}",
-            "remoteRoot": null
-        },
-        {
-            "name": "Attach to Process",
-            "type": "node",
-            "request": "attach",
-            "processId": "${command.PickProcess}",
-            "port": 5858,
             "sourceMaps": false,
             "outDir": null
         }
