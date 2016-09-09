@@ -22,10 +22,10 @@ MTContainer = function()
 
 
 /**
- * Add a panel to the sidebar
+ * Add a panel to the sidenav
  *
  * @example
- * sidebar.addPanel({
+ * sidenav.addPanel({
        title: 'My Awesome Panel'
  *     id: 'sb-awesome-panel',
  *     tab: '<i class="fa fa-fort-awesome"></i>',
@@ -38,18 +38,17 @@ MTContainer = function()
  * @param {String} [data.id] the ID for the new Panel, must be unique for the whole page
  * @param {HTMLString} {DOMnode} [data.content] content of the panel, as HTMLstring or DOM node
  * @param {String} [data.position='top'] where the tab will appear:
- *                                       on the top or the bottom of the sidebar. 'top' or 'bottom'
+ *                                       on the top or the bottom of the sidenav. 'top' or 'bottom'
  * @param {HTMLString} {DOMnode} [data.tab]  content of the tab item, as HTMLstring or DOM node
  */
-MTContainer.prototype.sidebarPanel = function(data)
+MTContainer.prototype.sidenavPanel = function(data)
 {
-    var panel = MTDom._makeSidebarPanel(data.title, data.id+"-panel");
     this._elements.push(data.id+"-panel");
     this._elements.push(data.id);
 
-    panel.append(data.content);
-    data.pane = panel[0];
-    MTDom._addSidebarPanel(data);
+    data.pane = data.content
+    data.title = data.title +'<div class="sidenav-close"><i class="fa fa-caret-left"></i></div>'
+    MTDom._addsidenavPanel(data);
 };
 
 /**
@@ -153,17 +152,17 @@ MTDom = {
                        });
     },
 
-    _makeSidebarPanel: function(title, id)
+    _makesidenavPanel: function(title, id)
     {
         var panel = $("<div>", {
-                                class: "sidebar-pane",
+                                class: "sidenav-pane",
                                 id: id
                               });
 
         var header = $("<h1>",
                         {
-                           class: "sidebar-header",
-                           html: title+'<div class="sidebar-close"><i class="fa fa-caret-left"></i></div>'
+                           class: "sidenav-header",
+                           html: title+'<div class="sidenav-close"><i class="fa fa-caret-left"></i></div>'
                         });
 
         panel.append(header);
@@ -171,27 +170,27 @@ MTDom = {
 
     },
 
-    _addSidebarPanel: function(data){
-        mapCtrl.getMapCtrl().sidebar.addPanel(data);
+    _addsidenavPanel: function(data){
+        mapCtrl.getMapCtrl().sidenav.addPanel(data);
     },
 
-    hideSidebar: function(){
-        $('#sidebar').hide();
+    hidesidenav: function(){
+        $('#sidenav').hide();
     },
 
-    showSidebar: function(){
-        $('#sidebar').show();
+    showsidenav: function(){
+        $('#sidenav').show();
     },
 
     prepareMapForPrint: function(){
-        this.hideSidebar();
+        this.hidesidenav();
         var mc = mapCtrl.getMapCtrl();
         mc.zoomControl.remove();
         mc.searchControl.remove();
     },
 
     resetMapAfterPrint: function(){
-        this.showSidebar();
+        this.showsidenav();
         var mc = MTgetMap();
         mc.zoomControl.addTo(mc._map);
         mc.searchControl.addTo(mc._map);
@@ -206,7 +205,7 @@ MTDom = {
     },
 
     /**
-    * Adds a button to the 'plugin' sidebar with the name of this plugin
+    * Adds a button to the 'plugin' sidenav with the name of this plugin
     */
     addPluginLauncher: function(pluginName, setupFunc, description){
         // Create an id for the launcher button

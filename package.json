@@ -27,7 +27,9 @@
     "leaflet-draw": "*",
     "leaflet-loading": "*",
     "leaflet-search": "*",
+    "leaflet-sidenav": ">=0.4.2",
     "plotly.js": ">=1.16.2"
+    
   },
   "repository": {
     "type": "git",

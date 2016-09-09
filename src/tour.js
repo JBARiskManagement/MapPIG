@@ -14,7 +14,7 @@ module.exports.runTour = function(mapCtrl){
             title: "Welcome!",
             content: "MapThing is a desktop base, extensible web GIS with an emphasis on interactive visualisation. " +
                     "This short tour is intended to get you familiar with the user interface.",
-            onShow: function(tour){mapCtrl.closeSidebarTab("sb-help");}
+            onShow: function(tour){mapCtrl.closesidenavTab("sb-help");}
             },
             {
             element: "#container",
@@ -26,9 +26,9 @@ module.exports.runTour = function(mapCtrl){
                     "of MapThing to create new overlays from different sources, charts and provide more complex, interactive analysis of all kinds of data. ",
             },
             {
-            element: ".sidebar",
-            title: "Sidebar",
-            content: "Clicking on a sidebar button will display a panel for the selected feature. Hovering over buttons will popup a short description."
+            element: ".sidenav",
+            title: "sidenav",
+            content: "Clicking on a sidenav button will display a panel for the selected feature. Hovering over buttons will popup a short description."
             },
             {
             element: "#sb-btn-layers",
@@ -39,8 +39,8 @@ module.exports.runTour = function(mapCtrl){
             element: "#sb-layers",
             title: "Layers Control",
             content: "Switch between a selection of basemap layers and show/hide or remove overlays which have been added to the map. Basemap layer providers can be configured in the conf.json file",
-            onShow: function(tour){mapCtrl.showSidebarTab("sb-layers");},
-            onHide: function(tour){mapCtrl.closeSidebarTab("sb-layers");}
+            onShow: function(tour){mapCtrl.showsidenavTab("sb-layers");},
+            onHide: function(tour){mapCtrl.closesidenavTab("sb-layers");}
             },
             {
             element: "#sb-btn-overlays",
@@ -52,7 +52,7 @@ module.exports.runTour = function(mapCtrl){
             element: "#wms-host-select",
             title: "Select a host",
             content: "Select a web service from the drop down list. Environment Agency & FEMA WMS' are available by default - this can be edited in the conf.json file.",
-            onShow: function(tour){mapCtrl.showSidebarTab("sb-overlays");},
+            onShow: function(tour){mapCtrl.showsidenavTab("sb-overlays");},
             },
             {
             element: "#wms-layer-select",
@@ -63,7 +63,7 @@ module.exports.runTour = function(mapCtrl){
             element: "#overlay-submit",
             title: "Add the layer",
             content: "Found a layer you want? Click this button to add it to the map. It will appear in the layer control. Some WMS layers have legends. If a legend is available, it will be displayed and can be hidden/shown via the layer control",
-            onHide: function(tour){mapCtrl.closeSidebarTab("sb-overlays");}
+            onHide: function(tour){mapCtrl.closesidenavTab("sb-overlays");}
             },
             {
             element: "#sb-btn-plugin",
@@ -74,7 +74,7 @@ module.exports.runTour = function(mapCtrl){
             {
             element: "#sb-btn-print",
             title: "Print",
-            content: "Print the map to a PDF image! The image is created at the current size and resolution of the window. The final image will not feature any GUI elements (such as the sidebar)."
+            content: "Print the map to a PDF image! The image is created at the current size and resolution of the window. The final image will not feature any GUI elements (such as the sidenav)."
             },
             {
             placement: 'left',

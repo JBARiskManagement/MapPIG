@@ -58,12 +58,12 @@ function initialise(){
 
     // Initialise printing
     document.getElementById('print-submit').addEventListener('click', function(event){
-        $("#sidebar").hide();
+        $("#sidenav").hide();
         ipc.send('print-to-pdf', $('#save-file-path').text());
     });
 
     ipc.on('wrote-pdf', function (event, path) {
-        $("#sidebar").show();
+        $("#sidenav").show();
     });
 
     // Initialise plugins

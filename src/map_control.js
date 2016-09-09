@@ -7,7 +7,7 @@ const appPath = app.getAppPath();
 const $ = jQuery = require('jQuery');
 const L = require('leaflet');
 require('./layerpanel.js');
-require('../vendors/js/leaflet-sidebar.js');
+require('leaflet-sidenav');
 require('../vendors/js/leaflet-wms-getlegendgraphic.js');
 require('leaflet-search');
 require('leaflet-loading');
@@ -96,12 +96,12 @@ MapControl.prototype.init = function(data){
       position: "bottomright"
     }).addTo(this._map);
 
-    // Create the layer control, which will be added to the sidebar
+    // Create the layer control, which will be added to the sidenav
     var ws = new wms.WebService();
     this.layerControl = L.control.layerpanel(this.baseLayers, this.overLays, 'sb-layers', {"legendFn": ws.createLegend}).addTo(this._map);
 
-    // Create the sidebar
-    this.sidebar = L.control.sidebar('sidebar').addTo(this._map);
+    // Create the sidenav
+    this.sidenav = L.control.sidenav('sidenav').addTo(this._map);
     L.Icon.Default.imagePath = appPath + "/node_modules/leaflet/dist/images";
 
     // If we got the google geocoder (we have connection), create a search control
@@ -178,17 +178,17 @@ MapControl.prototype.formatJSON = function(rawjson){
 
 
 /**
- * Show a sidebar tab by ID
+ * Show a sidenav tab by ID
  */
-MapControl.prototype.showSidebarTab = function(id){
-    this.sidebar.open(id);
+MapControl.prototype.showsidenavTab = function(id){
+    this.sidenav.open(id);
 };
 
 /**
- * Close a sidebar tab by ID
+ * Close a sidenav tab by ID
  */
-MapControl.prototype.closeSidebarTab = function(id){
-    this.sidebar.close(id);
+MapControl.prototype.closesidenavTab = function(id){
+    this.sidenav.close(id);
 };
 /**
   * Disable all map interaction
@@ -220,7 +220,7 @@ MapControl.prototype.enable = function(){
  * Add an overlay WMS layer to the map
  */
 MapControl.prototype.addWmsOverlay = function (host, layerName, displayName, format, attr){
-    // Get the values from the hazards-sidebar if they are not passed in
+    // Get the values from the hazards-sidenav if they are not passed in
     if (typeof host === 'undefined')
         host = $("#wms-host-select").val();
 

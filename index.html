@@ -19,7 +19,7 @@
         <link href='vendors/bootstrap-modal/css/bootstrap-modal.css' rel='stylesheet' />
         <link href='node_modules/bootstrap-switch/dist/css/bootstrap3/bootstrap-switch.min.css' rel="stylesheet">
         <link href='node_modules/bootstrap-select/dist/css/bootstrap-select.min.css' rel='stylesheet' />
-        <link href='vendors/css/leaflet-sidebar.css' rel='stylesheet' />
+        <link href='node_modules/leaflet-sidenav/dist/leaflet-sidenav.min.css' rel='stylesheet' />
         <!--<link href='node_modules/leaflet-draw/dist/leaflet.draw.css' rel='stylesheet' />-->
         <link href='node_modules/font-awesome/css/font-awesome.min.css' rel='stylesheet'>
         <link href='node_modules/jquery-ui-dist/jquery-ui.min.css' rel='stylesheet'>
@@ -32,11 +32,11 @@
     <!--Main Window-->
      <div id="container">
 
-      <!-- The sidebar -->
-      <div id="sidebar" class="sidebar collapsed">
+      <!-- The sidenav -->
+      <div id="sidenav" class="sidenav collapsed">
         <!-- Navigation tabs -->
-        <div class="sidebar-tabs">
-            <ul role="tablist" class="sidebar-tabs-top">
+        <div class="sidenav-tabs">
+            <ul role="tablist" class="sidenav-tabs-top">
                 <li ><a id="sb-btn-layers" href="#sb-layers" role="tab" data-placement="right" data-toggle="tooltip" title="Map layers"><i class="mt-icon mt-layers"></i></a></li>
                 <li id="sb-btn-overlays"><a href="#sb-overlays" role="tab" data-placement="right" data-toggle="tooltip" title="Add overlay from a WMS"><i class="fa fa-globe"></i></a></li>
                 <li id="sb-btn-plugin"><a href="#sb-plugin" role="tab" data-placement="right" data-toggle="tooltip" title="Plugins"><i class="fa fa-plug"></i></a></li>
@@ -49,13 +49,13 @@
             </ul>
         </div>
 
-        <div class="sidebar-content">
-            <div class="sidebar-pane" id="sb-layers">
-              <h1 class="sidebar-header">Layers<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+        <div class="sidenav-content">
+            <div class="sidenav-pane" id="sb-layers">
+              <h1 class="sidenav-header">Layers<div class="sidenav-close"><i class="fa fa-caret-left"></i></div></h1>
             </div>
 
-            <div class="sidebar-pane" id="sb-overlays">
-                <h1 class="sidebar-header">WMS Layers<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+            <div class="sidenav-pane" id="sb-overlays">
+                <h1 class="sidenav-header">WMS Layers<div class="sidenav-close"><i class="fa fa-caret-left"></i></div></h1>
                 <div class="row">
                     <div class="col-xs-12 col-md-12">
                         <form role="form" class="wms-form">
@@ -76,15 +76,15 @@
                 </div>
             </div>
 
-            <div class="sidebar-pane" id="sb-plugin">
-              <h1 class="sidebar-header" id="sb-plugin-header">Extensions<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+            <div class="sidenav-pane" id="sb-plugin">
+              <h1 class="sidenav-header" id="sb-plugin-header">Extensions<div class="sidenav-close"><i class="fa fa-caret-left"></i></div></h1>
               <div id="sb-plugin-area" class="row">
                 <div class="btn-group-vertical" id="plugin-launchers">
                 </div>
               </div>
             </div>
-            <div class="sidebar-pane" id="sb-print">
-              <h1 class="sidebar-header">Print<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+            <div class="sidenav-pane" id="sb-print">
+              <h1 class="sidenav-header">Print<div class="sidenav-close"><i class="fa fa-caret-left"></i></div></h1>
               <div class="row">
                 <div class="col-xs-12 col-md-12">
                   <form role="form" class="csv-form">
@@ -102,8 +102,8 @@
 
             </div>
 
-            <div class="sidebar-pane" id="sb-help">
-              <h1 class="sidebar-header" id="sb-help-header">Extensions<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+            <div class="sidenav-pane" id="sb-help">
+              <h1 class="sidenav-header" id="sb-help-header">Extensions<div class="sidenav-close"><i class="fa fa-caret-left"></i></div></h1>
               <div class="row">
                 <div class="col-xs-12 col-md-12">
                 <button type="button" class="btn btn-default" id="tour-btn">Tour</button>
@@ -112,8 +112,8 @@
               </div>
             </div>
 
-            <div class="sidebar-pane" id="sb-about">
-              <h1 class="sidebar-header">About<div class="sidebar-close"><i class="fa fa-caret-left"></i></div></h1>
+            <div class="sidenav-pane" id="sb-about">
+              <h1 class="sidenav-header">About<div class="sidenav-close"><i class="fa fa-caret-left"></i></div></h1>
               <p>Questions? Contact James Ramm <a href="mailto:jamessramm@gmail.com">email</a> </p>
               <p>Originally developed at JBA Risk Management Ltd 2016</p>
             </div>
@@ -122,7 +122,7 @@
       </div>
 
      <!-- This is where the actual map goes -->
-     <div id="map" class="sidebar-map">
+     <div id="map" class="sidenav-map">
      </div>
 
     <!-- Div for disabling the UI (e.g. when blocking work is happening, such as loading a file) -->

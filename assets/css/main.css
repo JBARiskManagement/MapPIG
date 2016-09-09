@@ -26,19 +26,19 @@ input[type="radio"], input[type="checkbox"] {
 }
 
 
-/* Sidebar style */
-.sidebar{
+/* sidenav style */
+.sidenav{
   z-index: 999;
 }
 
-.sidebar-header {
+.sidenav-header {
     margin: -10px -20px 10px;
     background-color: rgba(233,131,0,0.5);
     font-size: 13.5pt;
 
 }
 
-.sidebar-tabs > li.active, .sidebar-tabs > ul > li.active {
+.sidenav-tabs > li.active, .sidenav-tabs > ul > li.active {
     background-color: rgba(233,131,0,0.5);
 }
 
@@ -53,7 +53,7 @@ input[type="radio"], input[type="checkbox"] {
     border-radius:5px !important;
 }
 
-/* Ensure dropdown menus never exceed the sidebar width */
+/* Ensure dropdown menus never exceed the sidenav width */
 .dropdown-menu {
     width: 100%;
 }
