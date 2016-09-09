@@ -4,7 +4,6 @@
 // Get the app variable to figure out paths to resources etc
 const app = require('electron').remote.app;
 const appPath = app.getAppPath();
-
 const $ = jQuery = require('jQuery');
 const L = require('leaflet');
 require('./layerpanel.js');
@@ -14,8 +13,8 @@ require('leaflet-search');
 require('leaflet-loading');
 const wms = require('./wms.js');
 require('bootstrap-select');
-
 const {MTDom} = require('./dom.js');
+
 
 /**
  * Load a file and invoke a callback function

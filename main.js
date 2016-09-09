@@ -1,3 +1,6 @@
+/*
+ * Copyright (c) 2016 James Ramm
+ */
 const electron = require('electron');
 const {app, BrowserWindow} = electron;
 const fs = require('fs')
@@ -33,7 +36,7 @@ function createWindow () {
 
 
   // and load the index.html of the app.
-  win.loadURL(`file://${__dirname}/index.html`);
+  win.loadURL(`file://${__dirname}/index.html`);  
 
   // Open the DevTools.
   if (isDebug()){

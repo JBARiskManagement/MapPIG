@@ -1,4 +1,4 @@
-const {MTPluginGui, MTDom} = mtRequire("dom.js");
+const {MTContainer, MTDom} = mtRequire("dom.js");
 
 module.exports.setup = function(state){
 

@@ -11,7 +11,8 @@ require("bootstrap-switch");
 require('bootstrap-modal');
 var Handlebars = require("handlebars/runtime");
 require('./templates.js');
-
+var mapCtrl = require('./map_control.js');
+var Plotly = require('plotly.js');
 
 MTContainer = function()
 {
@@ -170,7 +171,7 @@ MTDom = {
     },
 
     _addSidebarPanel: function(data){
-        MT_mCtrl.sidebar.addPanel(data);
+        mapCtrl.getMapCtrl().sidebar.addPanel(data);
     },
 
     hideSidebar: function(){
@@ -183,7 +184,7 @@ MTDom = {
 
     prepareMapForPrint: function(){
         this.hideSidebar();
-        var mc = MTgetMap();
+        var mc = mapCtrl.getMapCtrl();
         mc.zoomControl.remove();
         mc.searchControl.remove();
     },

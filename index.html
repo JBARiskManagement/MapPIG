@@ -141,7 +141,11 @@
 
     <!-- Initialise the UI -->
     <script type="text/javascript">
-        $(document).ready(initialise);
+        document.onreadystatechange = () => {
+            if (document.readyState === 'complete') {
+                initialise();
+            }
+        };
     </script>
     </body>
 </html>

@@ -28,7 +28,6 @@ MTPlugins.prototype.registerPlugin = function(err, files){
         var pth = path.join(this.pluginPath, files[i]);
         if (fs.lstatSync(pth).isDirectory()){
             // Get the path to the plugin file
-            
             var plugin = require(pth);
             var pkg = require(path.join(pth, 'package.json'));
             if (plugin.hasOwnProperty('setup') && pkg.hasOwnProperty('name') && pkg.hasOwnProperty('description')){
