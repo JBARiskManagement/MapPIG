@@ -55,31 +55,29 @@ MTContainer.prototype.sidenavPanel = function(data)
 };
 
 /**
- * Create a modal dialog. The modal can be shown by calling `modal` on the return element,
+ * Create a dialog. The dialog can be shown by calling `dialog("open")` on the returned element,
  * e.g.:
- *    var mymodal  = pluginGui.modal(data);
- *    mymodal.modal();
+ *    var dialog  = pluginGui.dialog(data);
+ *    dialog.dialog("open");
  *
- *  @param {bool} [data.fullwidth] If true, the modal will scale to the width of the container
- *  @param {bool} [data.draggable] If true, the modal will be draggable
+ *  @param {bool} [data.modal] If true, the dialog will be modal
  *  @param {string} [data.id] Id of the modal
  *  @param {string} [data.title] Title of the modal window
- *  @param {HTMLString} {DOMNode} [data.body] Content of the modal body
- *  @param {HTMLString} {DOMNode} [data.footer] Content of the modal footer
+ *  @param {HTMLString} {DOMNode} [data.content] Content of the modal body
  */
-MTContainer.prototype.modal = function(data)
+MTContainer.prototype.dialog = function(data)
 {
     // Check the modal doesnt already exist on the DOM and remove if so
     $("#"+data.id).remove();    
 
-    var modal = $('<div />').attr('id', data.id);
+    var dlg = $('<div />').attr('id', data.id);
 
-    modal.innerHtml = data.content;
+    dlg.innerHtml = data.content;
 
     // Make it a dialog
-    modal.dialog({
+    dlg.dialog({
         autoOpen: false,
-        modal: true,
+        modal: data.modal,
         show: true,
         title: data.title
 
@@ -87,24 +85,22 @@ MTContainer.prototype.modal = function(data)
 
     // Record the modal id in the elements to remove on plugin exit
     this._elements.push(data.id);
-    return modal;
+    return dlg;
 };
 
 /**
- * Create a modal chart dialog. The modal can be shown by calling `modal` on the return element,
+ * Create a chart dialog. The dialog can be shown by calling `dialog("open")` on the return element,
  * e.g.:
- *    var mymodal  = container.modalChart(data);
- *    mymodal.modal();
+ *    var mymodal  = container.chartDialog(data);
+ *    mymodal.dialog("open");
  *
- *  @param {bool} [data.fullwidth] If true, the modal will scale to the width of the container
- *  @param {bool} [data.draggable] If true, the modal will be draggable
+ *  @param {bool} [data.modal] If true, the dialog will be modal
  *  @param {string} [data.id] Id of the modal
  *  @param {string} [data.title] Title of the modal window
- *  @param {HTMLString} {DOMNode} [data.footer] Content of the modal footer
  *  @param {object} [data.chartData] Chart data
  * @param {object} [data.chartLayout] Chart layout
  */
-MTContainer.prototype.modalChart = function(data)
+MTContainer.prototype.chartDialog = function(data)
 {
     var chartId = data.id+"-chart";
     data.body = "<div id='"+chartId+"'></div>";
@@ -112,16 +108,6 @@ MTContainer.prototype.modalChart = function(data)
 
     Plotly.newPlot(chartId, data.chartData, data.chartLayout, {showLink: false, displaylogo: false});
     return mod;
-
-};
-
-/**
- * Create a modless dialog
- *
- *
- */
-MTContainer.prototype.modeless = function(data)
-{
 
 };
 
