@@ -4,6 +4,9 @@
 * Copyright (c) 2016 James Ramm
 */
 
+const $ = jQuery = require('jQuery');
+require('../vendors/jquery-ui-1.12.0.custom/jquery-ui.min.js');
+
 const {dialog} = require('electron').remote;
 require('bootstrap');
 const bootbox = require('bootbox');
@@ -67,36 +70,23 @@ MTContainer.prototype.sidenavPanel = function(data)
 MTContainer.prototype.modal = function(data)
 {
     // Check the modal doesnt already exist on the DOM and remove if so
-    $("#"+data.id).remove();
+    $("#"+data.id).remove();    
 
-    if (data.fullwidth)
-    {
-        data.class="modal container fade";
-    }
-    else
-    {
-        data.class="modal fade";
-    }
+    var modal = $('<div />').attr('id', data.id);
 
-    if (data.draggable)
-    {
-        data.class += " modal-draggable";
-    }
+    modal.innerHtml = data.content;
 
-    var html = Handlebars.templates.modal(data);    
+    // Make it a dialog
+    modal.dialog({
+        autoOpen: false,
+        modal: true,
+        show: true,
+        title: data.title
+
+    });
 
     // Record the modal id in the elements to remove on plugin exit
     this._elements.push(data.id);
-
-    // Append the modal to the main page
-    $("body").append(html);
-
-    // Return the dom node
-    var modal = $("#"+data.id);
-    if (data.draggable)
-    {
-        modal.draggable({handle: ".modal-header"});
-    }
     return modal;
 };
 
