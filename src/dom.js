@@ -50,7 +50,7 @@ MTContainer.prototype.sidenavPanel = function(data)
     this._elements.push(data.id);
 
     data.pane = data.content
-    data.title = data.title +'<div class="sidenav-close"><i class="fa fa-caret-left"></i></div>'
+    data.header = data.title +'<div class="sidenav-close"><i class="fa fa-caret-left"></i></div>'
     MTDom._addsidenavPanel(data);
 };
 
@@ -87,7 +87,7 @@ MTContainer.prototype.modal = function(data)
     this._elements.push(data.id);
 
     // Append the modal to the main page
-    $("#container").append(html);
+    $("body").append(html);
 
     // Enable resizing on modal
     $('.modal-content').resizable();
@@ -111,15 +111,15 @@ MTContainer.prototype.modal = function(data)
  *  @param {object} [data.chartData] Chart data
  * @param {object} [data.chartLayout] Chart layout
  */
-MTContainer.prototype.chartDialog = function(data)
+MTContainer.prototype.modalChart = function(data)
 {
     var chartId = data.id+"-chart";
     data.body = "<div id='"+chartId+"'></div>";
     var mod = this.modal(data);
 
     Plotly.newPlot(chartId, data.chartData, data.chartLayout, {showLink: false, displaylogo: false});
-    return mod;
 
+    return mod;
 };
 
 MTContainer.prototype.close = function()
