@@ -9,9 +9,9 @@ require('../vendors/jquery-ui-1.12.0.custom/jquery-ui.min.js');
 
 const {dialog} = require('electron').remote;
 require('bootstrap');
+
 const bootbox = require('bootbox');
 require("bootstrap-switch");
-require('bootstrap-modal');
 const Handlebars = require("handlebars/runtime");
 require('./templates.js');
 var mapCtrl = require('./map_control.js');
@@ -54,38 +54,49 @@ MTContainer.prototype.sidenavPanel = function(data)
     MTDom._addsidenavPanel(data);
 };
 
+
 /**
- * Create a dialog. The dialog can be shown by calling `dialog("open")` on the returned element,
+ * Create a modal dialog. The modal can be shown by calling `modal` on the return element,
  * e.g.:
- *    var dialog  = pluginGui.dialog(data);
- *    dialog.dialog("open");
+ *    var mymodal  = pluginGui.modal(data);
+ *    mymodal.modal();
  *
- *  @param {bool} [data.modal] If true, the dialog will be modal
+ *  @param {bool} [data.fullwidth] If true, the modal will scale to the width of the container
  *  @param {string} [data.id] Id of the modal
  *  @param {string} [data.title] Title of the modal window
- *  @param {HTMLString} {DOMNode} [data.content] Content of the modal body
+ *  @param {HTMLString} {DOMNode} [data.body] Content of the modal body
+ *  @param {HTMLString} {DOMNode} [data.footer] Content of the modal footer
  */
-MTContainer.prototype.dialog = function(data)
+MTContainer.prototype.modal = function(data)
 {
     // Check the modal doesnt already exist on the DOM and remove if so
-    $("#"+data.id).remove();    
+    $("#"+data.id).remove();
 
-    var dlg = $('<div />').attr('id', data.id);
+    if (data.fullwidth)
+    {
+        data.class="modal draggable container fade";
+    }
+    else
+    {
+        data.class="modal draggable fade";
+    }
 
-    dlg.innerHtml = data.content;
-
-    // Make it a dialog
-    dlg.dialog({
-        autoOpen: false,
-        modal: data.modal,
-        show: true,
-        title: data.title
-
-    });
+    var html = Handlebars.templates.modal(data);    
 
     // Record the modal id in the elements to remove on plugin exit
     this._elements.push(data.id);
-    return dlg;
+
+    // Append the modal to the main page
+    $("#container").append(html);
+
+    // Enable resizing on modal
+    $('.modal-content').resizable();
+
+    // Enable dragging on modal
+    $('.modal-dialog').draggable();
+
+    // Return the dom node
+    return $("#" + data.id);
 };
 
 /**
