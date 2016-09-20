@@ -126,68 +126,7 @@ MapControl.prototype.init = function(data){
                                                 });
         this._map.addControl(this.searchControl);
     }
-    if (jsonObj.hasOwnProperty("ows")){
-        this.configOwsHosts(jsonObj.ows);
-    }
 };
-
-MapControl.prototype.configOwsHosts = function(jsonData){
-    for (var p in jsonData){
-        console.log(p)
-        if (jsonData.hasOwnProperty(p)){
-            $('#ows-host-select')
-                .append($('<option>', {value: jsonData[p][0], "ows-service": jsonData[p][1]})
-                .text(p));
-        }
-    }
-    $('#ows-host-select').selectpicker('refresh');
-
-};
-
-/**
- * Get the capabilities for the selected WMS host 
- * and add each layer to the select picker dropdown
- */
-MapControl.prototype.updateOwsControl =  function(e){
-    MTDom.showLoading("#sb-overlays");
-    var url = $('#ows-host-select').find("option:selected").val();
-    var service =  $('#ows-host-select').find("option:selected").attr("ows-service");
-
-    if (service == "wms"){
-         var success_func = this.updateWmsOptions
-         $('#overlay-submit').text("Add WMS Layer")
-    }
-    else if (service == "wfs"){
-        var success_func = this.updateWfsOptions
-        $('#overlay-submit').text("Add WFS Layer")
-    }
-    var ws = new wms.WebService(url);
-    $('#wms-layer-select').find('option').remove();
-    ws.getCapabilities({
-        success: success_func,
-        error: function(){alert("Error connecting to OWS host");},
-        service: service});
-};
-
-MapControl.prototype.updateWmsOptions = function(xml){
-    var layers = $(xml).find('Layer');
-    layers.each(function(index, value){
-                    var option = '<option value="' + $(this).children("Name").text() + '">' + $(this).children("Title").text() + '</option>';
-                    $("#wms-layer-select").append(option);
-                });
-                $("#wms-layer-select").selectpicker('refresh');
-                MTDom.hideLoading("#sb-overlays");
-}
-
-MapControl.prototype.updateWfsOptions = function(xml){
-    var layers = $(xml).find('FeatureType');
-    layers.each(function(index, value){
-                    var option = '<option value="' + $(this).children("Name").text() + '">' + $(this).children("Title").text() + '</option>';
-                    $("#wms-layer-select").append(option);
-                });
-                $("#wms-layer-select").selectpicker('refresh');
-                MTDom.hideLoading("#sb-overlays");
-}
 
 /**
  * Formats the response of the google geocoding service into JSON
