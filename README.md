@@ -23,7 +23,6 @@ Requirements:
 run `npm install` followed by `npm run templates`. 
 You should now be able to run MapPig by running `electron .` in the MapPIG directory
 
-## Configuration
+## Documentation
 
-Edit the `conf/conf.json` file to edit the default base layers and WMS services. The plugins directory can also be configured.
-To enable the example plugins, point the `plugins` path in `conf.json` to the `plugins` directory in the MapPig root folder
+See docs/index.md for documentation
