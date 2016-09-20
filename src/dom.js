@@ -76,6 +76,7 @@ MTContainer.prototype.dialog = function(data)
 
     // Make it a dialog
     dlg.dialog({
+        appendTo: "#container",
         autoOpen: false,
         modal: data.modal,
         show: true,
