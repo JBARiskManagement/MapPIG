@@ -20,10 +20,10 @@
                                        "attribution": "Contains Ordnance Survey Data © Crown copyright and database right 2010"}                   
                     },
                     
-    "wms": {
-                "OpenGeo": "http://demo.opengeo.org/geoserver/ows",
-                "Environment Agency": "http://www.geostore.com/OGC/OGCInterface?UID=UDATAGOV2011&PASSWORD=datagov2011&INTERFACE=ENVIRONMENT&LC=0",
-                "FEMA": "http://hazards.fema.gov/gis/nfhl/services/public/NFHLWMS/MapServer/WMSServer"                
+    "ows": {
+                "OpenGeo": ["http://demo.opengeo.org/geoserver/ows", "wfs"],
+                "Environment Agency": ["http://www.geostore.com/OGC/OGCInterface?UID=UDATAGOV2011&PASSWORD=datagov2011&INTERFACE=ENVIRONMENT&LC=0", "wms"],
+                "FEMA": ["http://hazards.fema.gov/gis/nfhl/services/public/NFHLWMS/MapServer/WMSServer", "wms"]                
             },
     "plugins": "C:/source/MapPIG/plugins"
 }

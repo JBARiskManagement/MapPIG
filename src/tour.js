@@ -48,7 +48,7 @@ module.exports.runTour = function(mapCtrl){
                     " Lets expand the tab and see what is available by default"
             },
             {
-            element: "#wms-host-select",
+            element: "#ows-host-select",
             title: "Select a host",
             content: "Select a web service from the drop down list. Environment Agency & FEMA WMS' are available by default - this can be edited in the conf.json file.",
             onShow: function(tour){mapCtrl.showsidenavTab("sb-overlays");},

@@ -126,21 +126,21 @@ MapControl.prototype.init = function(data){
                                                 });
         this._map.addControl(this.searchControl);
     }
-    if (jsonObj.hasOwnProperty("wms")){
-        this.configWmsHosts(jsonObj.wms);
+    if (jsonObj.hasOwnProperty("ows")){
+        this.configOwsHosts(jsonObj.ows);
     }
 };
 
-MapControl.prototype.configWmsHosts = function(jsonData){
-
+MapControl.prototype.configOwsHosts = function(jsonData){
     for (var p in jsonData){
+        console.log(p)
         if (jsonData.hasOwnProperty(p)){
-            $('#wms-host-select')
-                .append($('<option>', {value: jsonData[p]})
+            $('#ows-host-select')
+                .append($('<option>', {value: jsonData[p][0], "ows-service": jsonData[p][1]})
                 .text(p));
         }
     }
-    $('#wms-host-select').selectpicker('refresh');
+    $('#ows-host-select').selectpicker('refresh');
 
 };
 
@@ -150,14 +150,16 @@ MapControl.prototype.configWmsHosts = function(jsonData){
  */
 MapControl.prototype.updateOwsControl =  function(e){
     MTDom.showLoading("#sb-overlays");
-    var url = $('#wms-host-select').find("option:selected").val();
-    var service = $('#ows-type-select').find("option:selected").val();
+    var url = $('#ows-host-select').find("option:selected").val();
+    var service =  $('#ows-host-select').find("option:selected").attr("ows-service");
 
     if (service == "wms"){
          var success_func = this.updateWmsOptions
+         $('#overlay-submit').text("Add WMS Layer")
     }
     else if (service == "wfs"){
         var success_func = this.updateWfsOptions
+        $('#overlay-submit').text("Add WFS Layer")
     }
     var ws = new wms.WebService(url);
     $('#wms-layer-select').find('option').remove();
@@ -251,7 +253,7 @@ MapControl.prototype.enable = function(){
 MapControl.prototype.addWmsOverlay = function (host, layerName, displayName, format, attr){
     // Get the values from the hazards-sidenav if they are not passed in
     if (typeof host === 'undefined')
-        host = $("#wms-host-select").val();
+        host = $("#ows-host-select").val();
 
     if (typeof layerName === 'undefined')
         layerName = $('#wms-layer-select').val();
