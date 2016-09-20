@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2016 James Ramm
  */
 const path = require('path');
 const fs = require('fs');

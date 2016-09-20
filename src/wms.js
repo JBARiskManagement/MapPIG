@@ -1,7 +1,5 @@
 /**
  * Helper functions for WMS
- * 
- * Copyright (c) 2016 James Ramm
  */
 const $ = jQuery = require('jQuery');
 const L = require('leaflet');
@@ -11,25 +9,43 @@ function WebService(url){
     this.url = url;
 };
 
+/*
+ * \brief Get the capabilities for an OWS web service.
+ * 
+ * @param options: Object containing:
+ *  success: function to be called on success, which will be given the XML capabilities document
+ *  error: function to be called upon error
+ *  service: Optional parameter declaring the OWS service to get capabilities for (e.g. wms, wfs).
+ *             Defaults to WMS 
+ */
 WebService.prototype.getCapabilities = function(options){
-     if(this.url.indexOf('?') === -1)
-            this.url += '?';
-        else
-            this.url += '&';
+    if(this.url.indexOf('?') === -1){
+        this.url += '?';
+    }
+    else {
+        this.url += '&';
+    }
 
-        $.ajax({
-                type: "GET",
-            headers: {'Access-Control-Allow-Credentials': true},
-                xhrFields: {
-                    withCredentials: true
-                },
-                url: this.url + 'request=GetCapabilities&service=wms',
-                dataType: "xml",
-                success: function(xml) {
-                    options.success(xml);
-                },
-                error: function(){options.error}
-            });
+    if (options.service){
+        var capabilityURL = this.url + 'request=GetCapabilities&service=' + options.service
+    }
+    else {
+        var capabilityURL = this.url + 'request=GetCapabilities&service=wms'
+    }
+
+    $.ajax({
+            type: "GET",
+        headers: {'Access-Control-Allow-Credentials': true},
+            xhrFields: {
+                withCredentials: true
+            },
+            url: capabilityURL,
+            dataType: "xml",
+            success: function(xml) {
+                options.success(xml);
+            },
+            error: function(){options.error}
+        });
 
 };
 

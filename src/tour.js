@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2016 James Ramm
  */
 // Interactive tour/demo of MapPIG
 const $ = jQuery = require("jQuery");

@@ -1,5 +1,4 @@
 /*
- * Copyright (c) 2016 James Ramm
  */
 const electron = require('electron');
 const {app, BrowserWindow} = electron;

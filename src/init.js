@@ -42,7 +42,8 @@ function initialise(){
     $("#tour-btn").click({"control": mapCtrl}, function(event){
         runTour(event.data.control)});
 
-    $('#wms-host-select').on('change', mapCtrl.updateWmsOptions);
+    $(document).on('change', '#wms-host-select', mapCtrl.updateOwsControl.bind(mapCtrl))
+                         .on('change', '#ows-type-select', mapCtrl.updateOwsControl.bind(mapCtrl));
 
     // Initialise file browser buttons
     $('#save-file').on('click', function (event) {

@@ -1,5 +1,4 @@
 /*
-* Copyright (c) 2016 James Ramm
 */
 L.Control.LayerPanel = L.Control.Layers.extend({
 

@@ -1,7 +1,6 @@
 /*
  * L.Control.WMSLegend is used to add a WMS Legend to the map
  * 
- * Copyright (c) 2016 James Ramm
  * 
  */
 
