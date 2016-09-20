@@ -77,6 +77,14 @@ MapControl.prototype.init = function(data){
                 if (jsonObj.base_layers[p].type === "tileLayer"){
                     this.baseLayers[p] = L.tileLayer(jsonObj.base_layers[p].url, { attribution: jsonObj.base_layers[p].attribution});
                 }
+                else if (jsonObj.base_layers[p].type === "wms"){
+                    this.baseLayers[p] = L.tileLayer.wms(jsonObj.base_layers[p].url, {maxZoom: 30,
+                                                                                        layers: layerName,
+                                                                                        format: format,
+                                                                                        transparent: true,
+                                                                                        version: '1.1.0',
+                                                                                        attribution: attr})
+                }
             }
         }
     }
