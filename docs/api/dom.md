@@ -1,7 +1,7 @@
 
 # dom
 
-Helpers for manipulating the MapThing UI.
+Helpers for manipulating the MapPIG UI.
 
 ### MTDom.hideSidebar()
 
@@ -37,7 +37,7 @@ Returns the sidebar container element in which HTML elements can be added.
 ### MTDom.createModal(content, [title])
 
 Creates a modal bootstrap window and returns the `.modal-body` div; Add the contents of the window to this element.
-The modal window overlays the map area and the rest of the MapThing GUI is inactive while the window is displayed. 
+The modal window overlays the map area and the rest of the MapPIG GUI is inactive while the window is displayed. 
 
 - `content` HTML string. The content of the window
 - `title` String. The title of the window
@@ -62,7 +62,7 @@ The `form` element is returned.
 ### new MTContainer()
 
 Create a new MTContainer instance. This is a small helper class to add container elements such as sidebar panels and dialog boxes to
-the MapThing UI:
+the MapPIG UI:
 
     container = new MTContainer();
 

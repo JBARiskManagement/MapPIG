@@ -1,7 +1,7 @@
 /*
  * Copyright (c) 2016 James Ramm
  */
-// Interactive tour/demo of MapThing
+// Interactive tour/demo of MapPIG
 const $ = jQuery = require("jQuery");
 require("bootstrap");
 require("../vendors/bootstrap-tour/js/bootstrap-tour.min.js");
@@ -12,7 +12,7 @@ module.exports.runTour = function(mapCtrl){
             {
             orphan: true,
             title: "Welcome!",
-            content: "MapThing is a desktop base, extensible web GIS with an emphasis on interactive visualisation. " +
+            content: "MapPIG is a desktop base, extensible web GIS with an emphasis on interactive visualisation. " +
                     "This short tour is intended to get you familiar with the user interface.",
             onShow: function(tour){mapCtrl.closesidenavTab("sb-help");}
             },
@@ -23,7 +23,7 @@ module.exports.runTour = function(mapCtrl){
             content: 
                     "The main focus of the program is on visualisation. It allows you to quickly navigate the map, add overlays from web services " +
                     "and print images. Plugins can extend the functionality " +
-                    "of MapThing to create new overlays from different sources, charts and provide more complex, interactive analysis of all kinds of data. ",
+                    "of MapPIG to create new overlays from different sources, charts and provide more complex, interactive analysis of all kinds of data. ",
             },
             {
             element: ".sidenav",
@@ -33,7 +33,7 @@ module.exports.runTour = function(mapCtrl){
             {
             element: "#sb-btn-layers",
             title: "Display the layer control",
-            content: "MapThing offers a rudimentary layer control. "
+            content: "MapPIG offers a rudimentary layer control. "
             },
             {
             element: "#sb-layers",
@@ -45,7 +45,7 @@ module.exports.runTour = function(mapCtrl){
             {
             element: "#sb-btn-overlays",
             title: "WMS Overlays",
-            content: "MapThing can be configured to store WMS hosts" +
+            content: "MapPIG can be configured to store WMS hosts" +
                     " Lets expand the tab and see what is available by default"
             },
             {
@@ -68,7 +68,7 @@ module.exports.runTour = function(mapCtrl){
             {
             element: "#sb-btn-plugin",
             title: "Plugins",
-            content: "MapThings' analysis functionality and integration with other tools and methods comes from the extensible plugin framework" +
+            content: "MapPIGs' analysis functionality and integration with other tools and methods comes from the extensible plugin framework" +
                     " Available plugins are displayed in this panel and can be enabled by clicking the corresponding button."
             },
             {

@@ -1,7 +1,7 @@
-# Mapthing CSS
+# MapPIG CSS
 
 
-Mapthing has a number of CSS classes for styling and adding functionality to your plugins' GUI.
+MapPIG has a number of CSS classes for styling and adding functionality to your plugins' GUI.
 Many of these classes are provided by 3rd party libraries.
 
 ## Select Picker

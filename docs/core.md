@@ -1,3 +1,3 @@
-# MapThing Core Development
+# MapPIG Core Development
 
 TODO...

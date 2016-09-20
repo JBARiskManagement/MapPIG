@@ -46,7 +46,7 @@ function getMapCtrl(name = "default"){
 /**
  * \brief MapControl
  * 
- * Brings together the various elements of the MapThing GUI - essentially
+ * Brings together the various elements of the MapPIG GUI - essentially
  * representing the main html 'window'
  */
 function MapControl(id){

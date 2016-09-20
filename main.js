@@ -31,7 +31,8 @@ function createWindow () {
 
   win = new BrowserWindow({width: width * 0.85, height: height * 0.75,
                            toolbar: false,
-                           "auto-hide-menu-bar": true});
+                           "auto-hide-menu-bar": true,
+                          icon: "./assets/img/mappig.png"});
   win.setMenuBarVisibility(false);
 
 

@@ -1,5 +1,5 @@
 /**
-* MapThing DOM utilities
+* MapPIG DOM utilities
 *
 * Copyright (c) 2016 James Ramm
 */

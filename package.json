@@ -1,5 +1,5 @@
 {
-  "name": "mapthing",
+  "name": "MapPIG",
   "version": "0.1.0",
   "main": "main.js",
   "license": "MIT",
@@ -31,7 +31,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git://github.com/JamesRamm/MapThing"
+    "url": "git://github.com/JamesRamm/MapPIG"
   },
   "author": { "name" : "James Ramm",
              "email" : "jamessramm@gmail.com"
