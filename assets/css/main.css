@@ -10,7 +10,7 @@ html, body, #container {
 
 h1, h2, h3{
     font-weight: bold;
-    color: #e98300;
+    color: #83ca7b;
 }
 
 
@@ -33,13 +33,13 @@ input[type="radio"], input[type="checkbox"] {
 
 .sidenav-header {
     margin: -10px -20px 10px;
-    background-color: rgba(233,131,0,0.5);
+    background-color: rgba(131, 202, 123, 0.7);
     font-size: 13.5pt;
 
 }
 
 .sidenav-tabs > li.active, .sidenav-tabs > ul > li.active {
-    background-color: rgba(233,131,0,0.5);
+    background-color: rgba(131, 202, 123, 0.7);
 }
 
 
@@ -152,8 +152,8 @@ label {font-weight: normal}
     background-image: url("../img/layers.png");
 }
 
-.mt-jbarml {
-    background-image: url("../img/blank.png");
+.mt-logo {
+    background-image: url("../img/mappig.png");
 }
 
 
