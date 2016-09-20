@@ -1,11 +1,11 @@
-# MapPig
-[![Build Status](https://travis-ci.org/JamesRamm/MapThing.svg?branch=master)](https://travis-ci.org/JamesRamm/MapThing) 
+# MapPIG
+[![Build Status](https://travis-ci.org/JamesRamm/MapPIG.svg?branch=master)](https://travis-ci.org/JamesRamm/MapPIG) 
 
 A mapping platform for interactive geodata.
 
 Desktop web map viewer with a flexible extensions framework. MapPig utilizes web technology to gear itself toward integration of geovisualisation and statistical analysis. 
 
-MapPig is written in Javascript using Electron
+MapPIG is written in Javascript using Electron
 
 ## Goals
 1. Provide a simple and beautiful interface to enable interactive visualisation of geospatial data
@@ -21,7 +21,7 @@ Requirements:
 - Electron >= 1.3
 
 run `npm install` followed by `npm run templates`. 
-You should now be able to run MapPig by running `electron .` in the MapPig directory
+You should now be able to run MapPig by running `electron .` in the MapPIG directory
 
 ## Configuration
 
