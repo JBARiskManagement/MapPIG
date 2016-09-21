@@ -7,7 +7,7 @@ require('./vendors/jquery-loading-overlay/loadingoverlay.min.js')
 require('bootstrap')
 
 const {MapControl, registerMapCtrl, getMapCtrl} = require('./src/map_control.js')
-const {MTPlugins} = require('./src/loader.js')
+const {PluginLoader, PluginInstaller} = require('./src/plugins.js')
 const {OwsControl} = require('./src/ows_control.js')
 const runTour = require('./src/tour.js').runTour
 
@@ -62,7 +62,8 @@ function initialise(){
     })
 
     // Initialise plugins
-    var loader = new MTPlugins()
+    var loader = new PluginLoader()
+    var installer = new PluginInstaller(loader)    
     loader.findPlugins()
 
 }

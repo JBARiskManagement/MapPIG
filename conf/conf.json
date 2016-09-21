@@ -25,5 +25,5 @@
                 "Environment Agency": ["http://www.geostore.com/OGC/OGCInterface?UID=UDATAGOV2011&PASSWORD=datagov2011&INTERFACE=ENVIRONMENT&LC=0", "wms"],
                 "FEMA": ["http://hazards.fema.gov/gis/nfhl/services/public/NFHLWMS/MapServer/WMSServer", "wms"]                
             },
-    "plugins": "C:/source/MapPIG/plugins"
+    "plugins": "C:/Users/James/Source/Repos/MapPIG/plugins"
 }

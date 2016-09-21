@@ -11,29 +11,30 @@
     "esversion": 6
   },
   "dependencies": {
-    "handlebars": ">=4.0.5",
-    "electron-prebuilt": "*",
     "bootbox": "*",
     "bootstrap": ">=3.3.7",
     "bootstrap-select": "*",
-    "bootstrap-switch": "*",
+    "bootstrap-switch": "^3.3.2",
     "bootstrap-tour": "*",
+    "electron-prebuilt": "*",
     "electron-screenshot-app": "*",
     "font-awesome": ">=4.6.3",
+    "handlebars": ">=4.0.5",
     "jquery": ">=1.11.3",
     "leaflet": "*",
     "leaflet-draw": "*",
     "leaflet-loading": "*",
     "leaflet-search": "*",
     "leaflet-sidenav": ">=0.4.2",
+    "npm": "^3.10.7",
     "plotly.js": ">=1.16.2"
-    
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/JamesRamm/MapPIG"
   },
-  "author": { "name" : "James Ramm",
-             "email" : "jamessramm@gmail.com"
-    }
+  "author": {
+    "name": "James Ramm",
+    "email": "jamessramm@gmail.com"
+  }
 }

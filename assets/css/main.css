@@ -13,6 +13,12 @@ h1, h2, h3{
     color: #83ca7b;
 }
 
+h4{
+    font-weight: bold;
+    color: #83ca7b;
+    font-size: 16px;
+}
+
 
 input[type="radio"], input[type="checkbox"] {
   margin: 0;

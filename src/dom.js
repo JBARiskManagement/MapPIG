@@ -10,7 +10,6 @@ const {dialog} = require('electron').remote;
 require('bootstrap');
 
 const bootbox = require('bootbox');
-require("bootstrap-switch");
 const Handlebars = require("handlebars/runtime");
 require('./templates.js');
 var mapCtrl = require('./map_control.js');
@@ -197,15 +196,35 @@ MTDom = {
         var id = pluginName + 'launch';
 
         // Create the button
-        var button = $('<input/>').attr({ type: 'checkbox', id: id, name: id, "data-label-text":pluginName})
-        $("#plugin-launchers").append(button);
 
-        $("#"+id).bootstrapSwitch();
-        $("#"+id).on('switchChange.bootstrapSwitch', function(event, state){setupFunc(state);});
-        $(".bootstrap-switch-id-"+id).tooltip({
+        var button = $('<button/>').attr({ type: 'button',
+                                           "class": "btn btn-primary",
+                                            id: id,
+                                            name: id,
+                                            "data-toggle": "button",
+                                            "aria-pressed": 'false',
+                                            autocomplete:"off"})
+        button.text(pluginName)
+        $("#plugin-launchers").append(button)
+
+        // Callback to the plugin setup functions
+        $("#"+id).on('click', function(event){
+            let state = $("#"+id).attr("aria-pressed") !== "true"
+            if (state){
+                $("#"+id).removeClass("btn-primary").addClass("btn-success")
+            }
+            else {
+                $("#"+id).removeClass("btn-success").addClass("btn-primary")
+            }
+            
+            setupFunc(state)
+        })
+
+        // Add a tooltip with the plugin description
+        $("#"+id).tooltip({
                            placement: 'right',
                            title: description
-                       });
+                       })
     },
 
     addFileOpenForm: function(id, callback)
