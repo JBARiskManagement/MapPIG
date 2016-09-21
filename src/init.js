@@ -25,7 +25,7 @@ function initialise(){
                           })
     
     // Initialise tooltips
-    $('[data-toggle="tooltip"]').tooltip({ container: 'body' })
+    $('[data-toggle="tooltip"]').tooltip({ container: '#container' })
 
     // Create the MapControl and register it as the default map
     var mapCtrl = new MapControl()

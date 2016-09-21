@@ -4,7 +4,7 @@
 */
 
 const $ = jQuery = require('jQuery');
-require('../vendors/jquery-ui-1.12.0.custom/jquery-ui.min.js');
+require('../vendors/jquery-ui-1.12.1.custom/jquery-ui.min.js');
 
 const {dialog} = require('electron').remote;
 require('bootstrap');

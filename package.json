@@ -14,7 +14,6 @@
     "bootbox": "*",
     "bootstrap": ">=3.3.7",
     "bootstrap-select": "*",
-    "bootstrap-switch": "^3.3.2",
     "bootstrap-tour": "*",
     "electron-prebuilt": "*",
     "electron-screenshot-app": "*",
