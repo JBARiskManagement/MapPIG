@@ -12,7 +12,7 @@ require('leaflet-search');
 require('leaflet-loading');
 const wms = require('./wms.js');
 require('bootstrap-select');
-const {MTDom} = require('./dom.js');
+const {MPDom} = require('./dom.js');
 
 
 /**

@@ -1,7 +1,7 @@
 /*
  * Controls the OWS connections panel
  */
-const {MTDom} = require('./dom.js');
+const {MPDom} = require('./dom.js');
 const wms = require('./wms.js');
 const conf = require('../conf/conf.json')
 
@@ -46,7 +46,7 @@ class OwsControl {
      * and add each layer to the select picker dropdown
      */
     refreshAvailableLayers(e){
-        MTDom.showLoading("#sb-overlays");
+        MPDom.showLoading("#sb-overlays");
         var url = this._host_select.find("option:selected").val();
         var service =  this._host_select.find("option:selected").attr("ows-service");
 
@@ -74,7 +74,7 @@ class OwsControl {
                         self._layer_select.append(option)
                     })
                     this._layer_select.selectpicker('refresh')
-                    MTDom.hideLoading("#sb-overlays")
+                    MPDom.hideLoading("#sb-overlays")
     }
 
     updateWfsOptions(xml){
@@ -85,7 +85,7 @@ class OwsControl {
                         self._layer_select.append(option)
                     })
                     this._layer_select.selectpicker('refresh')
-                    MTDom.hideLoading("#sb-overlays")
+                    MPDom.hideLoading("#sb-overlays")
     }
 }
 

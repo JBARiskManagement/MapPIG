@@ -3,29 +3,29 @@
 
 Helpers for manipulating the MapPIG UI.
 
-### MTDom.hideSidebar()
+### MPDom.hideSidebar()
 
 Hide the sidebar
 
-### MTDom.showSidebar()
+### MPDom.showSidebar()
 
 Show the sidebar
 
-### MTDom.showLoading(selector)
+### MPDom.showLoading(selector)
 
 Show a loading/busy spinner over the selected element. This is useful to prevent
 UI use when waiting for e.g an ajax request.
 
 - `selector` A valid JQuery selector (e.g an element id, in the form "###idName" or an element class in the form ".className"
 
-### MTDom.showMessage(msg, title)
+### MPDom.showMessage(msg, title)
 
 Show a message in a small popup modal. Typically used for conveying error messages or important information. 
 
 - `msg` String. The message body
 - `title` String The title of the window
 
-### MTDom.makePluginSidebarUi(name)
+### MPDom.makePluginSidebarUi(name)
 
 Transforms the `Plugins` sidebar panel into an area in which a plugin can add its' own GUI elements.
 The panel header is replaced by `name` and the list of available plugins is removed and replaced by a single 'exit' button at the top of the panel.
@@ -34,7 +34,7 @@ replaced by the standard plugins list (i.e. the plugin is exited).
 
 Returns the sidebar container element in which HTML elements can be added.
 
-### MTDom.createModal(content, [title])
+### MPDom.createModal(content, [title])
 
 Creates a modal bootstrap window and returns the `.modal-body` div; Add the contents of the window to this element.
 The modal window overlays the map area and the rest of the MapPIG GUI is inactive while the window is displayed. 
@@ -44,7 +44,7 @@ The modal window overlays the map area and the rest of the MapPIG GUI is inactiv
 
 Returns the DOM node for the `.modal-body` element of the window
 
-### MTDom.addFileOpenForm(id, callback)
+### MPDom.addFileOpenForm(id, callback)
 
 Create a `file open` form within the specified element. A file open form consists of a single line text area (a ``span`` element) and an attached `Browse` button within a ``form`` HTML element.
 When pressed, the browse button will display a native file open dialog and the selected file path will be displayed in the text area.
@@ -57,14 +57,14 @@ The text `span` will have an id attribute of `<id>-file-path-span` and the brows
 The `form` element is returned.     
 
 
-## Class: MTContainer
+## Class: MPContainer
 
-### new MTContainer()
+### new MPContainer()
 
-Create a new MTContainer instance. This is a small helper class to add container elements such as sidebar panels and dialog boxes to
+Create a new MPContainer instance. This is a small helper class to add container elements such as sidebar panels and dialog boxes to
 the MapPIG UI:
 
-    container = new MTContainer();
+    container = new MPContainer();
 
 ### container.sidebarPanel(data)
 

@@ -16,7 +16,7 @@ var mapCtrl = require('./map_control.js');
 // Strange looking require path due to: https://github.com/plotly/plotly.js/issues/891
 const Plotly = require('plotly.js/dist/plotly.js');
 
-MTContainer = function()
+MPContainer = function()
 {
     this._elements = [];
 };
@@ -42,14 +42,14 @@ MTContainer = function()
  *                                       on the top or the bottom of the sidenav. 'top' or 'bottom'
  * @param {HTMLString} {DOMnode} [data.tab]  content of the tab item, as HTMLstring or DOM node
  */
-MTContainer.prototype.sidenavPanel = function(data)
+MPContainer.prototype.sidenavPanel = function(data)
 {
     this._elements.push(data.id+"-panel");
     this._elements.push(data.id);
 
     data.pane = data.content
     data.header = data.title +'<div class="sidenav-close"><i class="fa fa-caret-left"></i></div>'
-    MTDom._addsidenavPanel(data);
+    MPDom._addsidenavPanel(data);
 };
 
 
@@ -65,7 +65,7 @@ MTContainer.prototype.sidenavPanel = function(data)
  *  @param {HTMLString} {DOMNode} [data.body] Content of the modal body
  *  @param {HTMLString} {DOMNode} [data.footer] Content of the modal footer
  */
-MTContainer.prototype.modal = function(data)
+MPContainer.prototype.modal = function(data)
 {
     // Check the modal doesnt already exist on the DOM and remove if so
     $("#"+data.id).remove();
@@ -108,7 +108,7 @@ MTContainer.prototype.modal = function(data)
  *  @param {object} [data.chartData] Chart data
  * @param {object} [data.chartLayout] Chart layout
  */
-MTContainer.prototype.modalChart = function(data)
+MPContainer.prototype.modalChart = function(data)
 {
     var chartId = data.id+"-chart";
     data.body = "<div id='"+chartId+"'></div>";
@@ -119,7 +119,7 @@ MTContainer.prototype.modalChart = function(data)
     return mod;
 };
 
-MTContainer.prototype.close = function()
+MPContainer.prototype.close = function()
 {
     for (var i = 0; i < this._elements.length; i++)
     {
@@ -127,7 +127,7 @@ MTContainer.prototype.close = function()
     }
 };
 
-MTDom = {
+MPDom = {
     showMessage: function(msg, title){
         bootbox.dialog({ message: msg,
                          title: title,
@@ -277,5 +277,5 @@ MTDom = {
     }
 };
 
-module.exports.MTDom = MTDom;
-module.exports.MTContainer = MTContainer;
+module.exports.MPDom = MPDom;
+module.exports.MPContainer = MPContainer;

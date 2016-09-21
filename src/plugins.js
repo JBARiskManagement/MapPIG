@@ -2,7 +2,7 @@
  */
 const path = require('path');
 const fs = require('fs');
-const {MTPluginGui, MTDom} = require(path.join(__dirname, "dom.js"));
+const {MPContainer, MPDom} = require(path.join(__dirname, "dom.js"));
 const conf = require('../conf/conf.json')
 const npm = require('npm')
 
@@ -36,7 +36,7 @@ PluginLoader.prototype.registerPlugin = function(err, files){
                     this.all_plugins[pkg.name] = plugin
 
                     // Add a GUI button
-                    MTDom.addPluginLauncher(pkg.name, plugin.setup, pkg.description)
+                    MPDom.addPluginLauncher(pkg.name, plugin.setup, pkg.description)
                 }
             }
             else {
@@ -63,7 +63,7 @@ class PluginInstaller {
     }
 
     install(name){
-        MTDom.showLoading("#sb-plugin")
+        MPDom.showLoading("#sb-plugin")
         npm.load(function(err) {
             // handle errors
             if (err){
@@ -83,7 +83,7 @@ class PluginInstaller {
 
                     // Refresh the loaded plugins
                     this._loader.findPlugins()
-                    MTDom.hideLoading("#sb-plugin")
+                    MPDom.hideLoading("#sb-plugin")
                 }
             }.bind(this))
 
