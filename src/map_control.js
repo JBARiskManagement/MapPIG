@@ -29,6 +29,7 @@ function _load_config(path, callback){
             });
 };
 
+// Cache of MapControls
 var _MCTRL_LIST = {};
 
 /**
