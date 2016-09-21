@@ -17,7 +17,7 @@ MTPlugins.prototype.findPlugins = function(){
 };
 
 MTPlugins.prototype.readPluginDir = function(err, stats){
-    if (!err && stats.isDirectory()){
+    if (!err && (stats.isDirectory() || stats.isSymbolicLink())){
         fs.readdir(this.pluginPath, this.registerPlugin.bind(this));
     };
 }
