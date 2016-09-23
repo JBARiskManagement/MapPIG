@@ -1,5 +1,7 @@
 /*
 */
+wms = require('./wms.js')
+
 L.Control.LayerPanel = L.Control.Layers.extend({
 
     options: {
@@ -40,7 +42,8 @@ L.Control.LayerPanel = L.Control.Layers.extend({
         var layer = this._layers[layerId].layer;
         if (typeof layer.legendObjs === 'undefined')
         {
-            layer.legendObjs = MT.Wms.createLegend(layer);
+            let ws = new wms.WebService()
+            layer.legendObjs = ws.createLegend(layer);
         }
         else
         {
