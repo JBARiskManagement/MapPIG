@@ -16,6 +16,8 @@ class OwsControl {
         // When the OWS host is changed, update the mapCtrl
         this._host_select.on('change', this.refreshAvailableLayers.bind(this))
 
+        this._selected_service = ''
+
         if (conf.hasOwnProperty('ows')){
             this.configOwsHosts(conf.ows)
         }
@@ -36,6 +38,7 @@ class OwsControl {
     onSubmit(fn){
         $("#overlay-submit").click(function() {
             fn(this._host_select.val(), 
+                this._selected_service,
                 this._layer_select.val(), 
                 this._layer_select.find("option:selected").text())
         }.bind(this))
@@ -48,13 +51,13 @@ class OwsControl {
     refreshAvailableLayers(e){
         MPDom.showLoading("#sb-overlays");
         var url = this._host_select.find("option:selected").val();
-        var service =  this._host_select.find("option:selected").attr("ows-service");
+        this._selected_service =  this._host_select.find("option:selected").attr("ows-service");
 
-        if (service == "wms"){
+        if (this._selected_service == "wms"){
             var success_func = this.updateWmsOptions
             this._add_button.text("Add WMS Layer")
         }
-        else if (service == "wfs"){
+        else if (this._selected_service == "wfs"){
             var success_func = this.updateWfsOptions
             this._add_button.text("Add WFS Layer")
         }
@@ -63,7 +66,7 @@ class OwsControl {
         ws.getCapabilities({
             success: success_func.bind(this),
             error: function(){alert("Error connecting to OWS host")},
-            service: service})
+            service: this._selected_service})
     }
 
     updateWmsOptions(xml){

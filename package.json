@@ -11,6 +11,7 @@
     "esversion": 6
   },
   "dependencies": {
+    "Leaflet-WFST": "git+https://github.com/Flexberry/Leaflet-WFST.git",
     "bootbox": "*",
     "bootstrap": ">=3.3.7",
     "bootstrap-select": "*",

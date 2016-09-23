@@ -189,7 +189,7 @@ class MapControl{
     /**
      * Add an overlay WMS layer to the map
      */
-    addWmsOverlay (host, layerName, displayName, format, attr){
+    addWmsOverlay (host, service, layerName, displayName, format, attr){
         // Get the values from the hazards-sidenav if they are not passed in
         if (typeof host === 'undefined')
             host = $("#ows-host-select").val()
@@ -207,19 +207,28 @@ class MapControl{
             attr = ''
 
         if (host && layerName){
-            var layer = L.tileLayer.wms(host,
-                {
-                maxZoom: 30,
-                layers: layerName,
-                format: format,
-                transparent: true,
-                version: '1.1.0',
-                attribution: attr
-            })
 
-            this.overLays[displayName] = layer
-            this._map.addLayer(layer)
-            this.layerControl.addOverlay(layer, displayName)
+            if (service === "wms"){
+                var layer = L.tileLayer.wms(host,
+                    {
+                    maxZoom: 30,
+                    layers: layerName,
+                    format: format,
+                    transparent: true,
+                    version: '1.1.0',
+                    attribution: attr
+                })
+
+                this.overLays[displayName] = layer
+                this._map.addLayer(layer)
+                this.layerControl.addOverlay(layer, displayName)
+            }
+           else if (service === "wfs"){
+               alert("Drawing WFS layers is not yet supported")
+           }
+           else{
+               alert("Cannot create layer; Unknown service " + service)
+           }
         }
     }
 
