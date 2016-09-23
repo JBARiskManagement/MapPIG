@@ -13,6 +13,14 @@ MapPIG is written in Javascript using Electron
 3. Provide easy-to-use generic UI clients for WMS, WMTS, WFS(T), WPS and TMS web services
 4. Bring together web interactivity and desktop processing
 
+
+### Screenshots
+MapPIG can connect to WMS and WFS services:
+![MapPIG WMS](assets/img/mappig_wms.png?raw=True "WMS overlays")
+
+Any number of TMS services can be used as base map layers. Here, OpenCycleMap shows us cycle routes around Amsterdam:
+![MapPIG TMS](assets/img/mappig_wms.png?raw=True "Open Cyclemap basemap")
+
 ## Running MapPig.
 
 Requirements:
