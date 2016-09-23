@@ -19,7 +19,7 @@ MapPIG can connect to WMS and WFS services:
 ![MapPIG WMS](assets/img/mappig_wms.png?raw=True "WMS overlays")
 
 Any number of TMS services can be used as base map layers. Here, OpenCycleMap shows us cycle routes around Amsterdam:
-![MapPIG TMS](assets/img/mappig_wms.png?raw=True "Open Cyclemap basemap")
+![MapPIG TMS](assets/img/mappig_cyclemap.png?raw=True "Open Cyclemap basemap")
 
 ## Running MapPig.
 
