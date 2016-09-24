@@ -1,47 +1,52 @@
 /*
  */
-const electron = require('electron');
-const {app, BrowserWindow} = electron;
+const electron = require('electron')
+const {app, BrowserWindow} = electron
 const fs = require('fs')
 const os = require('os')
 const path = require('path')
-const ipc = electron.ipcMain;
-const dialog = electron.dialog;
-const shell = electron.shell;
+const ipc = electron.ipcMain
+const dialog = electron.dialog
+const shell = electron.shell
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
-let win;
+let win
 
 function isDebug(){
-    var result = false;
+    var result = false
     for (var i = 0; i < process.argv.length; i++){
         if (process.argv[i].indexOf("--debug") !== -1){
-            result = true;
-            break;
+            result = true
+            break
         }
     }
-    return result;
+    return result
 }
 
 function createWindow () {
   // Create the browser window.
   const {width, height} = electron.screen.getPrimaryDisplay().workAreaSize
 
-  win = new BrowserWindow({width: width * 0.85, height: height * 0.75,
-                           toolbar: false,
-                           "auto-hide-menu-bar": true,
-                          icon: "./assets/img/mappig.png"});
-  win.setMenuBarVisibility(false);
+  win = new BrowserWindow({width: width * 0.85, 
+                          height: height * 0.75,
+                          toolbar: false,
+                          "auto-hide-menu-bar": true,
+                          icon: "./assets/img/mappig.png",
+                          show: false})
+  win.setMenuBarVisibility(false)
+  win.once('ready-to-show', () => {
+    win.show()
+  })
 
 
   // and load the index.html of the app.
-  win.loadURL(`file://${__dirname}/index.html`);  
+  win.loadURL(`file://${__dirname}/index.html`)
 
   // Open the DevTools.
   if (isDebug()){
-        win.webContents.openDevTools();
-        win.setMenuBarVisibility(true);
+        win.webContents.openDevTools()
+        win.setMenuBarVisibility(true)
     }
 
   // Emitted when the window is closed.

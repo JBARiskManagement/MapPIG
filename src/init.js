@@ -10,13 +10,14 @@ const {MapControl, registerMapCtrl, getMapCtrl} = require('./src/map_control.js'
 const {PluginLoader, PluginInstaller} = require('./src/plugins.js')
 const {OwsControl} = require('./src/ows_control.js')
 const runTour = require('./src/tour.js').runTour
-
+var {MPContainer, MPDom} = require('./src/dom.js')
 const appPath = app.getAppPath()
 global.mtRequire = function(name){
   return require(appPath + '/src/' + name)
 }
 
 function initialise(){
+    
     // Default appearance of the loading overlay
     $.LoadingOverlaySetup({
                         color: "rgba(255,255,255,0.8)",
@@ -65,5 +66,4 @@ function initialise(){
     var loader = new PluginLoader()
     var installer = new PluginInstaller(loader)    
     loader.findPlugins()
-
 }

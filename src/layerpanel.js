@@ -1,6 +1,6 @@
 /*
 */
-wms = require('./wms.js')
+wms = require('./ows.js')
 
 L.Control.LayerPanel = L.Control.Layers.extend({
 
@@ -42,8 +42,7 @@ L.Control.LayerPanel = L.Control.Layers.extend({
         var layer = this._layers[layerId].layer;
         if (typeof layer.legendObjs === 'undefined')
         {
-            let ws = new wms.WebService()
-            layer.legendObjs = ws.createLegend(layer);
+            layer.legendObjs = wms.OwsHelper.createLegend(layer);
         }
         else
         {

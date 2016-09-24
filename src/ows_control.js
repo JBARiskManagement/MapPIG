@@ -2,7 +2,7 @@
  * Controls the OWS connections panel
  */
 const {MPDom} = require('./dom.js');
-const wms = require('./wms.js');
+const wms = require('./ows.js');
 const conf = require('../conf/conf.json')
 
 class OwsControl {
@@ -61,7 +61,7 @@ class OwsControl {
             var success_func = this.updateWfsOptions
             this._add_button.text("Add WFS Layer")
         }
-        var ws = new wms.WebService(url);
+        var ws = new wms.OwsHelper(url);
         this._layer_select.find('option').remove()
         ws.getCapabilities({
             success: success_func.bind(this),

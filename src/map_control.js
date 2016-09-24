@@ -10,24 +10,10 @@ require('leaflet-sidenav')
 require('../vendors/js/leaflet-wms-getlegendgraphic.js')
 require('leaflet-search')
 require('leaflet-loading')
-const wms = require('./wms.js')
+const wms = require('./ows.js')
 require('bootstrap-select')
 const {MPDom} = require('./dom.js')
-
-
-/**
- * Load a file and invoke a callback function
- */
-function _load_config(path, callback){
-
-    $.ajax({
-                url: path,
-                cache: true,
-                success: function(data) {
-                    callback(data)
-                }
-            })
-}
+const conf = require('../conf/conf.json')
 
 // Cache of MapControls
 var _MCTRL_LIST = {}
@@ -61,27 +47,19 @@ class MapControl{
             this.geocoder = new google.maps.Geocoder()
         }
 
-        // Load the baselayers into an obj
-        _load_config("./conf/conf.json", this.init.bind(this))
-
-    }
-
-    init (data){
-        var jsonObj = JSON.parse(data)
-        if (jsonObj.hasOwnProperty("base_layers")){
-            for (var p in jsonObj.base_layers){
-                if (jsonObj.base_layers.hasOwnProperty(p)){
-                    if (jsonObj.base_layers[p].type === "tileLayer"){
-                        this.baseLayers[p] = L.tileLayer(jsonObj.base_layers[p].url, { attribution: jsonObj.base_layers[p].attribution})
-                    }
-                    else if (jsonObj.base_layers[p].type === "wms"){
-                        this.baseLayers[p] = L.tileLayer.wms(jsonObj.base_layers[p].url, {maxZoom: 30,
-                                                                                            layers: layerName,
-                                                                                            format: format,
-                                                                                            transparent: true,
-                                                                                            version: '1.1.0',
-                                                                                            attribution: attr})
-                    }
+        // Parse base layers out of config
+        if (conf.hasOwnProperty("base_layers")){
+            for (var p in conf.base_layers){
+                if (conf.base_layers[p].type === "tileLayer"){
+                    this.baseLayers[p] = L.tileLayer(conf.base_layers[p].url, { attribution: conf.base_layers[p].attribution})
+                }
+                else if (conf.base_layers[p].type === "wms"){
+                    this.baseLayers[p] = L.tileLayer.wms(conf.base_layers[p].url, {maxZoom: 30,
+                                                                                    layers: layerName,
+                                                                                    format: format,
+                                                                                    transparent: true,
+                                                                                    version: '1.1.0',
+                                                                                    attribution: attr})
                 }
             }
         }
@@ -101,8 +79,8 @@ class MapControl{
         }).addTo(this._map)
 
         // Create the layer control, which will be added to the sidenav
-        var ws = new wms.WebService()
-        this.layerControl = L.control.layerpanel(this.baseLayers, this.overLays, 'sb-layers', {"legendFn": ws.createLegend}).addTo(this._map)
+        this.layerControl = L.control.layerpanel(this.baseLayers, this.overLays, 'sb-layers', 
+                                                {"legendFn": wms.OwsHelper.createLegend}).addTo(this._map)
 
         // Create the sidenav
         this.sidenav = L.control.sidenav('sidenav').addTo(this._map)
