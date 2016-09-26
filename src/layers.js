@@ -4,6 +4,28 @@ const {MapControl, registerMapCtrl, getMapCtrl} = require('./map_control.js')
 const child_process = require('child_process')
 
 
+/*
+ *  Simple wrapper around Leaflets geoJson layer
+ * to enable easy adding to the mapPIG map & layers control
+ *  
+ */
+class GeoJsonLayer {
+    constructor(layerName, options){
+        this.layer = L.geoJson(null, options)
+        this.layerName = layerName
+    }
+
+    addToMap(name = "default"){
+        this.mCtrl = getMapCtrl(name)
+        this.mCtrl.addOverlay(this.layer, this.layerName)
+    }
+
+    remove(){
+        this.layer.clearLayers()
+    }
+}
+
+
 class ClusterLayer {
 
     constructor(layerName){
@@ -45,6 +67,7 @@ class ClusterLayer {
         }
         this.worker = child_process.fork('./workers/cluster_worker.js')
         this.worker.on('message', (e) => {
+                        console.log(e)
                         if (e.data.ready) {
                             this.ready = true
                             this.update()
@@ -54,7 +77,7 @@ class ClusterLayer {
                         }
                 })
 
-        this.worker.send('loadFile', {
+        this.worker.send({
             file: path
         })
     }
@@ -62,7 +85,7 @@ class ClusterLayer {
     update() {
         if (!this.ready) return
         var bounds = this.mCtrl._map.getBounds()
-        this.worker.send('update', {
+        this.worker.send({
             bbox: [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()],
             zoom: this.mCtrl._map.getZoom()
         })

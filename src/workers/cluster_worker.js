@@ -1,6 +1,17 @@
 const supercluster = require('supercluster')
-
 var index
+
+process.on('message', (data) => {
+    console.log(data)
+    if (data.file){
+        console.log(data.file)
+        loadFile(data.file)
+    }
+    else {
+        process.send(index.getClusters(data.bbox, data.zoom)) 
+    }
+})
+
 
 function loadFile(path){
     if (path.indexOf(".json") !== -1){
@@ -9,22 +20,13 @@ function loadFile(path){
             log: true,
             radius: 60,
             extent: 256,
-            maxZoom: 17
-        }).load(geojson.features)
-        send({ready: true})
+            maxZoom: 17}).load(geojson.features)
+
+            process.send({ready: true})
         })
     }
 }
 
-self.on('message', (message, data) => {
-    if (message === "loadFile"){
-        loadFile(data.file)
-    }
-    else if (message === "update"){
-        send(index.getClusters(data.bbox, data.zoom)) 
-
-    }
-})
 
 function getJSON(url, callback) {
     var xhr = new XMLHttpRequest()
