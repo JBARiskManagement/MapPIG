@@ -36,15 +36,17 @@ class GeoJsonLayer {
 class ClusterLayer {
 
     constructor(layerName){
-        this.layer = L.geoJson(null, {
-            pointToLayer: this.createMarkerIcon
-        })
+        
 
         this.layerName = layerName
         this.ready = false
         this.mCtrl = undefined
         this.worker = undefined
-        this.createClusterIcon = this._createClusterIcon
+
+        this.layer = L.geoJson(null, {
+            pointToLayer: this._createClusterIcon
+        })
+
     }
 
     addToMap(name = "default"){
@@ -55,7 +57,7 @@ class ClusterLayer {
     }
 
     setClusterIconFn(func){
-        this.createClusterIcon = func
+        this.layer.pointToLayer = func
     }
 
     _createClusterIcon(feature, latlng) {
