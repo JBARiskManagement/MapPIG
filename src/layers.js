@@ -25,7 +25,14 @@ class GeoJsonLayer {
     }
 }
 
-
+/*
+ * Simple ClusterLayer
+ * 
+ * Currently supports GeoJson files.
+ * The function to create markers can be customised with the `setClusterIconFn` function.
+ * Data is loaded and processed asynchronously using mapbox's SuperCluster library
+ * 
+ */
 class ClusterLayer {
 
     constructor(layerName){
@@ -37,16 +44,21 @@ class ClusterLayer {
         this.ready = false
         this.mCtrl = undefined
         this.worker = undefined
+        this.createClusterIcon = this._createClusterIcon
     }
 
     addToMap(name = "default"){
         this.mCtrl = getMapCtrl(name)
         this.mCtrl.addOverlay(this.layer, this.layerName)
-        this.mCtrl._map.on('moveend', this.update);
+        this.mCtrl._map.on('moveend', this.update.bind(this));
 
     }
 
-    createClusterIcon(feature, latlng) {
+    setClusterIconFn(func){
+        this.createClusterIcon = func
+    }
+
+    _createClusterIcon(feature, latlng) {
         if (!feature.properties.cluster) return L.marker(latlng)
 
         var count = feature.properties.point_count
@@ -65,13 +77,12 @@ class ClusterLayer {
         if (this.worker && this.worker.connected){
             this.worker.disconnect()
         }
-        this.worker = child_process.fork('./workers/cluster_worker.js')
+        this.worker = child_process.fork(`${__dirname}/workers/cluster_worker.js`)
         this.worker.on('message', (e) => {
-                        console.log(e)
-                        if (e.data.ready) {
+                        if (e.ready) {
                             this.ready = true
                             this.update()
-                        } else {
+                        } else if (e.data) {
                             this.layer.clearLayers()
                             this.layer.addData(e.data)
                         }
@@ -84,11 +95,7 @@ class ClusterLayer {
 
     update() {
         if (!this.ready) return
-        var bounds = this.mCtrl._map.getBounds()
-        this.worker.send({
-            bbox: [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()],
-            zoom: this.mCtrl._map.getZoom()
-        })
+        this.worker.send(this.mCtrl.getPosition())
     }
 }
 

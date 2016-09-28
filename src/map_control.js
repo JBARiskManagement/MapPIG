@@ -122,6 +122,16 @@ class MapControl{
         return json
     }
 
+    /*
+     * Get the current position of the map as a bbox and zoom level.
+     * Returns an object: {bbox: [west, south, east, north], zoom: zoom_level}
+     */
+    getPosition(){
+        var bounds = this._map.getBounds()
+        var position = {bbox: [bounds.getWest(), bounds.getSouth(), bounds.getEast(), bounds.getNorth()],
+                        zoom: this._map.getZoom()}
+        return position
+    }
     
     /**
      * Show a sidenav tab by ID
