@@ -225,7 +225,7 @@ class MapControl{
      */
     addOverlay (layer, name){
         this._map.addLayer(layer)
-        this.overLays[name] = name
+        this.overLays[name] = layer
         this.layerControl.addOverlay(layer, name)
     }
 
