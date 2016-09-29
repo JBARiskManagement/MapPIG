@@ -103,6 +103,13 @@ class MapControl{
         }
     }
 
+    /**
+     * Shortcut for adding an event callback
+     */
+    on(event, callback){
+        this._map.on(event, callback)
+    }
+
 
     /**
      * Formats the response of the google geocoding service into JSON
