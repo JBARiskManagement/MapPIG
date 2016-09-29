@@ -240,6 +240,57 @@ class MapControl{
         this.geocoder.geocode({address: text}, callResponse)
     }
 
+    /*
+     * Create a basic legend on the map
+     * 
+     * @param options Object with following parameters:
+     * 
+     *  className: The class name for the legend. Defaults to 'legend'
+     *  position: The position of the legend. Defaults to 'bottomright'
+     *  limits: The legend 'limits'. These are the values of the legend from min to max
+     *  colors: The legend colors. Should be the same length as 'limits'
+     */ 
+    createLegend(options){
+        var legend
+        if (!options.className){
+            options.className = "legend"
+        }
+
+        if (!options.position){
+            options.position = "bottomright"
+        }
+        // Add legend (don't forget to add the CSS from index.html)
+        var basic_legend = L.control({ position: options.position })
+        basic_legend.onAdd = function (map) {
+            var div = L.DomUtil.create('div', options.className)
+            var limits = options.limits
+            var colors = options.colors
+            var labels = []
+
+            // Add min & max
+            div.innerHTML = '<div class="legend-labels"><div class="min">' + limits[0] + '</div> \
+                    <div class="max">' + limits[limits.length - 1] + '</div></div>'
+
+            limits.forEach(function (limit, index) {
+            labels.push('<li style="background-color: ' + colors[index] + '"></li>')
+            })
+
+            div.innerHTML += '<ul>' + labels.join('') + '</ul>'
+            return div
+        }
+
+        if (options.draggable){
+             legend = new L.Draggable(basic_legend)
+            legend.enable()
+        }
+        else {
+            legend = basic_legend
+        }
+        legend.addTo(this._map)
+
+        return legend
+    }
+
 }
 
 module.exports.MapControl = MapControl

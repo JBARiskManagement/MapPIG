@@ -3,22 +3,22 @@
 *
 */
 
-const $ = jQuery = require('jQuery');
-require('../vendors/jquery-ui-1.12.1.custom/jquery-ui.min.js');
+const $ = jQuery = require('jQuery')
+require('../vendors/jquery-ui-1.12.1.custom/jquery-ui.min.js')
 
-const {dialog} = require('electron').remote;
-require('bootstrap');
+const {dialog} = require('electron').remote
+require('bootstrap')
 
-const bootbox = require('bootbox');
+const bootbox = require('bootbox')
 const Handlebars = require("handlebars/runtime");
-require('./templates.js');
-var mapCtrl = require('./map_control.js');
+require('./templates.js')
+const {MapControl, registerMapCtrl, getMapCtrl} = require('./map_control.js')
 // Strange looking require path due to: https://github.com/plotly/plotly.js/issues/891
-const Plotly = require('plotly.js/dist/plotly.js');
+const Plotly = require('plotly.js/dist/plotly.js')
 
 MPContainer = function()
 {
-    this._elements = [];
+    this._elements = []
 };
 
 
@@ -44,12 +44,12 @@ MPContainer = function()
  */
 MPContainer.prototype.sidenavPanel = function(data)
 {
-    this._elements.push(data.id+"-panel");
-    this._elements.push(data.id);
+    this._elements.push(data.id+"-panel")
+    this._elements.push(data.id)
 
     data.pane = data.content
     data.header = data.title +'<div class="sidenav-close"><i class="fa fa-caret-left"></i></div>'
-    MPDom._addsidenavPanel(data);
+    MPDom._addsidenavPanel(data)
 };
 
 
@@ -68,33 +68,33 @@ MPContainer.prototype.sidenavPanel = function(data)
 MPContainer.prototype.modal = function(data)
 {
     // Check the modal doesnt already exist on the DOM and remove if so
-    $("#"+data.id).remove();
+    $("#"+data.id).remove()
 
     if (data.fullwidth)
     {
-        data.class="modal draggable container fade";
+        data.class="modal draggable container fade"
     }
     else
     {
-        data.class="modal draggable fade";
+        data.class="modal draggable fade"
     }
-    var html = Handlebars.templates.modal(data);    
+    var html = Handlebars.templates.modal(data);   
 
     // Record the modal id in the elements to remove on plugin exit
-    this._elements.push(data.id);
+    this._elements.push(data.id)
 
     // Append the modal to the main page
-    $("body").append(html);
+    $("body").append(html)
 
     // Enable resizing on modal
-    $('.modal-content').resizable();
+    $('.modal-content').resizable()
 
     // Enable dragging on modal
-    $('.modal-dialog').draggable();
+    $('.modal-dialog').draggable()
 
     // Return the dom node
-    return $("#" + data.id);
-};
+    return $("#" + data.id)
+}
 
 /**
  * Create a chart dialog. The dialog can be shown by calling `dialog("open")` on the return element,
@@ -110,22 +110,22 @@ MPContainer.prototype.modal = function(data)
  */
 MPContainer.prototype.modalChart = function(data)
 {
-    var chartId = data.id+"-chart";
+    var chartId = data.id+"-chart"
     data.body = "<div id='"+chartId+"'></div>";
-    var mod = this.modal(data);
+    var mod = this.modal(data)
 
-    Plotly.newPlot(chartId, data.chartData, data.chartLayout, {showLink: false, displaylogo: false});
+    Plotly.newPlot(chartId, data.chartData, data.chartLayout, {showLink: false, displaylogo: false})
 
-    return mod;
-};
+    return mod
+}
 
 MPContainer.prototype.close = function()
 {
     for (var i = 0; i < this._elements.length; i++)
     {
-        $('#'+this._elements[i]).remove();
+        $('#'+this._elements[i]).remove()
     }
-};
+}
 
 MPDom = {
     showMessage: function(msg, title){
@@ -133,7 +133,7 @@ MPDom = {
                          title: title,
                          buttons: {main: {label: "Ok",
                                className: "btn-primary"}}
-                       });
+                       })
     },
 
     _makesidenavPanel: function(title, id)
@@ -141,51 +141,51 @@ MPDom = {
         var panel = $("<div>", {
                                 class: "sidenav-pane",
                                 id: id
-                              });
+                              })
 
         var header = $("<h1>",
                         {
                            class: "sidenav-header",
                            html: title+' <div class="sidenav-close"><i class="fa fa-caret-left"></i></div>'
-                        });
+                        })
 
-        panel.append(header);
-        return panel;
+        panel.append(header)
+        return panel
 
     },
 
     _addsidenavPanel: function(data){
-        mapCtrl.getMapCtrl().sidenav.addPanel(data);
+        getMapCtrl().sidenav.addPanel(data)
     },
 
     hidesidenav: function(){
-        $('#sidenav').hide();
+        $('#sidenav').hide()
     },
 
     showsidenav: function(){
-        $('#sidenav').show();
+        $('#sidenav').show()
     },
 
     prepareMapForPrint: function(){
-        this.hidesidenav();
-        var mc = mapCtrl.getMapCtrl();
-        mc.zoomControl.remove();
-        mc.searchControl.remove();
+        this.hidesidenav()
+        var mc = getMapCtrl()
+        mc.zoomControl.remove()
+        mc.searchControl.remove()
     },
 
     resetMapAfterPrint: function(){
-        this.showsidenav();
-        var mc = MTgetMap();
-        mc.zoomControl.addTo(mc._map);
-        mc.searchControl.addTo(mc._map);
+        this.showsidenav()
+        var mc = getMapCtrl()
+        mc.zoomControl.addTo(mc._map)
+        mc.searchControl.addTo(mc._map)
     },
 
     showLoading: function(selector){
-        $(selector).LoadingOverlay("show");
+        $(selector).LoadingOverlay("show")
     },
 
     hideLoading: function(selector){
-        $(selector).LoadingOverlay("hide");
+        $(selector).LoadingOverlay("hide")
     },
 
     /**
@@ -193,7 +193,7 @@ MPDom = {
     */
     addPluginLauncher: function(pluginName, setupFunc, description){
         // Create an id for the launcher button
-        var id = pluginName + 'launch';
+        var id = pluginName + 'launch'
 
         // Create the button
 
@@ -229,37 +229,37 @@ MPDom = {
 
     addFileOpenForm: function(id, callback)
     {
-        var btnId = id+'-open-file-btn';
-        var spanId = id+'-file-path-span';
+        var btnId = id+'-open-file-btn'
+        var spanId = id+'-file-path-span'
         // form for file input
         var form = $('<form/>', {
               class: 'csv-form'
-          });
+          })
 
         // The form group div contains the file browser button
-        var fgrp = $('<div/>', {class: 'form-group'});
-        var label = $('<label/>', {for: btnId, text: 'Load file'});
-        var input = $('<div/>', {class: 'input-group'});
-        var brwsSpan = $('<span/>', {class: 'input-group-btn'});
+        var fgrp = $('<div/>', {class: 'form-group'})
+        var label = $('<label/>', {for: btnId, text: 'Load file'})
+        var input = $('<div/>', {class: 'input-group'})
+        var brwsSpan = $('<span/>', {class: 'input-group-btn'})
         var brwsBtn = $('<button/>', {class: 'btn btn-default',
                         type: 'button',
                         id: btnId,
                         text: 'Browse...',
                         click: function(){
-                            dialog.showOpenDialog({properties: ['openFile']}, callback);
-                        }});
+                            dialog.showOpenDialog({properties: ['openFile']}, callback)}
+                        })
 
         var pthSpan = $('<span/>', {class: 'form-control',
-                                    id: spanId});
+                                    id: spanId})
 
-        brwsSpan.append(brwsBtn);
-        input.append(brwsSpan);
-        input.append(pthSpan);
-        fgrp.append(label);
-        fgrp.append(input);
-        form.append(fgrp);
+        brwsSpan.append(brwsBtn)
+        input.append(brwsSpan)
+        input.append(pthSpan)
+        fgrp.append(label)
+        fgrp.append(input)
+        form.append(fgrp)
 
-        return form;
+        return form
 
 
     },
@@ -270,12 +270,19 @@ MPDom = {
     addFileOpenHandler: function(buttonId, callback){
         $('#'+buttonId).click(function(){
             // TODO - complete!
-            dialog.showOpenDialog({properties: ['openFile']}, callback);
+            dialog.showOpenDialog({properties: ['openFile']}, callback)
 
-        });
+        })
 
+    },
+
+    /*
+     * Insert a CSS file into the DOM
+     */ 
+    addCssFile(path){
+        $('head').append('<link rel="stylesheet" href="' + path + '" type="text/css" />')
     }
-};
+}
 
-module.exports.MPDom = MPDom;
-module.exports.MPContainer = MPContainer;
+module.exports.MPDom = MPDom
+module.exports.MPContainer = MPContainer

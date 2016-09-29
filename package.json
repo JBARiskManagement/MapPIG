@@ -22,6 +22,7 @@
     "handlebars": ">=4.0.5",
     "jquery": ">=1.11.3",
     "leaflet": "*",
+    "leaflet-choropleth": "^1.1.2",
     "leaflet-draw": "*",
     "leaflet-loading": "*",
     "leaflet-search": "*",

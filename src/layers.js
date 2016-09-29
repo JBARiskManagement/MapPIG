@@ -1,5 +1,6 @@
 const $ = jQuery = require('jQuery')
 const L = require('leaflet')
+require('leaflet-choropleth')
 const {MapControl, registerMapCtrl, getMapCtrl} = require('./map_control.js')
 const child_process = require('child_process')
 
@@ -24,6 +25,14 @@ class GeoJsonLayer {
         this.layer.clearLayers()
     }
 }
+
+/*
+ * Create a choropleth layer
+ */ 
+function choropleth(data, options){
+    return L.choropleth(data, options)
+}
+
 
 /*
  * Simple ClusterLayer
@@ -102,3 +111,5 @@ class ClusterLayer {
 }
 
 module.exports.ClusterLayer = ClusterLayer
+module.exports.GeoJsonLayer = GeoJsonLayer
+module.exports.choropleth = choropleth
